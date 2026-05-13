@@ -1,0 +1,5 @@
+tipo_hotspot,cantidad_zonas,criticidad_total_acumulada,siniestros_acumulados
+Hotspot exploratorio,13137,233369,155003
+Hotspot persistente con severidad media-alta,3965,199753,96823
+Hotspot estructural persistente,21,11195,7695
+Hotspot severo,7,2762,1310

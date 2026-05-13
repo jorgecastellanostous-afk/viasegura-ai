@@ -1,0 +1,7 @@
+anio,n_registros,pct_del_promedio_base,c1_registros,meses_con_datos,c2_meses,ratio_heridos_danos,desviacion_ratio,c3_gravedad,localidades_con_datos,c4_localidades,criterios_cumplidos,apto_4de4,apto_3de4
+2020,44049,67.8,True,12,True,0.6191,0.2513,True,19,True,4,True,True
+2021,28854,44.4,True,12,True,0.633,0.2794,True,20,True,4,True,True
+2022,25446,39.2,True,12,True,0.9838,0.9884,False,20,True,3,False,True
+2023,14115,21.7,False,12,True,11.1695,21.5749,False,20,True,2,False,False
+2024,14018,21.6,False,12,True,11.8688,22.9883,False,20,True,2,False,False
+2025,12377,19.1,False,12,True,13.7253,26.7405,False,19,True,2,False,False

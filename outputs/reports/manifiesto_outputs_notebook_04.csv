@@ -1,0 +1,7 @@
+notebook,carpeta,archivo,descripcion,existe,tam_kb,fecha_verificacion
+NB04,data/raw,actor_vial_top200_reciente.csv,VM_ACC_ACTOR_VIAL descargado para Top 200,True,502,2026-05-12 18:47
+NB04,data/raw,vehiculo_top200_reciente.csv,VM_ACC_VEHICULO descargado para Top 200,True,391,2026-05-12 18:47
+NB04,data/raw,causa_top200_reciente.csv,VM_ACC_CAUSA descargado para Top 200,True,322,2026-05-12 18:47
+NB04,outputs/reports,hotspots_enriquecidos_nb04.csv,Hotspots clasificación + actor/vehículo/causa predominante,True,4004,2026-05-12 18:47
+NB04,outputs/maps,mapa_hotspots_enriquecidos_nb04.html,Mapa interactivo con popup enriquecido por zona,True,375,2026-05-12 18:47
+NB04,outputs/reports,resumen_ejecutivo_notebook_04.md,Resumen ejecutivo NB04 (texto metodológico),True,2,2026-05-12 18:47

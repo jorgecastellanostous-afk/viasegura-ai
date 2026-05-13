@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4b288d7c953614b44cc835a5a18790c9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_4b288d7c953614b44cc835a5a18790c9" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_4b288d7c953614b44cc835a5a18790c9 = L.map(
+                "map_4b288d7c953614b44cc835a5a18790c9",
+                {
+                    center: [4.65, -74.08],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_9f6cce4d81eb622230032ee9dc98e14a = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_9f6cce4d81eb622230032ee9dc98e14a.addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+            var circle_marker_a531d51038ddaa9904565e9c4c0d667a = L.circleMarker(
+                [4.576, -74.155],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 24.0, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_c9878e61a6d396bd9a10b7f806eeb7a7 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_64434efd73185e9c8b8d4864e7d3f212 = $(`<div id="html_64434efd73185e9c8b8d4864e7d3f212" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 1<br>     <b>IPI:</b> 96.28<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> CIUDAD BOLIVAR<br>     <b>Barrio:</b> VERONA<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE VILLAVICENCIO<br><br>      <b>Cantidad de siniestros:</b> 108<br>     <b>Criticidad total:</b> 296<br>     <b>Criticidad promedio:</b> 2.74<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 32<br>     <b>Con heridos:</b> 58<br>     <b>Con muertos:</b> 18<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.576, -74.155     </div>`)[0];
+                popup_c9878e61a6d396bd9a10b7f806eeb7a7.setContent(html_64434efd73185e9c8b8d4864e7d3f212);
+            
+        
+
+        circle_marker_a531d51038ddaa9904565e9c4c0d667a.bindPopup(popup_c9878e61a6d396bd9a10b7f806eeb7a7)
+        ;
+
+        
+    
+    
+            var circle_marker_dfef8b0663cdb355d9208127c90b63c1 = L.circleMarker(
+                [4.602, -74.081],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.9070094591317, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_75ca3c35e8433aa21f64d578388ddddd = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_d5aadbc910f43916a162e4add112461c = $(`<div id="html_d5aadbc910f43916a162e4add112461c" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 2<br>     <b>IPI:</b> 95.78<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> VOTO NACIONAL<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 96<br>     <b>Criticidad total:</b> 244<br>     <b>Criticidad promedio:</b> 2.54<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 32<br>     <b>Con heridos:</b> 54<br>     <b>Con muertos:</b> 10<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.602, -74.081     </div>`)[0];
+                popup_75ca3c35e8433aa21f64d578388ddddd.setContent(html_d5aadbc910f43916a162e4add112461c);
+            
+        
+
+        circle_marker_dfef8b0663cdb355d9208127c90b63c1.bindPopup(popup_75ca3c35e8433aa21f64d578388ddddd)
+        ;
+
+        
+    
+    
+            var circle_marker_005639b37952056151196f49688ad6f8 = L.circleMarker(
+                [4.602, -74.077],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.890419597380546, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_24dd9a849ca74f7460a30b6a8a7ce535 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_6769ecfb17fa25cc54b0f0da713a7a1c = $(`<div id="html_6769ecfb17fa25cc54b0f0da713a7a1c" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 3<br>     <b>IPI:</b> 95.69<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> LA CAPUCHINA<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 94<br>     <b>Criticidad total:</b> 238<br>     <b>Criticidad promedio:</b> 2.53<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 28<br>     <b>Con heridos:</b> 60<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.602, -74.077     </div>`)[0];
+                popup_24dd9a849ca74f7460a30b6a8a7ce535.setContent(html_6769ecfb17fa25cc54b0f0da713a7a1c);
+            
+        
+
+        circle_marker_005639b37952056151196f49688ad6f8.bindPopup(popup_24dd9a849ca74f7460a30b6a8a7ce535)
+        ;
+
+        
+    
+    
+            var circle_marker_a74fc15d999a899b49e2f48df9b743ca = L.circleMarker(
+                [4.605, -74.075],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.777346592287167, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_08b61125ec53e2d3d071ae321170ac2b = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_8adb21c2a3cefae8e36170a627579e97 = $(`<div id="html_8adb21c2a3cefae8e36170a627579e97" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 4<br>     <b>IPI:</b> 95.08<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> VERACRUZ<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 86<br>     <b>Criticidad total:</b> 206<br>     <b>Criticidad promedio:</b> 2.4<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 32<br>     <b>Con heridos:</b> 48<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.605, -74.075     </div>`)[0];
+                popup_08b61125ec53e2d3d071ae321170ac2b.setContent(html_8adb21c2a3cefae8e36170a627579e97);
+            
+        
+
+        circle_marker_a74fc15d999a899b49e2f48df9b743ca.bindPopup(popup_08b61125ec53e2d3d071ae321170ac2b)
+        ;
+
+        
+    
+    
+            var circle_marker_b24ea1eb8ae539a56024463a383d6e3b = L.circleMarker(
+                [4.642, -74.191],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.760429299054085, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_38b77e3af7341a9eef13de4bfdb65672 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_ab27386962e9673a6ae93e0f127a8cb7 = $(`<div id="html_ab27386962e9673a6ae93e0f127a8cb7" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 5<br>     <b>IPI:</b> 94.99<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> BOSA<br>     <b>Barrio:</b> EL CORZO I<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 24<br>     <b>Criticidad total:</b> 80<br>     <b>Criticidad promedio:</b> 3.33<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 0<br>     <b>Con heridos:</b> 20<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.642, -74.191     </div>`)[0];
+                popup_38b77e3af7341a9eef13de4bfdb65672.setContent(html_ab27386962e9673a6ae93e0f127a8cb7);
+            
+        
+
+        circle_marker_b24ea1eb8ae539a56024463a383d6e3b.bindPopup(popup_38b77e3af7341a9eef13de4bfdb65672)
+        ;
+
+        
+    
+    
+            var circle_marker_2198b91962c85278e3837c205f647f12 = L.circleMarker(
+                [4.607, -74.13],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.75508125151589, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_ea7c99331b10d37b1a274c7ca5ee00e6 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_8ed07ce4145f2ac4c2735a0a434c732b = $(`<div id="html_8ed07ce4145f2ac4c2735a0a434c732b" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 6<br>     <b>IPI:</b> 94.97<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> PUENTE ARANDA<br>     <b>Barrio:</b> TEJAR<br>     <b>Vía predominante:</b> AVENIDA DEL CONGRESO EUCARISTICO<br><br>      <b>Cantidad de siniestros:</b> 60<br>     <b>Criticidad total:</b> 152<br>     <b>Criticidad promedio:</b> 2.53<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 24<br>     <b>Con heridos:</b> 26<br>     <b>Con muertos:</b> 10<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.607, -74.13     </div>`)[0];
+                popup_ea7c99331b10d37b1a274c7ca5ee00e6.setContent(html_8ed07ce4145f2ac4c2735a0a434c732b);
+            
+        
+
+        circle_marker_2198b91962c85278e3837c205f647f12.bindPopup(popup_ea7c99331b10d37b1a274c7ca5ee00e6)
+        ;
+
+        
+    
+    
+            var circle_marker_84da1f164198b678c3bc6571cddc17ea = L.circleMarker(
+                [4.611, -74.075],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.70563909774436, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_fd3faede1b7f10cd3d71829c22020d43 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_81f7937ba3644c32ad122f7f0a6e456f = $(`<div id="html_81f7937ba3644c32ad122f7f0a6e456f" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 7<br>     <b>IPI:</b> 94.7<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot severo<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> SANTA FE<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 182<br>     <b>Criticidad total:</b> 422<br>     <b>Criticidad promedio:</b> 2.32<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 66<br>     <b>Con heridos:</b> 112<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.611, -74.075     </div>`)[0];
+                popup_fd3faede1b7f10cd3d71829c22020d43.setContent(html_81f7937ba3644c32ad122f7f0a6e456f);
+            
+        
+
+        circle_marker_84da1f164198b678c3bc6571cddc17ea.bindPopup(popup_fd3faede1b7f10cd3d71829c22020d43)
+        ;
+
+        
+    
+    
+            var circle_marker_b897f3be888c13c36cf16acd403994a6 = L.circleMarker(
+                [4.576, -74.12],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.693524132912923, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_406f96074978ed5d1afefaa75fce6d43 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_89a7355d983e00087f883261e81d83eb = $(`<div id="html_89a7355d983e00087f883261e81d83eb" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 8<br>     <b>IPI:</b> 94.64<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> RAFAEL URIBE URIBE<br>     <b>Barrio:</b> QUIROGA SUR<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 92<br>     <b>Criticidad total:</b> 236<br>     <b>Criticidad promedio:</b> 2.57<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 22<br>     <b>Con heridos:</b> 68<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.576, -74.12     </div>`)[0];
+                popup_406f96074978ed5d1afefaa75fce6d43.setContent(html_89a7355d983e00087f883261e81d83eb);
+            
+        
+
+        circle_marker_b897f3be888c13c36cf16acd403994a6.bindPopup(popup_406f96074978ed5d1afefaa75fce6d43)
+        ;
+
+        
+    
+    
+            var circle_marker_8ee0638492902ce81b3706a3da19fb7d = L.circleMarker(
+                [4.618, -74.17],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.682064031045353, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_d6a9ecd4233860e0d538b1d6b7e4dc9f = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_56afd20fb6d7fe6cefeaab75bf0efebb = $(`<div id="html_56afd20fb6d7fe6cefeaab75bf0efebb" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 9<br>     <b>IPI:</b> 94.58<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> CASABLANCA<br>     <b>Vía predominante:</b> AVENIDA AGOBERTO MEJIA CIFUENTES<br><br>      <b>Cantidad de siniestros:</b> 48<br>     <b>Criticidad total:</b> 132<br>     <b>Criticidad promedio:</b> 2.75<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 10<br>     <b>Con heridos:</b> 34<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.618, -74.17     </div>`)[0];
+                popup_d6a9ecd4233860e0d538b1d6b7e4dc9f.setContent(html_56afd20fb6d7fe6cefeaab75bf0efebb);
+            
+        
+
+        circle_marker_8ee0638492902ce81b3706a3da19fb7d.bindPopup(popup_d6a9ecd4233860e0d538b1d6b7e4dc9f)
+        ;
+
+        
+    
+    
+            var circle_marker_860ff3cc9ffd0f0ad37a8c4126445419 = L.circleMarker(
+                [4.512, -74.115],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.659689546446764, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_e1b5ed015696f6f427350a0e3a090b66 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_63da5c5cc8cfffd1f18991451db9e562 = $(`<div id="html_63da5c5cc8cfffd1f18991451db9e562" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 10<br>     <b>IPI:</b> 94.46<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> USME<br>     <b>Barrio:</b> LA ANDREA<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 68<br>     <b>Criticidad total:</b> 160<br>     <b>Criticidad promedio:</b> 2.35<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 26<br>     <b>Con heridos:</b> 38<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.512, -74.115     </div>`)[0];
+                popup_e1b5ed015696f6f427350a0e3a090b66.setContent(html_63da5c5cc8cfffd1f18991451db9e562);
+            
+        
+
+        circle_marker_860ff3cc9ffd0f0ad37a8c4126445419.bindPopup(popup_e1b5ed015696f6f427350a0e3a090b66)
+        ;
+
+        
+    
+    
+            var circle_marker_abeef87812b4a6fc30172ca00a0de74d = L.circleMarker(
+                [4.576, -74.095],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.65936211496483, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_12a836639e1e33270b5ba213d1bfa8b7 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_ef7a71ba4fd58a565790a5e00d71d3e1 = $(`<div id="html_ef7a71ba4fd58a565790a5e00d71d3e1" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 11<br>     <b>IPI:</b> 94.45<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SAN CRISTOBAL<br>     <b>Barrio:</b> VEINTE DE JULIO<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 148<br>     <b>Criticidad total:</b> 332<br>     <b>Criticidad promedio:</b> 2.24<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 60<br>     <b>Con heridos:</b> 84<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.576, -74.095     </div>`)[0];
+                popup_12a836639e1e33270b5ba213d1bfa8b7.setContent(html_ef7a71ba4fd58a565790a5e00d71d3e1);
+            
+        
+
+        circle_marker_abeef87812b4a6fc30172ca00a0de74d.bindPopup(popup_12a836639e1e33270b5ba213d1bfa8b7)
+        ;
+
+        
+    
+    
+            var circle_marker_2309500349812280ff692a88bfba2924 = L.circleMarker(
+                [4.609, -74.072],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.65827067669173, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_d1608b6594e6bb3ec5cdd76199cee7b7 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_bbe6611ba22461efe206600e652c1262 = $(`<div id="html_bbe6611ba22461efe206600e652c1262" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 12<br>     <b>IPI:</b> 94.45<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> LAS NIEVES<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 58<br>     <b>Criticidad total:</b> 142<br>     <b>Criticidad promedio:</b> 2.45<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 22<br>     <b>Con heridos:</b> 30<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.609, -74.072     </div>`)[0];
+                popup_d1608b6594e6bb3ec5cdd76199cee7b7.setContent(html_bbe6611ba22461efe206600e652c1262);
+            
+        
+
+        circle_marker_2309500349812280ff692a88bfba2924.bindPopup(popup_d1608b6594e6bb3ec5cdd76199cee7b7)
+        ;
+
+        
+    
+    
+            var circle_marker_1dceb2c550c0fdebd0262795a0b42b03 = L.circleMarker(
+                [4.647, -74.065],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.65630608780015, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_f54c3cc9e0e49407e64e869c2a537f5d = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_deda5da98cea8184cbb1c4cba698f176 = $(`<div id="html_deda5da98cea8184cbb1c4cba698f176" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 13<br>     <b>IPI:</b> 94.44<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot severo<br><br>      <b>Localidad:</b> CHAPINERO<br>     <b>Barrio:</b> CHAPINERO OCCIDENTAL<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 222<br>     <b>Criticidad total:</b> 482<br>     <b>Criticidad promedio:</b> 2.17<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 100<br>     <b>Con heridos:</b> 114<br>     <b>Con muertos:</b> 8<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.647, -74.065     </div>`)[0];
+                popup_f54c3cc9e0e49407e64e869c2a537f5d.setContent(html_deda5da98cea8184cbb1c4cba698f176);
+            
+        
+
+        circle_marker_1dceb2c550c0fdebd0262795a0b42b03.bindPopup(popup_f54c3cc9e0e49407e64e869c2a537f5d)
+        ;
+
+        
+    
+    
+            var circle_marker_2ed3bb79482bae3cbe8d0d66456ec113 = L.circleMarker(
+                [4.592, -74.116],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.651285471743872, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_7d5b45e798771de806b265abceec951c = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_530a85292d3e1280be7e10a282e97338 = $(`<div id="html_530a85292d3e1280be7e10a282e97338" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 14<br>     <b>IPI:</b> 94.41<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> ANTONIO NARIÑO<br>     <b>Barrio:</b> EDUARDO FREY<br>     <b>Vía predominante:</b> AVENIDA JORGE GAITAN CORTES<br><br>      <b>Cantidad de siniestros:</b> 100<br>     <b>Criticidad total:</b> 228<br>     <b>Criticidad promedio:</b> 2.28<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 42<br>     <b>Con heridos:</b> 52<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.592, -74.116     </div>`)[0];
+                popup_7d5b45e798771de806b265abceec951c.setContent(html_530a85292d3e1280be7e10a282e97338);
+            
+        
+
+        circle_marker_2ed3bb79482bae3cbe8d0d66456ec113.bindPopup(popup_7d5b45e798771de806b265abceec951c)
+        ;
+
+        
+    
+    
+            var circle_marker_13433131be8d28131f20a8a59c8d1a68 = L.circleMarker(
+                [4.586, -74.094],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.62334465195246, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_5f82a32fa4ab9bdab986fcc5ec8b8647 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_14ff3fcbe8ce4c7ad5a6d2cee3f5e322 = $(`<div id="html_14ff3fcbe8ce4c7ad5a6d2cee3f5e322" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 15<br>     <b>IPI:</b> 94.26<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> ANTONIO NARIÑO<br>     <b>Barrio:</b> CIUDAD BERNA<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 62<br>     <b>Criticidad total:</b> 146<br>     <b>Criticidad promedio:</b> 2.35<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 24<br>     <b>Con heridos:</b> 34<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.586, -74.094     </div>`)[0];
+                popup_5f82a32fa4ab9bdab986fcc5ec8b8647.setContent(html_14ff3fcbe8ce4c7ad5a6d2cee3f5e322);
+            
+        
+
+        circle_marker_13433131be8d28131f20a8a59c8d1a68.bindPopup(popup_5f82a32fa4ab9bdab986fcc5ec8b8647)
+        ;
+
+        
+    
+    
+            var circle_marker_3acda1430d0a7263ba8610e815a4abcd = L.circleMarker(
+                [4.619, -74.143],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.621052631578948, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_09242b37cab4d31674e44fb04b9131a7 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_a3d9147dc3c343ee8df1aa2f8e482c58 = $(`<div id="html_a3d9147dc3c343ee8df1aa2f8e482c58" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 16<br>     <b>IPI:</b> 94.25<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> CIUDAD KENNEDY ORIENTAL<br>     <b>Vía predominante:</b> AVENIDA PRIMERO DE MAYO<br><br>      <b>Cantidad de siniestros:</b> 60<br>     <b>Criticidad total:</b> 144<br>     <b>Criticidad promedio:</b> 2.4<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 22<br>     <b>Con heridos:</b> 34<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.619, -74.143     </div>`)[0];
+                popup_09242b37cab4d31674e44fb04b9131a7.setContent(html_a3d9147dc3c343ee8df1aa2f8e482c58);
+            
+        
+
+        circle_marker_3acda1430d0a7263ba8610e815a4abcd.bindPopup(popup_09242b37cab4d31674e44fb04b9131a7)
+        ;
+
+        
+    
+    
+            var circle_marker_f5f6e7d87409a6901f68ac881de80b66 = L.circleMarker(
+                [4.644, -74.066],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.608610235265584, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_9acd7bf3ff80745bcf9b40978efb5155 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_529a0c36e426b8968c914af6e3634f50 = $(`<div id="html_529a0c36e426b8968c914af6e3634f50" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 17<br>     <b>IPI:</b> 94.18<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> CHAPINERO<br>     <b>Barrio:</b> CHAPINERO CENTRAL<br>     <b>Vía predominante:</b> AVENIDA GILBERTO ALZATE AVENDAÑO<br><br>      <b>Cantidad de siniestros:</b> 72<br>     <b>Criticidad total:</b> 168<br>     <b>Criticidad promedio:</b> 2.33<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 28<br>     <b>Con heridos:</b> 40<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.644, -74.066     </div>`)[0];
+                popup_9acd7bf3ff80745bcf9b40978efb5155.setContent(html_529a0c36e426b8968c914af6e3634f50);
+            
+        
+
+        circle_marker_f5f6e7d87409a6901f68ac881de80b66.bindPopup(popup_9acd7bf3ff80745bcf9b40978efb5155)
+        ;
+
+        
+    
+    
+            var circle_marker_84102713eb07fc53f77a7cfb0d1e36f8 = L.circleMarker(
+                [4.606, -74.126],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.597914140189186, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_26d90d1c8855648c2691b46fe7de7f18 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_bd91101398bfbffceaeba6cf9c5e38c9 = $(`<div id="html_bd91101398bfbffceaeba6cf9c5e38c9" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 18<br>     <b>IPI:</b> 94.12<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> PUENTE ARANDA<br>     <b>Barrio:</b> SAN EUSEBIO<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 56<br>     <b>Criticidad total:</b> 136<br>     <b>Criticidad promedio:</b> 2.43<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 20<br>     <b>Con heridos:</b> 32<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.606, -74.126     </div>`)[0];
+                popup_26d90d1c8855648c2691b46fe7de7f18.setContent(html_bd91101398bfbffceaeba6cf9c5e38c9);
+            
+        
+
+        circle_marker_84102713eb07fc53f77a7cfb0d1e36f8.bindPopup(popup_26d90d1c8855648c2691b46fe7de7f18)
+        ;
+
+        
+    
+    
+            var circle_marker_31a3513a205cb39029e15149ce996b41 = L.circleMarker(
+                [4.577, -74.141],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.59780499636187, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_6a28428ae15fa598b5c8e4f7dd27b7cf = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_40a448edaffff431328148dadf92c0e0 = $(`<div id="html_40a448edaffff431328148dadf92c0e0" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 19<br>     <b>IPI:</b> 94.12<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> TUNJUELITO<br>     <b>Barrio:</b> MUZU<br>     <b>Vía predominante:</b> AVENIDA BOYACA<br><br>      <b>Cantidad de siniestros:</b> 134<br>     <b>Criticidad total:</b> 290<br>     <b>Criticidad promedio:</b> 2.16<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 62<br>     <b>Con heridos:</b> 66<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.577, -74.141     </div>`)[0];
+                popup_6a28428ae15fa598b5c8e4f7dd27b7cf.setContent(html_40a448edaffff431328148dadf92c0e0);
+            
+        
+
+        circle_marker_31a3513a205cb39029e15149ce996b41.bindPopup(popup_6a28428ae15fa598b5c8e4f7dd27b7cf)
+        ;
+
+        
+    
+    
+            var circle_marker_62afbeef72a1cbbb18d9cb261b9ba1e3 = L.circleMarker(
+                [4.586, -74.131],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.597368421052636, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_2328a1ea1f6a3eaa78a13910788eb918 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_a835b0a619b5b99ae99221d916704154 = $(`<div id="html_a835b0a619b5b99ae99221d916704154" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 20<br>     <b>IPI:</b> 94.12<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> TUNJUELITO<br>     <b>Barrio:</b> SAMORE<br>     <b>Vía predominante:</b> AVENIDA JORGE GAITAN CORTES<br><br>      <b>Cantidad de siniestros:</b> 54<br>     <b>Criticidad total:</b> 134<br>     <b>Criticidad promedio:</b> 2.48<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 18<br>     <b>Con heridos:</b> 32<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.586, -74.131     </div>`)[0];
+                popup_2328a1ea1f6a3eaa78a13910788eb918.setContent(html_a835b0a619b5b99ae99221d916704154);
+            
+        
+
+        circle_marker_62afbeef72a1cbbb18d9cb261b9ba1e3.bindPopup(popup_2328a1ea1f6a3eaa78a13910788eb918)
+        ;
+
+        
+    
+    
+            var circle_marker_9e8bae52629c27d8b5f85f27a1e23fd9 = L.circleMarker(
+                [4.573, -74.139],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.595949551297597, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_4eabb12317f149479a97fde0c36e2142 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_495326b32f35d2e5b6a16f5f5cff3a99 = $(`<div id="html_495326b32f35d2e5b6a16f5f5cff3a99" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 21<br>     <b>IPI:</b> 94.11<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot severo<br><br>      <b>Localidad:</b> TUNJUELITO<br>     <b>Barrio:</b> PARQUE EL TUNAL<br>     <b>Vía predominante:</b> AVENIDA MARISCAL SUCRE<br><br>      <b>Cantidad de siniestros:</b> 158<br>     <b>Criticidad total:</b> 334<br>     <b>Criticidad promedio:</b> 2.11<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 78<br>     <b>Con heridos:</b> 72<br>     <b>Con muertos:</b> 8<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.573, -74.139     </div>`)[0];
+                popup_4eabb12317f149479a97fde0c36e2142.setContent(html_495326b32f35d2e5b6a16f5f5cff3a99);
+            
+        
+
+        circle_marker_9e8bae52629c27d8b5f85f27a1e23fd9.bindPopup(popup_4eabb12317f149479a97fde0c36e2142)
+        ;
+
+        
+    
+    
+            var circle_marker_73c05894ec1de494d16cb5d53642790d = L.circleMarker(
+                [4.574, -74.153],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.59398496240602, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_1fa13428cf17b1b47e2e2c19509600f6 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_169807dc0b3641ae380b88f5e0c9ab8d = $(`<div id="html_169807dc0b3641ae380b88f5e0c9ab8d" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 22<br>     <b>IPI:</b> 94.1<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> CIUDAD BOLIVAR<br>     <b>Barrio:</b> ARBORIZADORA BAJA<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE VILLAVICENCIO<br><br>      <b>Cantidad de siniestros:</b> 58<br>     <b>Criticidad total:</b> 138<br>     <b>Criticidad promedio:</b> 2.38<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 22<br>     <b>Con heridos:</b> 32<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.574, -74.153     </div>`)[0];
+                popup_1fa13428cf17b1b47e2e2c19509600f6.setContent(html_169807dc0b3641ae380b88f5e0c9ab8d);
+            
+        
+
+        circle_marker_73c05894ec1de494d16cb5d53642790d.bindPopup(popup_1fa13428cf17b1b47e2e2c19509600f6)
+        ;
+
+        
+    
+    
+            var circle_marker_19d6cb9f0a4097faade89fd5c10c2e85 = L.circleMarker(
+                [4.603, -74.076],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.59191122968712, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_29d814537e805471d19cc257645b768e = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_750ab4f9add7727859615347aad3c235 = $(`<div id="html_750ab4f9add7727859615347aad3c235" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 23<br>     <b>IPI:</b> 94.09<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> VERACRUZ<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 44<br>     <b>Criticidad total:</b> 116<br>     <b>Criticidad promedio:</b> 2.64<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 12<br>     <b>Con heridos:</b> 28<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.603, -74.076     </div>`)[0];
+                popup_29d814537e805471d19cc257645b768e.setContent(html_750ab4f9add7727859615347aad3c235);
+            
+        
+
+        circle_marker_19d6cb9f0a4097faade89fd5c10c2e85.bindPopup(popup_29d814537e805471d19cc257645b768e)
+        ;
+
+        
+    
+    
+            var circle_marker_e2df8c2939957c875670201f5ef04d3a = L.circleMarker(
+                [4.577, -74.096],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.586563182148918, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_bb78c129ca6f8d45409d89f7beb30b00 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_19e65e93de1c2be32711d8d58f1bbe97 = $(`<div id="html_19e65e93de1c2be32711d8d58f1bbe97" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 24<br>     <b>IPI:</b> 94.06<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> ANTONIO NARIÑO<br>     <b>Barrio:</b> CIUDAD JARDIN SUR<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 50<br>     <b>Criticidad total:</b> 122<br>     <b>Criticidad promedio:</b> 2.44<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 22<br>     <b>Con heridos:</b> 20<br>     <b>Con muertos:</b> 8<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.577, -74.096     </div>`)[0];
+                popup_bb78c129ca6f8d45409d89f7beb30b00.setContent(html_19e65e93de1c2be32711d8d58f1bbe97);
+            
+        
+
+        circle_marker_e2df8c2939957c875670201f5ef04d3a.bindPopup(popup_bb78c129ca6f8d45409d89f7beb30b00)
+        ;
+
+        
+    
+    
+            var circle_marker_fce1796c147c7329008e8c77b1b78707 = L.circleMarker(
+                [4.739, -74.099],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.58252486053844, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_163c3cba1b58e2daf672a29ac3d9e3ff = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_9a277db8fb7f77d69e4bb74d2c777941 = $(`<div id="html_9a277db8fb7f77d69e4bb74d2c777941" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 25<br>     <b>IPI:</b> 94.04<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SUBA<br>     <b>Barrio:</b> COSTA AZUL<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE CALI<br><br>      <b>Cantidad de siniestros:</b> 40<br>     <b>Criticidad total:</b> 112<br>     <b>Criticidad promedio:</b> 2.8<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 8<br>     <b>Con heridos:</b> 28<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.739, -74.099     </div>`)[0];
+                popup_163c3cba1b58e2daf672a29ac3d9e3ff.setContent(html_9a277db8fb7f77d69e4bb74d2c777941);
+            
+        
+
+        circle_marker_fce1796c147c7329008e8c77b1b78707.bindPopup(popup_163c3cba1b58e2daf672a29ac3d9e3ff)
+        ;
+
+        
+    
+    
+            var circle_marker_1873b7bc272198418390bd3e9c7091c7 = L.circleMarker(
+                [4.595, -74.086],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.58252486053844, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_6dab1bc8c7c5367e0cec320b0c2e07b4 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_44fb79b23ca1118057c60542d63a9afb = $(`<div id="html_44fb79b23ca1118057c60542d63a9afb" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 26<br>     <b>IPI:</b> 94.04<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> SAN BERNARDINO<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 40<br>     <b>Criticidad total:</b> 112<br>     <b>Criticidad promedio:</b> 2.8<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 8<br>     <b>Con heridos:</b> 28<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.595, -74.086     </div>`)[0];
+                popup_6dab1bc8c7c5367e0cec320b0c2e07b4.setContent(html_44fb79b23ca1118057c60542d63a9afb);
+            
+        
+
+        circle_marker_1873b7bc272198418390bd3e9c7091c7.bindPopup(popup_6dab1bc8c7c5367e0cec320b0c2e07b4)
+        ;
+
+        
+    
+    
+            var circle_marker_dc96dbeffe7fff42152fca9a185be4c8 = L.circleMarker(
+                [4.544, -74.121],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.5692093136066, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_a20d0b08edd66bcd0111b516ddd131ce = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_3b7d7a1960fa4777bb2c55c2ad18f218 = $(`<div id="html_3b7d7a1960fa4777bb2c55c2ad18f218" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 27<br>     <b>IPI:</b> 93.97<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> USME<br>     <b>Barrio:</b> LA PICOTA<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 120<br>     <b>Criticidad total:</b> 256<br>     <b>Criticidad promedio:</b> 2.13<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 64<br>     <b>Con heridos:</b> 44<br>     <b>Con muertos:</b> 12<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.544, -74.121     </div>`)[0];
+                popup_a20d0b08edd66bcd0111b516ddd131ce.setContent(html_3b7d7a1960fa4777bb2c55c2ad18f218);
+            
+        
+
+        circle_marker_dc96dbeffe7fff42152fca9a185be4c8.bindPopup(popup_a20d0b08edd66bcd0111b516ddd131ce)
+        ;
+
+        
+    
+    
+            var circle_marker_52c559a2dde8fd211fdeece998365269 = L.circleMarker(
+                [4.595, -74.117],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.569100169779286, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_707ae76d6c03e76e1466dac9a2bb2dd1 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_dab7e75a5693dff59da0ac32b20e62fa = $(`<div id="html_dab7e75a5693dff59da0ac32b20e62fa" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 28<br>     <b>IPI:</b> 93.97<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> PUENTE ARANDA<br>     <b>Barrio:</b> AUTOPISTA MUZU ORIENTAL<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE QUITO<br><br>      <b>Cantidad de siniestros:</b> 56<br>     <b>Criticidad total:</b> 132<br>     <b>Criticidad promedio:</b> 2.36<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 22<br>     <b>Con heridos:</b> 30<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.595, -74.117     </div>`)[0];
+                popup_707ae76d6c03e76e1466dac9a2bb2dd1.setContent(html_dab7e75a5693dff59da0ac32b20e62fa);
+            
+        
+
+        circle_marker_52c559a2dde8fd211fdeece998365269.bindPopup(popup_707ae76d6c03e76e1466dac9a2bb2dd1)
+        ;
+
+        
+    
+    
+            var circle_marker_fb5b069b127452ceb6f5ce650022677f = L.circleMarker(
+                [4.687, -74.095],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.568881882124664, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_1b691382ff7d765f1dab9068df4e5f9d = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_42fca29d4b113b38f6413a42301b7e8e = $(`<div id="html_42fca29d4b113b38f6413a42301b7e8e" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 29<br>     <b>IPI:</b> 93.97<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot severo<br><br>      <b>Localidad:</b> ENGATIVA<br>     <b>Barrio:</b> BONANZA<br>     <b>Vía predominante:</b> AVENIDA BOYACA<br><br>      <b>Cantidad de siniestros:</b> 152<br>     <b>Criticidad total:</b> 316<br>     <b>Criticidad promedio:</b> 2.08<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 82<br>     <b>Con heridos:</b> 58<br>     <b>Con muertos:</b> 12<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.687, -74.095     </div>`)[0];
+                popup_1b691382ff7d765f1dab9068df4e5f9d.setContent(html_42fca29d4b113b38f6413a42301b7e8e);
+            
+        
+
+        circle_marker_fb5b069b127452ceb6f5ce650022677f.bindPopup(popup_1b691382ff7d765f1dab9068df4e5f9d)
+        ;
+
+        
+    
+    
+            var circle_marker_57e002683befc967c2b4bad3cfb1ed1b = L.circleMarker(
+                [4.607, -74.181],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.559277225321367, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_defa493de89e2a0b92baebcbc6e79ed5 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_404dd1909bcfa6d2d951cc6b3aaf19df = $(`<div id="html_404dd1909bcfa6d2d951cc6b3aaf19df" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 30<br>     <b>IPI:</b> 93.92<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> BOSA<br>     <b>Barrio:</b> JOSE ANTONIO GALAN<br>     <b>Vía predominante:</b> AVENIDA BOSA<br><br>      <b>Cantidad de siniestros:</b> 42<br>     <b>Criticidad total:</b> 110<br>     <b>Criticidad promedio:</b> 2.62<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 12<br>     <b>Con heridos:</b> 26<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.607, -74.181     </div>`)[0];
+                popup_defa493de89e2a0b92baebcbc6e79ed5.setContent(html_404dd1909bcfa6d2d951cc6b3aaf19df);
+            
+        
+
+        circle_marker_57e002683befc967c2b4bad3cfb1ed1b.bindPopup(popup_defa493de89e2a0b92baebcbc6e79ed5)
+        ;
+
+        
+    
+    
+            var circle_marker_57d340d28a1fd0f45e9e2c45fab0911b = L.circleMarker(
+                [4.619, -74.14],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.55545719136551, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_debbd1a9fc32dc7569f051bc08a75692 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_4855c9e3a83ff6733414cf78ad185e1f = $(`<div id="html_4855c9e3a83ff6733414cf78ad185e1f" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 31<br>     <b>IPI:</b> 93.9<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> CIUDAD KENNEDY<br>     <b>Vía predominante:</b> AVENIDA PRIMERO DE MAYO<br><br>      <b>Cantidad de siniestros:</b> 132<br>     <b>Criticidad total:</b> 276<br>     <b>Criticidad promedio:</b> 2.09<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 72<br>     <b>Con heridos:</b> 48<br>     <b>Con muertos:</b> 12<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.619, -74.14     </div>`)[0];
+                popup_debbd1a9fc32dc7569f051bc08a75692.setContent(html_4855c9e3a83ff6733414cf78ad185e1f);
+            
+        
+
+        circle_marker_57d340d28a1fd0f45e9e2c45fab0911b.bindPopup(popup_debbd1a9fc32dc7569f051bc08a75692)
+        ;
+
+        
+    
+    
+            var circle_marker_8848aab9359c1d8048aa3028f7acda1a = L.circleMarker(
+                [4.631, -74.167],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.54388794567063, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_e140b1ce8b4932458076c8c6c8371f93 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_8d18243a00a3814b30a406f5405092a6 = $(`<div id="html_8d18243a00a3814b30a406f5405092a6" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 32<br>     <b>IPI:</b> 93.84<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> DINTALITO<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE CALI<br><br>      <b>Cantidad de siniestros:</b> 132<br>     <b>Criticidad total:</b> 276<br>     <b>Criticidad promedio:</b> 2.09<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 66<br>     <b>Con heridos:</b> 60<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.631, -74.167     </div>`)[0];
+                popup_e140b1ce8b4932458076c8c6c8371f93.setContent(html_8d18243a00a3814b30a406f5405092a6);
+            
+        
+
+        circle_marker_8848aab9359c1d8048aa3028f7acda1a.bindPopup(popup_e140b1ce8b4932458076c8c6c8371f93)
+        ;
+
+        
+    
+    
+            var circle_marker_cba7e57b822efa6f4bc5df141b9958a6 = L.circleMarker(
+                [4.628, -74.171],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.537011884550086, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_406623928681a9b6b7bdeb176c91d6c6 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_04a9dc442c157929ae8e275fbb4f62ff = $(`<div id="html_04a9dc442c157929ae8e275fbb4f62ff" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 33<br>     <b>IPI:</b> 93.8<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot severo<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> LAS MARGARITAS<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE CALI<br><br>      <b>Cantidad de siniestros:</b> 260<br>     <b>Criticidad total:</b> 528<br>     <b>Criticidad promedio:</b> 2.03<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 130<br>     <b>Con heridos:</b> 126<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.628, -74.171     </div>`)[0];
+                popup_406623928681a9b6b7bdeb176c91d6c6.setContent(html_04a9dc442c157929ae8e275fbb4f62ff);
+            
+        
+
+        circle_marker_cba7e57b822efa6f4bc5df141b9958a6.bindPopup(popup_406623928681a9b6b7bdeb176c91d6c6)
+        ;
+
+        
+    
+    
+            var circle_marker_18ae49824098842cfe102a1e4b90c977 = L.circleMarker(
+                [4.617, -74.171],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.52227746786321, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_231f9ea33dd09f800a197981cb4fa567 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_e917ecd24de87dd317e8e947b8ed6349 = $(`<div id="html_e917ecd24de87dd317e8e947b8ed6349" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 34<br>     <b>IPI:</b> 93.72<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot preventivo prioritario<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> CASABLANCA<br>     <b>Vía predominante:</b> AVENIDA AGOBERTO MEJIA CIFUENTES<br><br>      <b>Cantidad de siniestros:</b> 74<br>     <b>Criticidad total:</b> 174<br>     <b>Criticidad promedio:</b> 2.35<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 26<br>     <b>Con heridos:</b> 46<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.617, -74.171     </div>`)[0];
+                popup_231f9ea33dd09f800a197981cb4fa567.setContent(html_e917ecd24de87dd317e8e947b8ed6349);
+            
+        
+
+        circle_marker_18ae49824098842cfe102a1e4b90c977.bindPopup(popup_231f9ea33dd09f800a197981cb4fa567)
+        ;
+
+        
+    
+    
+            var circle_marker_0f621a7e8c75d4efcc8d4e3538446808 = L.circleMarker(
+                [4.599, -74.079],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.51976715983507, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_0e06a6823b16281493e813009da70b08 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_bd1230edeb8cf5914645ca28e8171347 = $(`<div id="html_bd1230edeb8cf5914645ca28e8171347" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 35<br>     <b>IPI:</b> 93.71<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> SANTA INES<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 26<br>     <b>Criticidad total:</b> 78<br>     <b>Criticidad promedio:</b> 3.0<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 4<br>     <b>Con heridos:</b> 18<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.599, -74.079     </div>`)[0];
+                popup_0e06a6823b16281493e813009da70b08.setContent(html_bd1230edeb8cf5914645ca28e8171347);
+            
+        
+
+        circle_marker_0f621a7e8c75d4efcc8d4e3538446808.bindPopup(popup_0e06a6823b16281493e813009da70b08)
+        ;
+
+        
+    
+    
+            var circle_marker_30b0532d1823210d4f6f57fb2b150783 = L.circleMarker(
+                [4.581, -74.102],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.514091680814943, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_c67a1a1870515f20f4150510ce3d1670 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_5a56cb4bce278752751486c581535359 = $(`<div id="html_5a56cb4bce278752751486c581535359" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 36<br>     <b>IPI:</b> 93.68<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> ANTONIO NARIÑO<br>     <b>Barrio:</b> CIUDAD JARDIN SUR<br>     <b>Vía predominante:</b> AVENIDA PRIMERO DE MAYO<br><br>      <b>Cantidad de siniestros:</b> 136<br>     <b>Criticidad total:</b> 284<br>     <b>Criticidad promedio:</b> 2.09<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 66<br>     <b>Con heridos:</b> 66<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.581, -74.102     </div>`)[0];
+                popup_c67a1a1870515f20f4150510ce3d1670.setContent(html_5a56cb4bce278752751486c581535359);
+            
+        
+
+        circle_marker_30b0532d1823210d4f6f57fb2b150783.bindPopup(popup_c67a1a1870515f20f4150510ce3d1670)
+        ;
+
+        
+    
+    
+            var circle_marker_021b302de57a7ccb68601a79d0520259 = L.circleMarker(
+                [4.554, -74.092],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.510817365995635, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_037f19878ce0c2f14f7290e17f23d556 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_567fd1c9a6402832956f30aff33b7a34 = $(`<div id="html_567fd1c9a6402832956f30aff33b7a34" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 37<br>     <b>IPI:</b> 93.66<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot preventivo prioritario<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SAN CRISTOBAL<br>     <b>Barrio:</b> ATENAS<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE VILLAVICENCIO<br><br>      <b>Cantidad de siniestros:</b> 48<br>     <b>Criticidad total:</b> 132<br>     <b>Criticidad promedio:</b> 2.75<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 8<br>     <b>Con heridos:</b> 38<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.554, -74.092     </div>`)[0];
+                popup_037f19878ce0c2f14f7290e17f23d556.setContent(html_567fd1c9a6402832956f30aff33b7a34);
+            
+        
+
+        circle_marker_021b302de57a7ccb68601a79d0520259.bindPopup(popup_037f19878ce0c2f14f7290e17f23d556)
+        ;
+
+        
+    
+    
+            var circle_marker_030a5fa97bbc1745e472544a54de1709 = L.circleMarker(
+                [4.594, -74.113],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.5062333252486, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_49ab96c6d6dd752bbb861a4d204ea517 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_07bb6fbe884ea2177d45c89d62d99b50 = $(`<div id="html_07bb6fbe884ea2177d45c89d62d99b50" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 38<br>     <b>IPI:</b> 93.63<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> ANTONIO NARIÑO<br>     <b>Barrio:</b> SANTANDER SUR<br>     <b>Vía predominante:</b> AVENIDA JORGE GAITAN CORTES<br><br>      <b>Cantidad de siniestros:</b> 92<br>     <b>Criticidad total:</b> 200<br>     <b>Criticidad promedio:</b> 2.17<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 42<br>     <b>Con heridos:</b> 46<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.594, -74.113     </div>`)[0];
+                popup_49ab96c6d6dd752bbb861a4d204ea517.setContent(html_07bb6fbe884ea2177d45c89d62d99b50);
+            
+        
+
+        circle_marker_030a5fa97bbc1745e472544a54de1709.bindPopup(popup_49ab96c6d6dd752bbb861a4d204ea517)
+        ;
+
+        
+    
+    
+            var circle_marker_23008244244ed8f2c9dc069da4de9061 = L.circleMarker(
+                [4.638, -74.067],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.49368178510793, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_daceeeddbb5f791521670f025855639c = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_9402de768f3c592dc1efe462f744d401 = $(`<div id="html_9402de768f3c592dc1efe462f744d401" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 39<br>     <b>IPI:</b> 93.57<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot preventivo prioritario<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> CHAPINERO<br>     <b>Barrio:</b> MARLY<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 54<br>     <b>Criticidad total:</b> 138<br>     <b>Criticidad promedio:</b> 2.56<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 14<br>     <b>Con heridos:</b> 38<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.638, -74.067     </div>`)[0];
+                popup_daceeeddbb5f791521670f025855639c.setContent(html_9402de768f3c592dc1efe462f744d401);
+            
+        
+
+        circle_marker_23008244244ed8f2c9dc069da4de9061.bindPopup(popup_daceeeddbb5f791521670f025855639c)
+        ;
+
+        
+    
+    
+            var circle_marker_5d7313f685c989f5a694058733849446 = L.circleMarker(
+                [4.72, -74.095],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.49248120300752, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_fd1e1ad7e1a15ee4080ef48e283c3882 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_46714f0bceeb43a695bd607361dbe63d = $(`<div id="html_46714f0bceeb43a695bd607361dbe63d" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 40<br>     <b>IPI:</b> 93.56<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SUBA<br>     <b>Barrio:</b> RINCON ALTAMAR<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 108<br>     <b>Criticidad total:</b> 228<br>     <b>Criticidad promedio:</b> 2.11<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 52<br>     <b>Con heridos:</b> 52<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.72, -74.095     </div>`)[0];
+                popup_fd1e1ad7e1a15ee4080ef48e283c3882.setContent(html_46714f0bceeb43a695bd607361dbe63d);
+            
+        
+
+        circle_marker_5d7313f685c989f5a694058733849446.bindPopup(popup_fd1e1ad7e1a15ee4080ef48e283c3882)
+        ;
+
+        
+    
+    
+            var circle_marker_7784a23c7bc5b542f1ed1869e745ea6b = L.circleMarker(
+                [4.578, -74.156],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.49171719621635, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_359ae321ea7b57324c78280bf52888a0 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_abc3b366cdb9314415864f2da8a4924e = $(`<div id="html_abc3b366cdb9314415864f2da8a4924e" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 41<br>     <b>IPI:</b> 93.56<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> CIUDAD BOLIVAR<br>     <b>Barrio:</b> VERONA<br>     <b>Vía predominante:</b> AVENIDA CIUDAD DE VILLAVICENCIO<br><br>      <b>Cantidad de siniestros:</b> 90<br>     <b>Criticidad total:</b> 194<br>     <b>Criticidad promedio:</b> 2.16<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 42<br>     <b>Con heridos:</b> 44<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.578, -74.156     </div>`)[0];
+                popup_359ae321ea7b57324c78280bf52888a0.setContent(html_abc3b366cdb9314415864f2da8a4924e);
+            
+        
+
+        circle_marker_7784a23c7bc5b542f1ed1869e745ea6b.bindPopup(popup_359ae321ea7b57324c78280bf52888a0)
+        ;
+
+        
+    
+    
+            var circle_marker_3ce7116366030b9292bd9960a571612f = L.circleMarker(
+                [4.669, -74.143],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.47982051903953, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_903cd63db3f7693dccea20b20ebbe3af = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_698822886813b0ef5eb8ef9a976f1a5f = $(`<div id="html_698822886813b0ef5eb8ef9a976f1a5f" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 42<br>     <b>IPI:</b> 93.49<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> FONTIBON<br>     <b>Barrio:</b> VILLEMAR<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 92<br>     <b>Criticidad total:</b> 192<br>     <b>Criticidad promedio:</b> 2.09<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 50<br>     <b>Con heridos:</b> 34<br>     <b>Con muertos:</b> 8<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.669, -74.143     </div>`)[0];
+                popup_903cd63db3f7693dccea20b20ebbe3af.setContent(html_698822886813b0ef5eb8ef9a976f1a5f);
+            
+        
+
+        circle_marker_3ce7116366030b9292bd9960a571612f.bindPopup(popup_903cd63db3f7693dccea20b20ebbe3af)
+        ;
+
+        
+    
+    
+            var circle_marker_764296202363b2a467c900be8c8fbb35 = L.circleMarker(
+                [4.6, -74.088],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.47807421780257, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_ac22c91f5625cb92fe63cc9715ee1227 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_b6d6c73e25a1bbccc1d6cd47b350be40 = $(`<div id="html_b6d6c73e25a1bbccc1d6cd47b350be40" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 43<br>     <b>IPI:</b> 93.48<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> LOS MARTIRES<br>     <b>Barrio:</b> LA ESTANZUELA<br>     <b>Vía predominante:</b> AVENIDA DE LOS COMUNEROS<br><br>      <b>Cantidad de siniestros:</b> 108<br>     <b>Criticidad total:</b> 220<br>     <b>Criticidad promedio:</b> 2.04<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 58<br>     <b>Con heridos:</b> 44<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.6, -74.088     </div>`)[0];
+                popup_ac22c91f5625cb92fe63cc9715ee1227.setContent(html_b6d6c73e25a1bbccc1d6cd47b350be40);
+            
+        
+
+        circle_marker_764296202363b2a467c900be8c8fbb35.bindPopup(popup_ac22c91f5625cb92fe63cc9715ee1227)
+        ;
+
+        
+    
+    
+            var circle_marker_be305d67e8fb75ba1873f746f0512aa6 = L.circleMarker(
+                [4.6, -74.078],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.472289594955125, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_962832c44d1f4f63e2f624fc816870ce = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_bc36495a3a12f028184002fe6acbbc8e = $(`<div id="html_bc36495a3a12f028184002fe6acbbc8e" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 44<br>     <b>IPI:</b> 93.45<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot preventivo prioritario<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> SANTA INES<br>     <b>Vía predominante:</b> AVENIDA FERNANDO MAZUERA<br><br>      <b>Cantidad de siniestros:</b> 62<br>     <b>Criticidad total:</b> 150<br>     <b>Criticidad promedio:</b> 2.42<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 20<br>     <b>Con heridos:</b> 40<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.6, -74.078     </div>`)[0];
+                popup_962832c44d1f4f63e2f624fc816870ce.setContent(html_bc36495a3a12f028184002fe6acbbc8e);
+            
+        
+
+        circle_marker_be305d67e8fb75ba1873f746f0512aa6.bindPopup(popup_962832c44d1f4f63e2f624fc816870ce)
+        ;
+
+        
+    
+    
+            var circle_marker_0ed838f451e7867e36a48aad03ea1aff = L.circleMarker(
+                [4.719, -74.12],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.464212951734172, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_7b58e5041e160a895b58576a978574dc = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_939e865657cb0e797647bcaac46e709d = $(`<div id="html_939e865657cb0e797647bcaac46e709d" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 45<br>     <b>IPI:</b> 93.41<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> ENGATIVA<br>     <b>Barrio:</b> VILLAS DE GRANADA I<br>     <b>Vía predominante:</b> AVENIDA MEDELLIN<br><br>      <b>Cantidad de siniestros:</b> 102<br>     <b>Criticidad total:</b> 206<br>     <b>Criticidad promedio:</b> 2.02<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 56<br>     <b>Con heridos:</b> 40<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.719, -74.12     </div>`)[0];
+                popup_7b58e5041e160a895b58576a978574dc.setContent(html_939e865657cb0e797647bcaac46e709d);
+            
+        
+
+        circle_marker_0ed838f451e7867e36a48aad03ea1aff.bindPopup(popup_7b58e5041e160a895b58576a978574dc)
+        ;
+
+        
+    
+    
+            var circle_marker_4b2177d4d68d1b0eba97dbf737766610 = L.circleMarker(
+                [4.594, -74.087],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.45657288382246, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_9ff16916235fc92444281fe98a7350eb = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_0f4317cb63d1c150310740e3305a679e = $(`<div id="html_0f4317cb63d1c150310740e3305a679e" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 46<br>     <b>IPI:</b> 93.37<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot preventivo prioritario<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> SANTA FE<br>     <b>Barrio:</b> SAN BERNARDINO<br>     <b>Vía predominante:</b> AVENIDA CARACAS<br><br>      <b>Cantidad de siniestros:</b> 58<br>     <b>Criticidad total:</b> 142<br>     <b>Criticidad promedio:</b> 2.45<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 18<br>     <b>Con heridos:</b> 38<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.594, -74.087     </div>`)[0];
+                popup_9ff16916235fc92444281fe98a7350eb.setContent(html_0f4317cb63d1c150310740e3305a679e);
+            
+        
+
+        circle_marker_4b2177d4d68d1b0eba97dbf737766610.bindPopup(popup_9ff16916235fc92444281fe98a7350eb)
+        ;
+
+        
+    
+    
+            var circle_marker_ff0b578f54ce0d5d25e83fb1086a089d = L.circleMarker(
+                [4.626, -74.191],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.454717438758184, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_3e112d6224d86c6d71e85784d4a63eba = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_ba0e6d9ed79c7b55632e14eb1f70c0d8 = $(`<div id="html_ba0e6d9ed79c7b55632e14eb1f70c0d8" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 47<br>     <b>IPI:</b> 93.36<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> BOSA<br>     <b>Barrio:</b> ESCOCIA<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 34<br>     <b>Criticidad total:</b> 94<br>     <b>Criticidad promedio:</b> 2.76<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 8<br>     <b>Con heridos:</b> 22<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> ATROPELLO<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.626, -74.191     </div>`)[0];
+                popup_3e112d6224d86c6d71e85784d4a63eba.setContent(html_ba0e6d9ed79c7b55632e14eb1f70c0d8);
+            
+        
+
+        circle_marker_ff0b578f54ce0d5d25e83fb1086a089d.bindPopup(popup_3e112d6224d86c6d71e85784d4a63eba)
+        ;
+
+        
+    
+    
+            var circle_marker_d384b52a4f0ce98c58bd127d23409d44 = L.circleMarker(
+                [4.638, -74.155],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.45187969924812, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_6e55d06d7d5376aa91ca8c287075e4e7 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_63b9d7fb62960fc97b192cb82138d575 = $(`<div id="html_63b9d7fb62960fc97b192cb82138d575" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 48<br>     <b>IPI:</b> 93.34<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot de severidad/fatalidad<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> CIUDAD TECHO II<br>     <b>Vía predominante:</b> AVENIDA MANUEL CEPEDA VARGAS<br><br>      <b>Cantidad de siniestros:</b> 78<br>     <b>Criticidad total:</b> 166<br>     <b>Criticidad promedio:</b> 2.13<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 40<br>     <b>Con heridos:</b> 32<br>     <b>Con muertos:</b> 6<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.638, -74.155     </div>`)[0];
+                popup_6e55d06d7d5376aa91ca8c287075e4e7.setContent(html_63b9d7fb62960fc97b192cb82138d575);
+            
+        
+
+        circle_marker_d384b52a4f0ce98c58bd127d23409d44.bindPopup(popup_6e55d06d7d5376aa91ca8c287075e4e7)
+        ;
+
+        
+    
+    
+            var circle_marker_706ecf5317cea0687c79f1063cc63a1d = L.circleMarker(
+                [4.624, -74.164],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.450024254183848, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_2c766843819300dd2641612a4429c30d = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_4a2a52443444b81e8cb047d26e6d17ac = $(`<div id="html_4a2a52443444b81e8cb047d26e6d17ac" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 49<br>     <b>IPI:</b> 93.33<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot preventivo prioritario<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> KENNEDY<br>     <b>Barrio:</b> CHUCUA DE LA VACA II<br>     <b>Vía predominante:</b> SIN_NMG<br><br>      <b>Cantidad de siniestros:</b> 46<br>     <b>Criticidad total:</b> 122<br>     <b>Criticidad promedio:</b> 2.65<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 10<br>     <b>Con heridos:</b> 34<br>     <b>Con muertos:</b> 2<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> CON HERIDOS<br><br>     <b>Coordenada aproximada:</b> 4.624, -74.164     </div>`)[0];
+                popup_2c766843819300dd2641612a4429c30d.setContent(html_4a2a52443444b81e8cb047d26e6d17ac);
+            
+        
+
+        circle_marker_706ecf5317cea0687c79f1063cc63a1d.bindPopup(popup_2c766843819300dd2641612a4429c30d)
+        ;
+
+        
+    
+    
+            var circle_marker_cddf0a0aff8f7d0ea4ac5f340680f80e = L.circleMarker(
+                [4.6, -74.089],
+                {"bubblingMouseEvents": true, "color": "#3388ff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3388ff", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 23.448605384428813, "stroke": true, "weight": 3}
+            ).addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+    
+        var popup_756048f060f3c02d3d4f3e7859609f47 = L.popup({
+  "maxWidth": 400,
+});
+
+        
+            
+                var html_fe9cfd4dd7e5c6c16411d56099d5d960 = $(`<div id="html_fe9cfd4dd7e5c6c16411d56099d5d960" style="width: 100.0%; height: 100.0%;">     <b>Zona priorizada por IPI</b><br><br>     <b>Rank IPI:</b> 50<br>     <b>IPI:</b> 93.33<br>     <b>Prioridad:</b> Prioridad 1 - Intervención prioritaria<br>     <b>Familia analítica:</b> Hotspot robusto integral<br>     <b>Tipo de hotspot:</b> Hotspot persistente con severidad media-alta<br><br>      <b>Localidad:</b> LOS MARTIRES<br>     <b>Barrio:</b> LA ESTANZUELA<br>     <b>Vía predominante:</b> AVENIDA DE LOS COMUNEROS<br><br>      <b>Cantidad de siniestros:</b> 110<br>     <b>Criticidad total:</b> 222<br>     <b>Criticidad promedio:</b> 2.02<br>     <b>Años activos:</b> 4<br><br>      <b>Solo daños:</b> 58<br>     <b>Con heridos:</b> 48<br>     <b>Con muertos:</b> 4<br><br>      <b>Clase predominante:</b> CHOQUE<br>     <b>Gravedad predominante:</b> SOLO DANOS<br><br>     <b>Coordenada aproximada:</b> 4.6, -74.089     </div>`)[0];
+                popup_756048f060f3c02d3d4f3e7859609f47.setContent(html_fe9cfd4dd7e5c6c16411d56099d5d960);
+            
+        
+
+        circle_marker_cddf0a0aff8f7d0ea4ac5f340680f80e.bindPopup(popup_756048f060f3c02d3d4f3e7859609f47)
+        ;
+
+        
+    
+    
+            tile_layer_9f6cce4d81eb622230032ee9dc98e14a.addTo(map_4b288d7c953614b44cc835a5a18790c9);
+        
+</script>
+</html>

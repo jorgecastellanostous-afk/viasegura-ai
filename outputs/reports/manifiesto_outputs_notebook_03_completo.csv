@@ -1,0 +1,19 @@
+archivo,tipo,descripcion,existe,tamano_kb,ruta_relativa
+auditoria_conteo_actualizada_notebook_03.csv,reports,Sec 3 — Conteos anuales actualizados,True,0.2,outputs\reports\auditoria_conteo_actualizada_notebook_03.csv
+auditoria_cobertura_mensual_reciente_notebook_03.csv,reports,Sec 3 — Cobertura mensual por año,True,1.3,outputs\reports\auditoria_cobertura_mensual_reciente_notebook_03.csv
+auditoria_ratios_gravedad_notebook_03.csv,reports,Sec 3 — Ratios de gravedad por año,True,0.6,outputs\reports\auditoria_ratios_gravedad_notebook_03.csv
+auditoria_cobertura_localidades_reciente_notebook_03.csv,reports,Sec 3 — Cobertura de localidades,True,2.5,outputs\reports\auditoria_cobertura_localidades_reciente_notebook_03.csv
+diagnostico_integridad_datos_recientes_notebook_03.csv,reports,Sec 4 — Diagnóstico de integridad,True,0.6,outputs\reports\diagnostico_integridad_datos_recientes_notebook_03.csv
+auditoria_capas_hermanas_simur_notebook_03.csv,reports,Sec 11 — Conteos por capa SIMUR,True,1.0,outputs\reports\auditoria_capas_hermanas_simur_notebook_03.csv
+detalle_campos_capas_simur_notebook_03.csv,reports,Sec 11 — Campos por capa SIMUR,True,2.3,outputs\reports\detalle_campos_capas_simur_notebook_03.csv
+manifiesto_outputs_notebook_03_fase1.csv,reports,Sec 11 — Manifiesto Fase 1,True,1.1,outputs\reports\manifiesto_outputs_notebook_03_fase1.csv
+validacion_descarga_reciente_notebook_03.csv,reports,Sec 6 — Validación de descarga reciente,True,0.1,outputs\reports\validacion_descarga_reciente_notebook_03.csv
+calidad_datos_reciente_notebook_03.csv,reports,Sec 7 — Calidad de datos reciente,True,0.1,outputs\reports\calidad_datos_reciente_notebook_03.csv
+top50_IPI_reciente_notebook_03.csv,reports,Sec 8 — Top 50 IPI reciente,True,8.7,outputs\reports\top50_IPI_reciente_notebook_03.csv
+top200_IPI_reciente_notebook_03.csv,reports,Sec 8 — Top 200 IPI reciente,True,34.5,outputs\reports\top200_IPI_reciente_notebook_03.csv
+zonas_criticas_IPI_reciente_completo_notebook_03.csv,reports,Sec 8 — IPI reciente completo,True,2178.1,outputs\reports\zonas_criticas_IPI_reciente_completo_notebook_03.csv
+comparacion_IPI_base_vs_reciente_notebook_03.csv,reports,Sec 9 — Comparación base vs reciente,True,2826.5,outputs\reports\comparacion_IPI_base_vs_reciente_notebook_03.csv
+clasificacion_hotspots_persistencia_notebook_03.csv,reports,Sec 10 — Clasificación de hotspots,True,3441.1,outputs\reports\clasificacion_hotspots_persistencia_notebook_03.csv
+mapa_comparacion_persistencia_notebook_03.html,maps,Sec 9 — Mapa comparativo base/reciente,True,414.4,outputs\maps\mapa_comparacion_persistencia_notebook_03.html
+mapa_clasificacion_persistencia_notebook_03.html,maps,Sec 10 — Mapa clasificación hotspots,True,255.4,outputs\maps\mapa_clasificacion_persistencia_notebook_03.html
+esquema_integracion_nb04_notebook_03.csv,reports,Sec 12 — Esquema integración NB04,True,1.4,outputs\reports\esquema_integracion_nb04_notebook_03.csv

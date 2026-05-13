@@ -1,0 +1,2 @@
+base,periodo,filas_raw,filas_limpias,filas_eliminadas_limpieza,duplicados_objectid_raw,duplicados_objectid_limpia,nulos_latitud,nulos_longitud,nulos_puntaje_gravedad
+accidentes_bogota_2016_2019_limpio,2016-2019,260831,260831,0,0,0,0,0,0

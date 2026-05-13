@@ -1,0 +1,5 @@
+top_n_zonas,porcentaje_zonas,siniestros_acumulados,porcentaje_siniestros,criticidad_acumulada,porcentaje_criticidad,muertes_registradas,porcentaje_muertes
+50,0.29,4426,1.7,10138,2.27,270,6.43
+200,1.17,14304,5.48,31224,6.98,760,18.11
+500,2.92,34743,13.32,69415,15.53,1622,38.65
+1000,5.84,69604,26.69,124758,27.91,2826,67.33

@@ -1,0 +1,8 @@
+capa_id,nombre,n_registros,nota,url_query
+0,MUERTO,15637,"15,637",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/0/query
+1,LESIONADO,474962,"474,962",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/1/query
+2,ACCIDENTE,900302,"900,302",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/2/query
+3,VM_ACC_ACTOR_VIAL,3267230,"3,267,230",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/3/query
+4,VM_ACC_CAUSA,1865722,"1,865,722",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/4/query
+5,VM_ACC_VEHICULO,2803725,"2,803,725",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/5/query
+6,VM_ACC_VIA,961216,"961,216",https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/6/query

@@ -1,0 +1,56 @@
+# Entorno virtual
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Datos grandes (no subir al repo)
+data/raw/*.csv
+data/raw/chunks_*/
+data/processed/*.csv
+
+# Outputs grandes (regenerables desde notebooks, >2MB)
+outputs/reports/zonas_criticas_*.csv
+outputs/reports/comparacion_IPI_*.csv
+outputs/reports/clasificacion_hotspots_*.csv
+outputs/reports/hotspots_enriquecidos_*.csv
+outputs/reports/hotspots_normalizados_*.csv
+outputs/maps/.ipynb_checkpoints/
+
+# Metadata sensible
+data/raw/_snapshot_metadata.json
+
+# Claude Code — settings locales (no son del equipo)
+.claude/settings.local.json
+
+# VS Code (settings personales, no de proyecto)
+.vscode/launch.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+
+# Archivos temporales de debugging en raíz
+fix_out.txt
+fix_sec9_cells.py
+inspect_out.txt
+inspect_sec9_10.py
+resultados_sec9_10.txt
+add_sec12_13_result.txt
+add_sec12_13_stdout.txt
+run_sec12_13_out.txt
+ejecucion_notebooks.log
