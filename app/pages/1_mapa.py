@@ -12,11 +12,13 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.data_loader import html_mapa, metricas_globales
+from app.styles import inject_global_css
 
 st.set_page_config(page_title="Mapa · VíaSegura AI", page_icon="🗺️", layout="wide")
+inject_global_css()
 
-st.markdown("## 🗺️ Mapa Interactivo de Siniestralidad")
-st.markdown("Selecciona la capa que quieres explorar.")
+st.markdown('<p class="vs-page-title">Mapa Interactivo de Siniestralidad</p>', unsafe_allow_html=True)
+st.markdown('<p class="vs-section-label">Selecciona la capa que quieres explorar</p>', unsafe_allow_html=True)
 
 m = metricas_globales()
 

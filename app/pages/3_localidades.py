@@ -13,10 +13,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.data_loader import cargar_ipi_por_localidad, cargar_ipi
+from app.styles import inject_global_css
 
 st.set_page_config(page_title="Localidades · VíaSegura AI", page_icon="📍", layout="wide")
+inject_global_css()
 
-st.markdown("## 📍 Análisis por Localidad")
+st.markdown('<p class="vs-page-title">Análisis por Localidad</p>', unsafe_allow_html=True)
 
 df_loc = cargar_ipi_por_localidad().sort_values("IPI_localidad", ascending=False)
 df_ipi = cargar_ipi()
@@ -153,17 +155,24 @@ else:
     df_mapa = df_loc_zonas.nlargest(200, "IPI")
     if not df_mapa.empty and "LAT_ZONA" in df_mapa.columns:
         import pydeck as pdk
+
+        def _color_prioridad(p):
+            if "Prioridad 1" in str(p):
+                return [215, 48, 39, 200]
+            elif "Prioridad 2" in str(p):
+                return [252, 141, 89, 200]
+            return [254, 224, 139, 200]
+
+        df_mapa = df_mapa.copy()
+        df_mapa["color"] = df_mapa["prioridad_IPI"].apply(_color_prioridad)
+        df_mapa["IPI_fmt"] = df_mapa["IPI"].round(1).astype(str)
+
         layer = pdk.Layer(
             "ScatterplotLayer",
             data=df_mapa,
             get_position=["LON_ZONA", "LAT_ZONA"],
             get_radius=120,
-            get_fill_color=[
-                "prioridad_IPI.includes('1') ? 215 : prioridad_IPI.includes('2') ? 252 : 254",
-                "prioridad_IPI.includes('1') ? 48 : prioridad_IPI.includes('2') ? 141 : 224",
-                "prioridad_IPI.includes('1') ? 39 : prioridad_IPI.includes('2') ? 89 : 139",
-                200,
-            ],
+            get_fill_color="color",
             pickable=True,
         )
         view = pdk.ViewState(
@@ -172,13 +181,13 @@ else:
             zoom=13, pitch=0,
         )
         tooltip = {
-            "html": "<b>Rank #{rank_IPI}</b> — IPI {IPI:.1f}<br>{barrio_predominante}<br>Siniestros: {cantidad_siniestros}",
+            "html": "<b>Rank #{rank_IPI}</b> — IPI {IPI_fmt}<br>{barrio_predominante}<br>Siniestros: {cantidad_siniestros}",
             "style": {"backgroundColor": "#1a1d27", "color": "white"},
         }
         deck = pdk.Deck(
             layers=[layer],
             initial_view_state=view,
             tooltip=tooltip,
-            map_style="mapbox://styles/mapbox/dark-v10",
+            map_style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
         )
         st.pydeck_chart(deck)

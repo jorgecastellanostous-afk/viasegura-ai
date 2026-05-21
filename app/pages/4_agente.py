@@ -23,6 +23,9 @@ if _env.exists():
 
 st.set_page_config(page_title="Agente IA · VíaSegura AI", page_icon="🤖", layout="wide")
 
+from app.styles import inject_global_css
+inject_global_css()
+
 # ── API Key (sidebar primero) ────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### 🔑 Configuración")
@@ -56,9 +59,9 @@ with st.sidebar:
         st.rerun()
 
 # ── Header ───────────────────────────────────────────────────────────────
-st.markdown("## 🤖 Agente Intérprete de Seguridad Vial")
+st.markdown('<p class="vs-page-title">Agente Intérprete de Seguridad Vial</p>', unsafe_allow_html=True)
 st.markdown(
-    "Pregúntale a **Claude Opus 4.7** sobre el análisis IPI de Bogotá 2016-2019. "
+    "Pregúntale a **Claude Haiku 4.5** sobre el análisis IPI de Bogotá 2016-2019. "
     "El agente tiene acceso completo a las 17,130 zonas analizadas."
 )
 
@@ -184,9 +187,8 @@ if pregunta:
             full_response = ""
 
             with client.messages.stream(
-                model="claude-opus-4-7",
+                model="claude-haiku-4-5-20251001",
                 max_tokens=1500,
-                thinking={"type": "adaptive"},
                 system=system_prompt,
                 messages=messages_api,
             ) as stream:

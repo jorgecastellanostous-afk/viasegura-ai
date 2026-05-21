@@ -10,7 +10,6 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-import geopandas as gpd
 import streamlit as st
 
 # ── Resolver raíz del proyecto ───────────────────────────────────────────
@@ -53,14 +52,16 @@ def cargar_top_barrios() -> pd.DataFrame:
 # ════════════════════════════════════════════════════════════════════════
 
 @st.cache_data(show_spinner=False)
-def cargar_gdf_hexagonos() -> gpd.GeoDataFrame:
+def cargar_gdf_hexagonos():
     """GeoDataFrame de hexágonos H3 con IPI."""
+    import geopandas as gpd
     return gpd.read_file(MAPS / "ipi_hexagonos_h3.geojson")
 
 
 @st.cache_data(show_spinner=False)
-def cargar_gdf_localidades() -> gpd.GeoDataFrame:
+def cargar_gdf_localidades():
     """GeoDataFrame de localidades con IPI."""
+    import geopandas as gpd
     return gpd.read_file(MAPS / "ipi_por_localidad.geojson")
 
 

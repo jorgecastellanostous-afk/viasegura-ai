@@ -14,10 +14,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.data_loader import cargar_ipi, cargar_top_vias, cargar_top_barrios
+from app.styles import inject_global_css
 
 st.set_page_config(page_title="Zonas Críticas · VíaSegura AI", page_icon="🔴", layout="wide")
+inject_global_css()
 
-st.markdown("## 🔴 Zonas Críticas — Ranking IPI")
+st.markdown('<p class="vs-page-title">Zonas Críticas — Ranking IPI</p>', unsafe_allow_html=True)
 
 df = cargar_ipi()
 
@@ -51,7 +53,7 @@ with st.sidebar:
     top_n = st.slider("Top N zonas", 10, 500, 50)
 
 # ── Filtrar datos ────────────────────────────────────────────────────────
-mask = pd.Series([True] * len(df))
+mask = pd.Series(True, index=df.index)
 
 if prioridades:
     mask_p = df["prioridad_IPI"].str.contains("|".join(prioridades), na=False)
