@@ -1,0 +1,9 @@
+# Normalize line endings to LF on commit (prevents ruff format CI failures on Windows)
+* text=auto eol=lf
+
+# Force binary for data/media files
+*.csv binary
+*.geojson binary
+*.png binary
+*.html binary
+*.ipynb binary

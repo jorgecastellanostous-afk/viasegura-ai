@@ -4,6 +4,34 @@
 
 ---
 
+## [DT-01 / DT-02 / DT-03 — Infraestructura de ingeniería] — 2026-05-21
+
+### DT-01 — Módulo `src/` reutilizable
+
+- `src/__init__.py` — re-exporta todos los símbolos públicos.
+- `src/data_utils.py` — limpieza y validación de siniestros (NB01): `limpiar_siniestros`, `validar_coordenadas`, `calcular_puntaje_gravedad`. Constantes `PUNTAJE_GRAVEDAD` y `PUNTAJE_EPDO`.
+- `src/ipi_utils.py` — cálculo del IPI (NB02): `calcular_ipi`, `asignar_prioridad_ipi`, `clasificar_familia_analitica`, `clasificar_hotspot`. Constante `SCORES_COLS`.
+- `src/geo_utils.py` — utilidades H3/GeoPandas con lazy import: `asignar_h3`, `h3_to_polygon`, `agregar_por_hexagono`, `clasificar_hex`. Guard `_GEO_AVAILABLE` para entornos sin geopandas.
+- `src/simur_client.py` — cliente SIMUR con descarga paginada + retry: `descargar_accidentes_por_anio_seguro`, `descargar_por_formularios`, `agregar_por_zona` (con HHI).
+- `CLAUDE.md` y `AGENTS.md` — instrucciones de proyecto para Claude Code.
+
+### DT-02 — Suite de tests unitarios (133 tests, 93% cobertura)
+
+- `tests/test_data_utils.py` — 21 tests: bbox, puntajes gravedad/EPDO, parseo fechas, inmutabilidad.
+- `tests/test_ipi_utils.py` — 29 tests: rango IPI [0,100], scores [0,1], límites P1/P2/P3, fórmula exacta.
+- `tests/test_geo_utils.py` — 27 tests: H3 bounds en Bogotá, CRS EPSG:4326, `_require_geo` error path.
+- `tests/test_simur_client.py` — 27 tests: HTTP mocked, HHI monopoly/uniforme, cache resume desde CSV.
+- `pyproject.toml` — añadido `pytest-cov`, markers `network`/`slow`, `per-file-ignores` para E402.
+
+### DT-03 — CI/CD + CRLF
+
+- `.github/workflows/validate.yml` — añadido `--cov=src --cov-fail-under=80` al job de tests; `h3` a pip install; `src/ app/ agents/ mcp_simur/` a targets de ruff.
+- `.gitattributes` — `* text=auto eol=lf` para normalizar a LF en commit (previene fallas de `ruff format --check` en Ubuntu CI desde Windows).
+- Corregidos 17 errores ruff en `agents/` y `mcp_simur/` (imports no usados, f-string sin placeholder, import múltiple).
+- Normalización CRLF→LF en 28 archivos.
+
+---
+
 ## [Fix IPI NB02] — 2026-05-08
 
 ### Corregido
