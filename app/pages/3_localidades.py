@@ -1,6 +1,7 @@
 """
 Página 3 — Análisis por Localidad
 """
+
 import sys
 from pathlib import Path
 import streamlit as st
@@ -38,7 +39,8 @@ if loc_sel == "— Ver todas —":
         st.markdown("**IPI por localidad (percentil 75)**")
         fig_bar = px.bar(
             df_loc.head(20),
-            x="IPI_localidad", y="localidad",
+            x="IPI_localidad",
+            y="localidad",
             orientation="h",
             color="IPI_localidad",
             color_continuous_scale="Reds",
@@ -47,8 +49,10 @@ if loc_sel == "— Ver todas —":
             labels={"IPI_localidad": "IPI (P75)", "localidad": ""},
         )
         fig_bar.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            height=520, margin=dict(t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=520,
+            margin=dict(t=10, b=10),
             coloraxis_showscale=False,
             yaxis=dict(autorange="reversed"),
         )
@@ -73,8 +77,10 @@ if loc_sel == "— Ver todas —":
             },
         )
         fig_bub.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            height=520, margin=dict(t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=520,
+            margin=dict(t=10, b=10),
             coloraxis_showscale=False,
         )
         st.plotly_chart(fig_bub, use_container_width=True)
@@ -89,9 +95,7 @@ if loc_sel == "— Ver todas —":
 # ── Vista de localidad específica ─────────────────────────────────────────
 else:
     row = df_loc[df_loc["localidad"] == loc_sel].iloc[0]
-    df_loc_zonas = df_ipi[
-        df_ipi["localidad_predominante"].str.upper() == loc_sel.upper()
-    ].copy()
+    df_loc_zonas = df_ipi[df_ipi["localidad_predominante"].str.upper() == loc_sel.upper()].copy()
 
     # KPIs
     c1, c2, c3, c4 = st.columns(4)
@@ -107,15 +111,19 @@ else:
         st.markdown(f"**Top 10 barrios en {loc_sel}**")
         top_barrios_loc = (
             df_loc_zonas.groupby("barrio_predominante")
-            .agg(ipi_max=("IPI", "max"), siniestros=("cantidad_siniestros", "sum"),
-                 muertos=("siniestros_con_muertos", "sum"))
+            .agg(
+                ipi_max=("IPI", "max"),
+                siniestros=("cantidad_siniestros", "sum"),
+                muertos=("siniestros_con_muertos", "sum"),
+            )
             .sort_values("ipi_max", ascending=False)
             .head(10)
             .reset_index()
         )
         fig_b = px.bar(
             top_barrios_loc.sort_values("ipi_max"),
-            x="ipi_max", y="barrio_predominante",
+            x="ipi_max",
+            y="barrio_predominante",
             orientation="h",
             color="muertos",
             color_continuous_scale="OrRd",
@@ -124,8 +132,11 @@ else:
             labels={"ipi_max": "IPI máximo", "barrio_predominante": ""},
         )
         fig_b.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            height=320, margin=dict(t=10, b=10), coloraxis_showscale=False,
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=320,
+            margin=dict(t=10, b=10),
+            coloraxis_showscale=False,
         )
         st.plotly_chart(fig_b, use_container_width=True)
 
@@ -138,13 +149,18 @@ else:
             por_anio.columns = ["Año", "Criticidad total"]
             por_anio["Año"] = por_anio["Año"].str.replace("criticidad_", "")
             fig_lin = px.line(
-                por_anio, x="Año", y="Criticidad total",
-                markers=True, template="plotly_dark",
+                por_anio,
+                x="Año",
+                y="Criticidad total",
+                markers=True,
+                template="plotly_dark",
                 color_discrete_sequence=["#d73027"],
             )
             fig_lin.update_layout(
-                paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                height=320, margin=dict(t=10, b=10),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
+                height=320,
+                margin=dict(t=10, b=10),
             )
             st.plotly_chart(fig_lin, use_container_width=True)
 
@@ -176,7 +192,8 @@ else:
         view = pdk.ViewState(
             latitude=df_mapa["LAT_ZONA"].mean(),
             longitude=df_mapa["LON_ZONA"].mean(),
-            zoom=13, pitch=0,
+            zoom=13,
+            pitch=0,
         )
         tooltip = {
             "html": "<b>Rank #{rank_IPI}</b> — IPI {IPI_fmt}<br>{barrio_predominante}<br>Siniestros: {cantidad_siniestros}",

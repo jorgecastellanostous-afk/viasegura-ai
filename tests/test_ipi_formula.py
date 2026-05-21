@@ -4,6 +4,7 @@ tests/test_ipi_formula.py — Tests unitarios de la fórmula IPI
 Verifica que los scores y el IPI calculado en NB02 sean numéricamente
 correctos y estén dentro de rangos esperados.
 """
+
 import csv
 import sys
 from pathlib import Path
@@ -35,13 +36,16 @@ class TestIPIRangos:
             ipi = float(row["IPI"])
             assert 0.0 <= ipi <= 100.0, f"IPI fuera de rango: {ipi} (zona {row.get('rank_IPI')})"
 
-    @pytest.mark.parametrize("score_col", [
-        "score_volumen",
-        "score_criticidad_total",
-        "score_severidad_promedio",
-        "score_persistencia",
-        "score_fatalidad",
-    ])
+    @pytest.mark.parametrize(
+        "score_col",
+        [
+            "score_volumen",
+            "score_criticidad_total",
+            "score_severidad_promedio",
+            "score_persistencia",
+            "score_fatalidad",
+        ],
+    )
     def test_scores_rango_0_1(self, ipi_rows, score_col):
         for row in ipi_rows:
             val = float(row[score_col])
@@ -56,8 +60,7 @@ class TestIPIRangos:
             pytest.skip("No se encontró zona rank_IPI=1")
         ipi_max = max(float(r["IPI"]) for r in ipi_rows)
         assert abs(float(rank1["IPI"]) - ipi_max) < 0.01, (
-            f"La zona rank=1 no tiene el IPI máximo: "
-            f"rank1={rank1['IPI']}, max={ipi_max}"
+            f"La zona rank=1 no tiene el IPI máximo: rank1={rank1['IPI']}, max={ipi_max}"
         )
 
 
@@ -73,9 +76,7 @@ class TestIPIIntegridad:
 
     def test_prioridad_1_tiene_top_50(self, ipi_rows):
         p1 = [r for r in ipi_rows if "Prioridad 1" in r.get("prioridad_IPI", "")]
-        assert len(p1) <= 50, (
-            f"Se esperan ≤50 zonas Prioridad 1, encontradas: {len(p1)}"
-        )
+        assert len(p1) <= 50, f"Se esperan ≤50 zonas Prioridad 1, encontradas: {len(p1)}"
 
     def test_no_ipi_nulos(self, ipi_rows):
         nulos = [r for r in ipi_rows if not r.get("IPI", "").strip()]
@@ -92,9 +93,7 @@ class TestIPIIntegridad:
             lon = float(r.get("LON_ZONA", 0))
             if not (LAT_MIN <= lat <= LAT_MAX and LON_MIN <= lon <= LON_MAX):
                 fuera.append((lat, lon, r.get("rank_IPI")))
-        assert len(fuera) == 0, (
-            f"{len(fuera)} zonas fuera del bbox de Bogotá: {fuera[:3]}"
-        )
+        assert len(fuera) == 0, f"{len(fuera)} zonas fuera del bbox de Bogotá: {fuera[:3]}"
 
     def test_localidades_conocidas(self, ipi_rows):
         """Las localidades predominantes son nombres válidos de Bogotá."""
@@ -103,18 +102,34 @@ class TestIPIIntegridad:
         def _normalizar(s: str) -> str:
             """Quita tildes y convierte a mayúsculas para comparación."""
             return "".join(
-                c for c in unicodedata.normalize("NFD", s.upper())
+                c
+                for c in unicodedata.normalize("NFD", s.upper())
                 if unicodedata.category(c) != "Mn"
             )
 
         LOCALIDADES_BOGOTA = {
             _normalizar(n)
             for n in [
-                "KENNEDY", "ENGATIVA", "SUBA", "USAQUEN", "FONTIBON",
-                "BOSA", "CIUDAD BOLIVAR", "SANTA FE", "CHAPINERO", "TEUSAQUILLO",
-                "BARRIOS UNIDOS", "LOS MARTIRES", "PUENTE ARANDA", "LA CANDELARIA",
-                "ANTONIO NARINO", "RAFAEL URIBE URIBE", "TUNJUELITO", "USME",
-                "SAN CRISTOBAL", "SUMAPAZ",
+                "KENNEDY",
+                "ENGATIVA",
+                "SUBA",
+                "USAQUEN",
+                "FONTIBON",
+                "BOSA",
+                "CIUDAD BOLIVAR",
+                "SANTA FE",
+                "CHAPINERO",
+                "TEUSAQUILLO",
+                "BARRIOS UNIDOS",
+                "LOS MARTIRES",
+                "PUENTE ARANDA",
+                "LA CANDELARIA",
+                "ANTONIO NARINO",
+                "RAFAEL URIBE URIBE",
+                "TUNJUELITO",
+                "USME",
+                "SAN CRISTOBAL",
+                "SUMAPAZ",
             ]
         }
         p1 = [r for r in ipi_rows if "Prioridad 1" in r.get("prioridad_IPI", "")]
@@ -134,25 +149,24 @@ class TestIPIFormula:
         Zonas con todos los scores <0.2 deben tener IPI <40.
         """
         score_cols = [
-            "score_volumen", "score_criticidad_total",
-            "score_severidad_promedio", "score_persistencia", "score_fatalidad",
+            "score_volumen",
+            "score_criticidad_total",
+            "score_severidad_promedio",
+            "score_persistencia",
+            "score_fatalidad",
         ]
         for r in ipi_rows:
             scores = [float(r.get(c, 0)) for c in score_cols]
             ipi = float(r["IPI"])
             if all(s > 0.9 for s in scores):
-                assert ipi > 80, (
-                    f"Zona con todos scores >0.9 debería tener IPI >80, tiene {ipi}"
-                )
+                assert ipi > 80, f"Zona con todos scores >0.9 debería tener IPI >80, tiene {ipi}"
 
     def test_top10_tienen_alto_ipi(self, ipi_rows):
         """Las 10 primeras zonas deben tener IPI >80."""
         top10 = ipi_rows[:10]
         for r in top10:
             ipi = float(r["IPI"])
-            assert ipi > 80, (
-                f"Zona top-10 rank={r.get('rank_IPI')} tiene IPI={ipi}, esperado >80"
-            )
+            assert ipi > 80, f"Zona top-10 rank={r.get('rank_IPI')} tiene IPI={ipi}, esperado >80"
 
     def test_ranking_ordenado(self, ipi_rows):
         """El rank_IPI debe ser consecutivo: 1, 2, 3, ..."""
@@ -162,5 +176,5 @@ class TestIPIFormula:
         # Verificar que están en orden ascendente
         for i in range(len(ranks) - 1):
             assert ranks[i] <= ranks[i + 1], (
-                f"Ranking no ordenado en posición {i}: {ranks[i]} > {ranks[i+1]}"
+                f"Ranking no ordenado en posición {i}: {ranks[i]} > {ranks[i + 1]}"
             )

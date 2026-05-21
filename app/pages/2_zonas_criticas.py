@@ -2,6 +2,7 @@
 Página 2 — Zonas Críticas
 Tabla filtrable de las zonas IPI con descarga CSV.
 """
+
 import sys
 from pathlib import Path
 import streamlit as st
@@ -83,10 +84,19 @@ tab1, tab2, tab3 = st.tabs(["📋 Tabla", "📊 Gráficos", "🔥 Top Vías y Ba
 # ── TAB 1: Tabla ─────────────────────────────────────────────────────────
 with tab1:
     COLS = [
-        "rank_IPI", "IPI", "prioridad_IPI",
-        "localidad_predominante", "barrio_predominante", "via_predominante",
-        "cantidad_siniestros", "siniestros_con_muertos", "siniestros_con_heridos",
-        "anios_activos", "clase_predominante", "LAT_ZONA", "LON_ZONA",
+        "rank_IPI",
+        "IPI",
+        "prioridad_IPI",
+        "localidad_predominante",
+        "barrio_predominante",
+        "via_predominante",
+        "cantidad_siniestros",
+        "siniestros_con_muertos",
+        "siniestros_con_heridos",
+        "anios_activos",
+        "clase_predominante",
+        "LAT_ZONA",
+        "LON_ZONA",
     ]
     cols_mostrar = [c for c in COLS if c in df_filtrado.columns]
     df_tabla = df_filtrado[cols_mostrar].copy()
@@ -121,7 +131,9 @@ with tab2:
     with col_a:
         st.markdown("**Distribución IPI**")
         fig_hist = px.histogram(
-            df_filtrado, x="IPI", nbins=30,
+            df_filtrado,
+            x="IPI",
+            nbins=30,
             color="prioridad_IPI",
             color_discrete_map={
                 "Prioridad 1 - Intervención prioritaria": "#d73027",
@@ -132,8 +144,11 @@ with tab2:
             labels={"IPI": "IPI", "count": "Zonas"},
         )
         fig_hist.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            legend_title="", height=300, margin=dict(t=10, b=40),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            legend_title="",
+            height=300,
+            margin=dict(t=10, b=40),
         )
         st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -142,7 +157,8 @@ with tab2:
         df_scatter = df_filtrado.head(200)
         fig_scat = px.scatter(
             df_scatter,
-            x="cantidad_siniestros", y="IPI",
+            x="cantidad_siniestros",
+            y="IPI",
             color="prioridad_IPI",
             size="siniestros_con_muertos",
             size_max=25,
@@ -156,8 +172,11 @@ with tab2:
             labels={"cantidad_siniestros": "Siniestros", "IPI": "IPI"},
         )
         fig_scat.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            legend_title="", height=300, margin=dict(t=10, b=40),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            legend_title="",
+            height=300,
+            margin=dict(t=10, b=40),
         )
         st.plotly_chart(fig_scat, use_container_width=True)
 
@@ -166,20 +185,25 @@ with tab2:
     if len(df_filtrado) > 0:
         top_zona = df_filtrado.iloc[0]
         score_cols = [
-            "score_volumen", "score_criticidad_total",
-            "score_severidad_promedio", "score_persistencia", "score_fatalidad",
+            "score_volumen",
+            "score_criticidad_total",
+            "score_severidad_promedio",
+            "score_persistencia",
+            "score_fatalidad",
         ]
         score_labels = ["Volumen", "Criticidad", "Severidad", "Persistencia", "Fatalidad"]
         score_vals = [float(top_zona.get(c, 0)) for c in score_cols]
 
-        fig_radar = go.Figure(go.Scatterpolar(
-            r=score_vals + [score_vals[0]],
-            theta=score_labels + [score_labels[0]],
-            fill="toself",
-            fillcolor="rgba(215,48,39,0.3)",
-            line_color="#d73027",
-            name=f"Zona rank #{int(top_zona['rank_IPI'])}",
-        ))
+        fig_radar = go.Figure(
+            go.Scatterpolar(
+                r=score_vals + [score_vals[0]],
+                theta=score_labels + [score_labels[0]],
+                fill="toself",
+                fillcolor="rgba(215,48,39,0.3)",
+                line_color="#d73027",
+                name=f"Zona rank #{int(top_zona['rank_IPI'])}",
+            )
+        )
         fig_radar.update_layout(
             polar=dict(radialaxis=dict(visible=True, range=[0, 1], color="#9e9e9e")),
             template="plotly_dark",
@@ -191,14 +215,14 @@ with tab2:
         info_col, radar_col = st.columns([1, 2])
         with info_col:
             st.markdown(f"""
-            **Rank #{int(top_zona['rank_IPI'])}**
-            - IPI: **{top_zona['IPI']:.1f}**
-            - Localidad: {top_zona['localidad_predominante']}
-            - Barrio: {top_zona['barrio_predominante']}
-            - Vía: {top_zona['via_predominante']}
-            - Siniestros: {int(top_zona['cantidad_siniestros'])}
-            - Muertos: {int(top_zona['siniestros_con_muertos'])}
-            - Años activos: {int(top_zona['anios_activos'])}/4
+            **Rank #{int(top_zona["rank_IPI"])}**
+            - IPI: **{top_zona["IPI"]:.1f}**
+            - Localidad: {top_zona["localidad_predominante"]}
+            - Barrio: {top_zona["barrio_predominante"]}
+            - Vía: {top_zona["via_predominante"]}
+            - Siniestros: {int(top_zona["cantidad_siniestros"])}
+            - Muertos: {int(top_zona["siniestros_con_muertos"])}
+            - Años activos: {int(top_zona["anios_activos"])}/4
             """)
         with radar_col:
             st.plotly_chart(fig_radar, use_container_width=True)
@@ -214,7 +238,8 @@ with tab3:
         st.markdown("**Top 10 vías — criticidad acumulada**")
         fig_vias = px.bar(
             tv.head(10).sort_values("criticidad"),
-            x="criticidad", y="via_predominante",
+            x="criticidad",
+            y="via_predominante",
             orientation="h",
             color="ipi_max",
             color_continuous_scale="Reds",
@@ -223,8 +248,10 @@ with tab3:
             labels={"criticidad": "Criticidad total", "via_predominante": ""},
         )
         fig_vias.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            height=380, margin=dict(t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=380,
+            margin=dict(t=10, b=10),
             coloraxis_showscale=False,
         )
         st.plotly_chart(fig_vias, use_container_width=True)
@@ -234,7 +261,8 @@ with tab3:
         tb["label"] = tb["barrio_predominante"] + " (" + tb["localidad_predominante"] + ")"
         fig_barrios = px.bar(
             tb.head(10).sort_values("ipi_max"),
-            x="ipi_max", y="label",
+            x="ipi_max",
+            y="label",
             orientation="h",
             color="muertos",
             color_continuous_scale="OrRd",
@@ -243,8 +271,10 @@ with tab3:
             labels={"ipi_max": "IPI máximo", "label": ""},
         )
         fig_barrios.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            height=380, margin=dict(t=10, b=10),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            height=380,
+            margin=dict(t=10, b=10),
             coloraxis_showscale=False,
         )
         st.plotly_chart(fig_barrios, use_container_width=True)

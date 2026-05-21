@@ -3,6 +3,7 @@ tests/test_simur_client.py — Unit tests for src/simur_client.py
 
 HTTP calls are mocked so no network is needed.
 """
+
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
@@ -13,14 +14,17 @@ from src.simur_client import agregar_por_zona, CAMPO_JOIN
 
 # ── agregar_por_zona ──────────────────────────────────────────────────────
 
+
 class TestAgregarPorZona:
     @pytest.fixture
     def df_actor(self):
         """Datos mínimos: 2 zonas, 4 formularios, campo CONDICION."""
-        return pd.DataFrame({
-            CAMPO_JOIN:   ["F001", "F001", "F002", "F003"],
-            "CONDICION":  ["CONDUCTOR", "CONDUCTOR", "PEATÓN", "CONDUCTOR"],
-        })
+        return pd.DataFrame(
+            {
+                CAMPO_JOIN: ["F001", "F001", "F002", "F003"],
+                "CONDICION": ["CONDUCTOR", "CONDUCTOR", "PEATÓN", "CONDUCTOR"],
+            }
+        )
 
     @pytest.fixture
     def zona_a_forms(self):
@@ -73,20 +77,24 @@ class TestAgregarPorZona:
 
     def test_hhi_monopolio_es_10000(self):
         """Si todos los registros son del mismo valor, HHI = 10000."""
-        df = pd.DataFrame({
-            CAMPO_JOIN:  ["F001", "F001", "F001"],
-            "CONDICION": ["CONDUCTOR", "CONDUCTOR", "CONDUCTOR"],
-        })
+        df = pd.DataFrame(
+            {
+                CAMPO_JOIN: ["F001", "F001", "F001"],
+                "CONDICION": ["CONDUCTOR", "CONDUCTOR", "CONDUCTOR"],
+            }
+        )
         zona_a_forms = {"zona_X": ["F001"]}
         result = agregar_por_zona(df, "CONDICION", zona_a_forms)
         assert result["zona_X"]["hhi"] == 10000.0
 
     def test_hhi_distribucion_uniforme_es_menor_a_10000(self):
         """Con 2 valores iguales (50/50) el HHI = 5000."""
-        df = pd.DataFrame({
-            CAMPO_JOIN:  ["F001", "F001"],
-            "CONDICION": ["CONDUCTOR", "PEATÓN"],
-        })
+        df = pd.DataFrame(
+            {
+                CAMPO_JOIN: ["F001", "F001"],
+                "CONDICION": ["CONDUCTOR", "PEATÓN"],
+            }
+        )
         zona_a_forms = {"zona_X": ["F001"]}
         result = agregar_por_zona(df, "CONDICION", zona_a_forms)
         assert result["zona_X"]["hhi"] == pytest.approx(5000.0)
@@ -96,16 +104,16 @@ class TestAgregarPorZona:
         for zona, data in result.items():
             if data["distribucion"]:
                 total = sum(data["distribucion"].values())
-                assert abs(total - 100.0) < 0.2, (
-                    f"Distribución de {zona} no suma 100%: {total}"
-                )
+                assert abs(total - 100.0) < 0.2, f"Distribución de {zona} no suma 100%: {total}"
 
     def test_ignora_valores_nulos(self):
         """None y cadenas vacías no deben contar como valores válidos."""
-        df = pd.DataFrame({
-            CAMPO_JOIN:  ["F001", "F001", "F001"],
-            "CONDICION": ["CONDUCTOR", None, ""],
-        })
+        df = pd.DataFrame(
+            {
+                CAMPO_JOIN: ["F001", "F001", "F001"],
+                "CONDICION": ["CONDUCTOR", None, ""],
+            }
+        )
         zona_a_forms = {"zona_X": ["F001"]}
         result = agregar_por_zona(df, "CONDICION", zona_a_forms)
         assert result["zona_X"]["n_registros"] == 1
@@ -114,6 +122,7 @@ class TestAgregarPorZona:
 
 # ── descargar_por_formularios (mocked HTTP) ───────────────────────────────
 
+
 class TestDescargarPorFormularios:
     def test_retorna_dataframe_vacio_si_no_hay_features(self):
         mock_response = MagicMock()
@@ -121,6 +130,7 @@ class TestDescargarPorFormularios:
 
         with patch("src.simur_client.requests.post", return_value=mock_response):
             from src.simur_client import descargar_por_formularios
+
             result = descargar_por_formularios(
                 layer_id=3,
                 formularios=["F001", "F002"],
@@ -139,6 +149,7 @@ class TestDescargarPorFormularios:
 
         with patch("src.simur_client.requests.post", return_value=mock_response):
             from src.simur_client import descargar_por_formularios
+
             result = descargar_por_formularios(
                 layer_id=3,
                 formularios=["F001", "F002"],
@@ -149,6 +160,7 @@ class TestDescargarPorFormularios:
     def test_lista_vacia_retorna_dataframe_vacio(self):
         with patch("src.simur_client.requests.post") as mock_post:
             from src.simur_client import descargar_por_formularios
+
             result = descargar_por_formularios(layer_id=3, formularios=[])
         mock_post.assert_not_called()
         assert isinstance(result, pd.DataFrame)
@@ -156,6 +168,7 @@ class TestDescargarPorFormularios:
 
 
 # ── descargar_accidentes_por_anio_seguro (mocked HTTP) ────────────────────
+
 
 class TestDescargarAccidentesPorAnio:
     def _make_count_response(self, count):
@@ -166,9 +179,7 @@ class TestDescargarAccidentesPorAnio:
     def _make_features_response(self, rows):
         m = MagicMock()
         m.status_code = 200
-        m.json.return_value = {
-            "features": [{"properties": r} for r in rows]
-        }
+        m.json.return_value = {"features": [{"properties": r} for r in rows]}
         return m
 
     def _make_empty_response(self):
@@ -180,6 +191,7 @@ class TestDescargarAccidentesPorAnio:
     def test_retorna_none_si_total_cero(self):
         with patch("src.simur_client.requests.get", return_value=self._make_count_response(0)):
             from src.simur_client import descargar_accidentes_por_anio_seguro
+
             result = descargar_accidentes_por_anio_seguro(anio=2019)
         assert result is None
 
@@ -190,9 +202,12 @@ class TestDescargarAccidentesPorAnio:
             self._make_features_response(rows),
             self._make_empty_response(),
         ]
-        with patch("src.simur_client.requests.get", side_effect=responses), \
-             patch("src.simur_client.time.sleep"):
+        with (
+            patch("src.simur_client.requests.get", side_effect=responses),
+            patch("src.simur_client.time.sleep"),
+        ):
             from src.simur_client import descargar_accidentes_por_anio_seguro
+
             result = descargar_accidentes_por_anio_seguro(
                 anio=2019,
                 registros_por_bloque=10,
@@ -210,9 +225,12 @@ class TestDescargarAccidentesPorAnio:
             self._make_features_response(rows_p2),
             self._make_empty_response(),
         ]
-        with patch("src.simur_client.requests.get", side_effect=responses), \
-             patch("src.simur_client.time.sleep"):
+        with (
+            patch("src.simur_client.requests.get", side_effect=responses),
+            patch("src.simur_client.time.sleep"),
+        ):
             from src.simur_client import descargar_accidentes_por_anio_seguro
+
             result = descargar_accidentes_por_anio_seguro(
                 anio=2019,
                 registros_por_bloque=3,
@@ -226,9 +244,12 @@ class TestDescargarAccidentesPorAnio:
             cache_file, index=False
         )
         count_resp = self._make_count_response(1)
-        with patch("src.simur_client.requests.get", return_value=count_resp), \
-             patch("src.simur_client.time.sleep"):
+        with (
+            patch("src.simur_client.requests.get", return_value=count_resp),
+            patch("src.simur_client.time.sleep"),
+        ):
             from src.simur_client import descargar_accidentes_por_anio_seguro
+
             result = descargar_accidentes_por_anio_seguro(
                 anio=2019,
                 ruta_chunks=tmp_path,
@@ -244,9 +265,12 @@ class TestDescargarAccidentesPorAnio:
             self._make_count_response(10),
             *[error_response] * 5,  # max_reintentos=5 failures
         ]
-        with patch("src.simur_client.requests.get", side_effect=responses), \
-             patch("src.simur_client.time.sleep"):
+        with (
+            patch("src.simur_client.requests.get", side_effect=responses),
+            patch("src.simur_client.time.sleep"),
+        ):
             from src.simur_client import descargar_accidentes_por_anio_seguro
+
             result = descargar_accidentes_por_anio_seguro(
                 anio=2019,
                 registros_por_bloque=10,

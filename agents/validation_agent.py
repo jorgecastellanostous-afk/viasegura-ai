@@ -2,6 +2,7 @@
 ValidationAgent — revisa que el fix propuesto por ErrorReviewAgent sea correcto.
 Actúa como segunda opinión antes de aplicar cualquier cambio al código.
 """
+
 from __future__ import annotations
 import ast
 
@@ -84,7 +85,8 @@ Responde con este JSON exacto:
         try:
             import json
             import re
-            match = re.search(r'\{.*\}', raw, re.DOTALL)
+
+            match = re.search(r"\{.*\}", raw, re.DOTALL)
             data = json.loads(match.group() if match else raw)
         except Exception:
             proposal.approved = False

@@ -1,6 +1,7 @@
 """
 tests/test_ipi_utils.py — Unit tests for src/ipi_utils.py
 """
+
 import pandas as pd
 import pytest
 
@@ -15,19 +16,23 @@ from src.ipi_utils import (
 
 # ── Fixtures ─────────────────────────────────────────────────────────────
 
+
 @pytest.fixture
 def zonas_simple():
     """5 zonas con valores monotónicamente crecientes para facilitar verificación."""
-    return pd.DataFrame({
-        "cantidad_siniestros":    [10,  50, 100, 200, 500],
-        "criticidad_total":       [30, 150, 300, 600, 1500],
-        "criticidad_promedio":    [3.0, 3.0, 3.0, 3.0, 3.0],
-        "anios_activos":          [1,   2,   3,   4,   4],
-        "siniestros_con_muertos": [0,   2,   5,  10,  20],
-    })
+    return pd.DataFrame(
+        {
+            "cantidad_siniestros": [10, 50, 100, 200, 500],
+            "criticidad_total": [30, 150, 300, 600, 1500],
+            "criticidad_promedio": [3.0, 3.0, 3.0, 3.0, 3.0],
+            "anios_activos": [1, 2, 3, 4, 4],
+            "siniestros_con_muertos": [0, 2, 5, 10, 20],
+        }
+    )
 
 
 # ── calcular_ipi ──────────────────────────────────────────────────────────
+
 
 class TestCalcularIPI:
     def test_retorna_dataframe(self, zonas_simple):
@@ -77,13 +82,15 @@ class TestCalcularIPI:
             )
 
     def test_una_zona(self):
-        df = pd.DataFrame({
-            "cantidad_siniestros":    [100],
-            "criticidad_total":       [300],
-            "criticidad_promedio":    [3.0],
-            "anios_activos":          [4],
-            "siniestros_con_muertos": [5],
-        })
+        df = pd.DataFrame(
+            {
+                "cantidad_siniestros": [100],
+                "criticidad_total": [300],
+                "criticidad_promedio": [3.0],
+                "anios_activos": [4],
+                "siniestros_con_muertos": [5],
+            }
+        )
         result = calcular_ipi(df)
         assert len(result) == 1
         # Con una sola zona, rank(pct=True) = 1.0 para todos los rank-based scores
@@ -92,17 +99,21 @@ class TestCalcularIPI:
 
 # ── asignar_prioridad_ipi ─────────────────────────────────────────────────
 
+
 class TestAsignarPrioridadIPI:
-    @pytest.mark.parametrize("rank,expected_prefix", [
-        (1,   "Prioridad 1"),
-        (50,  "Prioridad 1"),
-        (51,  "Prioridad 2"),
-        (200, "Prioridad 2"),
-        (201, "Prioridad 3"),
-        (500, "Prioridad 3"),
-        (501, "Seguimiento"),
-        (9999, "Seguimiento"),
-    ])
+    @pytest.mark.parametrize(
+        "rank,expected_prefix",
+        [
+            (1, "Prioridad 1"),
+            (50, "Prioridad 1"),
+            (51, "Prioridad 2"),
+            (200, "Prioridad 2"),
+            (201, "Prioridad 3"),
+            (500, "Prioridad 3"),
+            (501, "Seguimiento"),
+            (9999, "Seguimiento"),
+        ],
+    )
     def test_limites_de_prioridad(self, rank, expected_prefix):
         result = asignar_prioridad_ipi(rank)
         assert result.startswith(expected_prefix), (
@@ -133,14 +144,17 @@ class TestAsignarPrioridadIPI:
 
 # ── clasificar_familia_analitica ──────────────────────────────────────────
 
+
 class TestClasificarFamiliaAnalitica:
     def _row(self, rank_ipi, rank_criticidad, rank_muertes=9999, rank_volumen=9999):
-        return pd.Series({
-            "rank_IPI": rank_ipi,
-            "rank_criticidad_total": rank_criticidad,
-            "rank_muertes": rank_muertes,
-            "rank_volumen": rank_volumen,
-        })
+        return pd.Series(
+            {
+                "rank_IPI": rank_ipi,
+                "rank_criticidad_total": rank_criticidad,
+                "rank_muertes": rank_muertes,
+                "rank_volumen": rank_volumen,
+            }
+        )
 
     def test_robusto_integral(self):
         row = self._row(rank_ipi=100, rank_criticidad=100)
@@ -169,13 +183,16 @@ class TestClasificarFamiliaAnalitica:
 
 # ── clasificar_hotspot (legacy) ───────────────────────────────────────────
 
+
 class TestClasificarHotspot:
     def _row(self, cantidad, criticidad_promedio, anios_activos):
-        return pd.Series({
-            "cantidad_siniestros": cantidad,
-            "criticidad_promedio": criticidad_promedio,
-            "anios_activos": anios_activos,
-        })
+        return pd.Series(
+            {
+                "cantidad_siniestros": cantidad,
+                "criticidad_promedio": criticidad_promedio,
+                "anios_activos": anios_activos,
+            }
+        )
 
     def test_estructural_persistente(self):
         row = self._row(cantidad=350, criticidad_promedio=1.5, anios_activos=4)

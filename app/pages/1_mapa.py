@@ -2,6 +2,7 @@
 Página 1 — Mapa Interactivo
 Muestra los mapas folium pre-generados con controles de capa.
 """
+
 import sys
 from pathlib import Path
 import streamlit as st
@@ -17,8 +18,13 @@ from app.styles import inject_global_css
 st.set_page_config(page_title="Mapa · VíaSegura AI", page_icon="🗺️", layout="wide")
 inject_global_css()
 
-st.markdown('<p class="vs-page-title">Mapa Interactivo de Siniestralidad</p>', unsafe_allow_html=True)
-st.markdown('<p class="vs-section-label">Selecciona la capa que quieres explorar</p>', unsafe_allow_html=True)
+st.markdown(
+    '<p class="vs-page-title">Mapa Interactivo de Siniestralidad</p>', unsafe_allow_html=True
+)
+st.markdown(
+    '<p class="vs-section-label">Selecciona la capa que quieres explorar</p>',
+    unsafe_allow_html=True,
+)
 
 m = metricas_globales()
 
@@ -35,8 +41,8 @@ capa = st.radio(
 
 MAP_FILES = {
     "Hexágonos H3 (IPI por zona ~460m)": "mapa_hexagonos_H3_IPI.html",
-    "Choropleth por Localidad":           "mapa_choropleth_localidades_IPI.html",
-    "Heatmap + Zonas Prioridad 1":        "mapa_heatmap_clusters_P1.html",
+    "Choropleth por Localidad": "mapa_choropleth_localidades_IPI.html",
+    "Heatmap + Zonas Prioridad 1": "mapa_heatmap_clusters_P1.html",
 }
 
 DESCRIPCIONES = {

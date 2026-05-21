@@ -3,6 +3,7 @@ app/styles.py — VíaSegura AI Design System
 Applied: taste-skill (DESIGN_VARIANCE:8 MOTION:6 DENSITY:4) + redesign-skill audit
 Inject in every page: from app.styles import inject_global_css; inject_global_css()
 """
+
 import streamlit as st
 
 GLOBAL_CSS = """

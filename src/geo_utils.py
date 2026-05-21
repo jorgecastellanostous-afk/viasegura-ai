@@ -1,4 +1,5 @@
 """Geospatial utilities: H3 hexagonal grid, spatial joins (from NB04.5)."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -7,6 +8,7 @@ try:
     import h3 as _h3
     import geopandas as gpd
     from shapely.geometry import Polygon
+
     _GEO_AVAILABLE = True
 except ImportError:
     _GEO_AVAILABLE = False
@@ -53,17 +55,21 @@ def agregar_por_hexagono(
     """
     _require_geo()
 
-    agg = gdf_zonas.groupby(h3_col).agg(
-        n_zonas=("IPI", "count"),
-        IPI_hex=("IPI", "max"),
-        ipi_mean=("IPI", "mean"),
-        ipi_sum=("IPI", "sum"),
-        siniestros_total=("cantidad_siniestros", "sum"),
-        criticidad_total=("criticidad_total", "sum"),
-        siniestros_muertos=("siniestros_con_muertos", "sum"),
-        localidad=("localidad_predominante", lambda x: x.value_counts().idxmax()),
-        prioridad_dominante=("prioridad_IPI", lambda x: x.value_counts().idxmax()),
-    ).reset_index()
+    agg = (
+        gdf_zonas.groupby(h3_col)
+        .agg(
+            n_zonas=("IPI", "count"),
+            IPI_hex=("IPI", "max"),
+            ipi_mean=("IPI", "mean"),
+            ipi_sum=("IPI", "sum"),
+            siniestros_total=("cantidad_siniestros", "sum"),
+            criticidad_total=("criticidad_total", "sum"),
+            siniestros_muertos=("siniestros_con_muertos", "sum"),
+            localidad=("localidad_predominante", lambda x: x.value_counts().idxmax()),
+            prioridad_dominante=("prioridad_IPI", lambda x: x.value_counts().idxmax()),
+        )
+        .reset_index()
+    )
 
     agg["geometry"] = agg[h3_col].apply(h3_to_polygon)
     agg["centroid_lat"] = agg["geometry"].apply(lambda g: g.centroid.y)

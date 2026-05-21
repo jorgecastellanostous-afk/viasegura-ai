@@ -23,6 +23,7 @@ Uso:
 Requiere:
     ANTHROPIC_API_KEY en .env o en el entorno
 """
+
 from __future__ import annotations
 
 import csv
@@ -61,6 +62,7 @@ MODEL = "claude-opus-4-7"
 
 # ── Cargar datos IPI ────────────────────────────────────────────────────
 
+
 def _load_ipi_summary() -> str:
     """
     Carga el CSV de IPI y lo convierte en un bloque de texto compacto.
@@ -68,9 +70,7 @@ def _load_ipi_summary() -> str:
     """
     ipi_path = REPORTS / "zonas_criticas_IPI_completo_2016_2019.csv"
     if not ipi_path.exists():
-        raise FileNotFoundError(
-            f"No se encontró {ipi_path}. Ejecuta NB02 para generarlo."
-        )
+        raise FileNotFoundError(f"No se encontró {ipi_path}. Ejecuta NB02 para generarlo.")
 
     with open(ipi_path, encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
@@ -91,12 +91,12 @@ def _load_ipi_summary() -> str:
     ]
     for r in top_rows:
         lines.append(
-            f"{r.get('rank_IPI','?')}|{float(r.get('IPI', 0)):.1f}|"
-            f"{r.get('prioridad_IPI','?')}|{r.get('LAT_ZONA','?')}|"
-            f"{r.get('LON_ZONA','?')}|{r.get('cantidad_siniestros','?')}|"
-            f"{r.get('criticidad_total','?')}|{r.get('localidad_predominante','?')}|"
-            f"{r.get('barrio_predominante','?')}|{r.get('via_predominante','?')}|"
-            f"{r.get('clase_predominante','?')}|{r.get('anios_activos','?')}|"
+            f"{r.get('rank_IPI', '?')}|{float(r.get('IPI', 0)):.1f}|"
+            f"{r.get('prioridad_IPI', '?')}|{r.get('LAT_ZONA', '?')}|"
+            f"{r.get('LON_ZONA', '?')}|{r.get('cantidad_siniestros', '?')}|"
+            f"{r.get('criticidad_total', '?')}|{r.get('localidad_predominante', '?')}|"
+            f"{r.get('barrio_predominante', '?')}|{r.get('via_predominante', '?')}|"
+            f"{r.get('clase_predominante', '?')}|{r.get('anios_activos', '?')}|"
             f"{float(r.get('score_volumen', 0)):.3f}|"
             f"{float(r.get('score_fatalidad', 0)):.3f}"
         )
@@ -105,7 +105,7 @@ def _load_ipi_summary() -> str:
     def _stats(vals: list[float]) -> str:
         if not vals:
             return "N/A"
-        return f"min={min(vals):.1f} max={max(vals):.1f} media={sum(vals)/len(vals):.1f}"
+        return f"min={min(vals):.1f} max={max(vals):.1f} media={sum(vals) / len(vals):.1f}"
 
     all_ipi = []
     for r in rows:
@@ -115,6 +115,7 @@ def _load_ipi_summary() -> str:
             pass
 
     from collections import Counter
+
     prioridades = Counter(r.get("prioridad_IPI", "?") for r in rows)
     localidades = Counter(r.get("localidad_predominante", "?") for r in rows)
 
@@ -129,6 +130,7 @@ def _load_ipi_summary() -> str:
 
 
 # ── System prompt con caching ────────────────────────────────────────────
+
 
 def _build_system_prompt(ipi_data: str) -> list[dict]:
     """
@@ -166,6 +168,7 @@ def _build_system_prompt(ipi_data: str) -> list[dict]:
 
 # ── Consulta con streaming ───────────────────────────────────────────────
 
+
 def consultar(
     pregunta: str,
     ipi_data: str | None = None,
@@ -190,9 +193,9 @@ def consultar(
     system = _build_system_prompt(ipi_data)
 
     if verbose:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"Pregunta: {pregunta}")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         print("Respuesta:\n")
 
     full_text = ""

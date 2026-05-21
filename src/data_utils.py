@@ -1,4 +1,5 @@
 """Utilities for cleaning and validating accident records (from NB01)."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -25,10 +26,7 @@ PUNTAJE_EPDO: dict[str, int] = {
 
 def validar_coordenadas(df: pd.DataFrame) -> pd.DataFrame:
     """Drop rows with coordinates outside Bogotá's bounding box."""
-    mask = (
-        df["LATITUD"].between(_LAT_MIN, _LAT_MAX)
-        & df["LONGITUD"].between(_LON_MIN, _LON_MAX)
-    )
+    mask = df["LATITUD"].between(_LAT_MIN, _LAT_MAX) & df["LONGITUD"].between(_LON_MIN, _LON_MAX)
     return df[mask].copy()
 
 
@@ -59,9 +57,7 @@ def limpiar_siniestros(df: pd.DataFrame) -> pd.DataFrame:
             df["FECHA_OCURRENCIA_ACC"], unit="ms", errors="coerce"
         )
     else:
-        df["FECHA_OCURRENCIA_ACC"] = pd.to_datetime(
-            df["FECHA_OCURRENCIA_ACC"], errors="coerce"
-        )
+        df["FECHA_OCURRENCIA_ACC"] = pd.to_datetime(df["FECHA_OCURRENCIA_ACC"], errors="coerce")
 
     df = validar_coordenadas(df)
     df["puntaje_gravedad"] = calcular_puntaje_gravedad(df)

@@ -1,6 +1,7 @@
 """
 ErrorReviewAgent — analiza errores con Claude y propone fixes concretos.
 """
+
 from __future__ import annotations
 
 from .base import client, ExecutionError, FixProposal, SessionLog
@@ -74,18 +75,22 @@ Si el error es por archivo faltante, ruta incorrecta, o problema de entorno, pon
 
         try:
             import json
+
             data = json.loads(raw)
         except json.JSONDecodeError:
             # Intentar extraer JSON si Claude añadió texto extra
             import re
-            match = re.search(r'\{.*\}', raw, re.DOTALL)
+
+            match = re.search(r"\{.*\}", raw, re.DOTALL)
             if not match:
                 self.log.log("[ErrorReviewAgent] No se pudo parsear JSON de la respuesta")
                 return None
             data = json.loads(match.group())
 
         if not data.get("puede_repararse_con_codigo"):
-            self.log.log(f"[ErrorReviewAgent] Error no reparable con código: {data.get('reasoning', '')}")
+            self.log.log(
+                f"[ErrorReviewAgent] Error no reparable con código: {data.get('reasoning', '')}"
+            )
             return None
 
         proposal = FixProposal(

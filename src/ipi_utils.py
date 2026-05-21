@@ -1,4 +1,5 @@
 """IPI (Índice de Prioridad de Intervención) calculations (from NB02)."""
+
 from __future__ import annotations
 
 import pandas as pd

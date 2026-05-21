@@ -31,6 +31,7 @@ Herramientas expuestas:
     - ipi_top_zonas               → Top N zonas del CSV de IPI ya calculado
     - ipi_resumen_ejecutivo       → Resumen global del IPI para Claude
 """
+
 from __future__ import annotations
 
 import json
@@ -81,6 +82,7 @@ mcp = FastMCP(
 # Helpers internos
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def _simur_get(params: dict[str, Any]) -> dict:
     """GET al FeatureServer de SIMUR con manejo de errores."""
     defaults = {
@@ -105,10 +107,10 @@ def _load_ipi_csv() -> list[dict]:
     ipi_path = REPORTS / "zonas_criticas_IPI_completo_2016_2019.csv"
     if not ipi_path.exists():
         raise FileNotFoundError(
-            f"CSV de IPI no encontrado en {ipi_path}. "
-            "Ejecuta NB02 para generarlo."
+            f"CSV de IPI no encontrado en {ipi_path}. Ejecuta NB02 para generarlo."
         )
     import csv
+
     with open(ipi_path, encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
 
@@ -116,6 +118,7 @@ def _load_ipi_csv() -> list[dict]:
 # ═══════════════════════════════════════════════════════════════════════════
 # Herramientas MCP
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 @mcp.tool()
 def simur_contar_registros(anio: int) -> str:
@@ -129,10 +132,12 @@ def simur_contar_registros(anio: int) -> str:
     Returns:
         JSON con el conteo de registros.
     """
-    data = _simur_get({
-        "where": _where_anio(anio),
-        "returnCountOnly": "true",
-    })
+    data = _simur_get(
+        {
+            "where": _where_anio(anio),
+            "returnCountOnly": "true",
+        }
+    )
     count = data.get("count", 0)
     return json.dumps({"anio": anio, "total_registros": count})
 
@@ -157,20 +162,26 @@ def simur_descargar_muestra(
     """
     n = min(n, 1000)
     where = f"({_where_anio(anio)}) AND ({where_extra})"
-    data = _simur_get({
-        "where": where,
-        "resultRecordCount": n,
-        "orderByFields": "OBJECTID DESC",
-    })
+    data = _simur_get(
+        {
+            "where": where,
+            "resultRecordCount": n,
+            "orderByFields": "OBJECTID DESC",
+        }
+    )
     features = data.get("features", [])
     records = [f["attributes"] for f in features]
     fields = list(records[0].keys()) if records else []
-    return json.dumps({
-        "anio": anio,
-        "n_retornados": len(records),
-        "campos": fields,
-        "registros": records,
-    }, ensure_ascii=False, default=str)
+    return json.dumps(
+        {
+            "anio": anio,
+            "n_retornados": len(records),
+            "campos": fields,
+            "registros": records,
+        },
+        ensure_ascii=False,
+        default=str,
+    )
 
 
 @mcp.tool()
@@ -185,23 +196,32 @@ def simur_localidades_activas(anio: int) -> str:
     Returns:
         JSON con lista de {localidad, cantidad_siniestros}.
     """
-    data = _simur_get({
-        "where": _where_anio(anio),
-        "groupByFieldsForStatistics": "LOCALIDAD_ACCIDENTE",
-        "outStatistics": json.dumps([{
-            "statisticType": "count",
-            "onStatisticField": "OBJECTID",
-            "outStatisticFieldName": "cantidad_siniestros",
-        }]),
-        "orderByFields": "cantidad_siniestros DESC",
-    })
+    data = _simur_get(
+        {
+            "where": _where_anio(anio),
+            "groupByFieldsForStatistics": "LOCALIDAD_ACCIDENTE",
+            "outStatistics": json.dumps(
+                [
+                    {
+                        "statisticType": "count",
+                        "onStatisticField": "OBJECTID",
+                        "outStatisticFieldName": "cantidad_siniestros",
+                    }
+                ]
+            ),
+            "orderByFields": "cantidad_siniestros DESC",
+        }
+    )
     features = data.get("features", [])
     localidades = [f["attributes"] for f in features]
-    return json.dumps({
-        "anio": anio,
-        "n_localidades": len(localidades),
-        "localidades": localidades,
-    }, ensure_ascii=False)
+    return json.dumps(
+        {
+            "anio": anio,
+            "n_localidades": len(localidades),
+            "localidades": localidades,
+        },
+        ensure_ascii=False,
+    )
 
 
 @mcp.tool()
@@ -234,35 +254,52 @@ def simur_estadisticas_zona(lat: float, lon: float, radio_grados: float = 0.003)
     total = total_data.get("count", 0)
 
     # Desglose por gravedad
-    grav_data = _simur_get({
-        "where": where,
-        "groupByFieldsForStatistics": "GRAVEDAD_ACCIDENTE",
-        "outStatistics": json.dumps([{
-            "statisticType": "count",
-            "onStatisticField": "OBJECTID",
-            "outStatisticFieldName": "n",
-        }]),
-    })
+    grav_data = _simur_get(
+        {
+            "where": where,
+            "groupByFieldsForStatistics": "GRAVEDAD_ACCIDENTE",
+            "outStatistics": json.dumps(
+                [
+                    {
+                        "statisticType": "count",
+                        "onStatisticField": "OBJECTID",
+                        "outStatisticFieldName": "n",
+                    }
+                ]
+            ),
+        }
+    )
     gravedad = [f["attributes"] for f in grav_data.get("features", [])]
 
     # Desglose por clase
-    clase_data = _simur_get({
-        "where": where,
-        "groupByFieldsForStatistics": "CLASE_ACCIDENTE",
-        "outStatistics": json.dumps([{
-            "statisticType": "count",
-            "onStatisticField": "OBJECTID",
-            "outStatisticFieldName": "n",
-        }]),
-    })
+    clase_data = _simur_get(
+        {
+            "where": where,
+            "groupByFieldsForStatistics": "CLASE_ACCIDENTE",
+            "outStatistics": json.dumps(
+                [
+                    {
+                        "statisticType": "count",
+                        "onStatisticField": "OBJECTID",
+                        "outStatisticFieldName": "n",
+                    }
+                ]
+            ),
+        }
+    )
     clase = [f["attributes"] for f in clase_data.get("features", [])]
 
-    return json.dumps({
-        "lat": lat, "lon": lon, "radio_grados": radio_grados,
-        "total_accidentes_historico": total,
-        "por_gravedad": gravedad,
-        "por_clase": clase,
-    }, ensure_ascii=False)
+    return json.dumps(
+        {
+            "lat": lat,
+            "lon": lon,
+            "radio_grados": radio_grados,
+            "total_accidentes_historico": total,
+            "por_gravedad": gravedad,
+            "por_clase": clase,
+        },
+        ensure_ascii=False,
+    )
 
 
 @mcp.tool()
@@ -297,20 +334,34 @@ def ipi_top_zonas(n: int = 20, prioridad: str = "") -> str:
 
     # Seleccionar columnas clave
     campos = [
-        "rank_IPI", "IPI", "prioridad_IPI", "LAT_ZONA", "LON_ZONA",
-        "cantidad_siniestros", "criticidad_total", "localidad_predominante",
-        "barrio_predominante", "via_predominante", "clase_predominante",
-        "anios_activos", "tipo_hotspot", "score_volumen", "score_fatalidad",
+        "rank_IPI",
+        "IPI",
+        "prioridad_IPI",
+        "LAT_ZONA",
+        "LON_ZONA",
+        "cantidad_siniestros",
+        "criticidad_total",
+        "localidad_predominante",
+        "barrio_predominante",
+        "via_predominante",
+        "clase_predominante",
+        "anios_activos",
+        "tipo_hotspot",
+        "score_volumen",
+        "score_fatalidad",
     ]
     result = []
     for r in rows_sorted:
         result.append({k: r.get(k, "") for k in campos})
 
-    return json.dumps({
-        "n_zonas": len(result),
-        "filtro_prioridad": prioridad or "todas",
-        "zonas": result,
-    }, ensure_ascii=False)
+    return json.dumps(
+        {
+            "n_zonas": len(result),
+            "filtro_prioridad": prioridad or "todas",
+            "zonas": result,
+        },
+        ensure_ascii=False,
+    )
 
 
 @mcp.tool()
@@ -329,6 +380,7 @@ def ipi_resumen_ejecutivo() -> str:
 
     # Distribución por prioridad
     from collections import Counter
+
     prioridades = Counter(r.get("prioridad_IPI", "Sin clasificar") for r in rows)
 
     # Localidades más críticas (top 5)
@@ -348,6 +400,7 @@ def ipi_resumen_ejecutivo() -> str:
             pass
 
     import statistics
+
     stats_ipi = {
         "min": round(min(ipi_vals), 2) if ipi_vals else None,
         "max": round(max(ipi_vals), 2) if ipi_vals else None,
@@ -358,36 +411,43 @@ def ipi_resumen_ejecutivo() -> str:
     # Top 3 zonas
     top3 = []
     for r in rows[:3]:
-        top3.append({
-            "rank": r.get("rank_IPI"),
-            "IPI": r.get("IPI"),
-            "localidad": r.get("localidad_predominante"),
-            "barrio": r.get("barrio_predominante"),
-            "via": r.get("via_predominante"),
-            "siniestros": r.get("cantidad_siniestros"),
-        })
+        top3.append(
+            {
+                "rank": r.get("rank_IPI"),
+                "IPI": r.get("IPI"),
+                "localidad": r.get("localidad_predominante"),
+                "barrio": r.get("barrio_predominante"),
+                "via": r.get("via_predominante"),
+                "siniestros": r.get("cantidad_siniestros"),
+            }
+        )
 
-    return json.dumps({
-        "periodo_base": "2016-2019",
-        "total_zonas_analizadas": total_zonas,
-        "distribucion_prioridad": dict(prioridades),
-        "top5_localidades_criticas": [
-            {"localidad": loc, "n_zonas": n} for loc, n in top_localidades
-        ],
-        "estadisticas_IPI": stats_ipi,
-        "top3_zonas": top3,
-        "fuente_datos": "SIMUR - sig.simur.gov.co",
-        "metodologia": (
-            "IPI = combinación lineal normalizada de 5 scores: "
-            "volumen (25%), criticidad_total (25%), severidad_promedio (20%), "
-            "persistencia_temporal (15%), fatalidad (15%)"
-        ),
-    }, ensure_ascii=False, indent=2)
+    return json.dumps(
+        {
+            "periodo_base": "2016-2019",
+            "total_zonas_analizadas": total_zonas,
+            "distribucion_prioridad": dict(prioridades),
+            "top5_localidades_criticas": [
+                {"localidad": loc, "n_zonas": n} for loc, n in top_localidades
+            ],
+            "estadisticas_IPI": stats_ipi,
+            "top3_zonas": top3,
+            "fuente_datos": "SIMUR - sig.simur.gov.co",
+            "metodologia": (
+                "IPI = combinación lineal normalizada de 5 scores: "
+                "volumen (25%), criticidad_total (25%), severidad_promedio (20%), "
+                "persistencia_temporal (15%), fatalidad (15%)"
+            ),
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Recursos MCP (contexto estático que Claude puede leer)
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 @mcp.resource("simur://metodologia")
 def resource_metodologia() -> str:
@@ -425,23 +485,36 @@ Kennedy, Engativá, Suba, Usaquén, Fontibón
 @mcp.resource("simur://estructura-campos")
 def resource_campos() -> str:
     """Campos disponibles en el FeatureServer de SIMUR."""
-    return json.dumps({
-        "campos_principales": [
-            "OBJECTID", "ANIO_ACCIDENTE", "MES_ACCIDENTE",
-            "DIA_ACCIDENTE", "HORA_ACCIDENTE",
-            "CLASE_ACCIDENTE",        # CHOQUE, ATROPELLO, CAIDA, VOLCAMIENTO, etc.
-            "GRAVEDAD_ACCIDENTE",     # CON HERIDOS, CON MUERTOS, SOLO DAÑOS
-            "LOCALIDAD_ACCIDENTE",    # Nombre de localidad
-            "BARRIO_ACCIDENTE",       # Nombre de barrio
-            "VIA_ACCIDENTE",          # Nombre de vía
-            "LATITUD_ACCIDENTE",      # Coordenada decimal
-            "LONGITUD_ACCIDENTE",     # Coordenada decimal
-        ],
-        "valores_gravedad": ["CON HERIDOS", "CON MUERTOS", "SOLO DAÑOS"],
-        "valores_clase": ["CHOQUE", "ATROPELLO", "CAIDA OCUPANTE", "VOLCAMIENTO",
-                          "INCENDIO", "OTRO"],
-        "nota": "Los campos exactos pueden variar. Usa simur_descargar_muestra para ver los campos reales.",
-    }, ensure_ascii=False, indent=2)
+    return json.dumps(
+        {
+            "campos_principales": [
+                "OBJECTID",
+                "ANIO_ACCIDENTE",
+                "MES_ACCIDENTE",
+                "DIA_ACCIDENTE",
+                "HORA_ACCIDENTE",
+                "CLASE_ACCIDENTE",  # CHOQUE, ATROPELLO, CAIDA, VOLCAMIENTO, etc.
+                "GRAVEDAD_ACCIDENTE",  # CON HERIDOS, CON MUERTOS, SOLO DAÑOS
+                "LOCALIDAD_ACCIDENTE",  # Nombre de localidad
+                "BARRIO_ACCIDENTE",  # Nombre de barrio
+                "VIA_ACCIDENTE",  # Nombre de vía
+                "LATITUD_ACCIDENTE",  # Coordenada decimal
+                "LONGITUD_ACCIDENTE",  # Coordenada decimal
+            ],
+            "valores_gravedad": ["CON HERIDOS", "CON MUERTOS", "SOLO DAÑOS"],
+            "valores_clase": [
+                "CHOQUE",
+                "ATROPELLO",
+                "CAIDA OCUPANTE",
+                "VOLCAMIENTO",
+                "INCENDIO",
+                "OTRO",
+            ],
+            "nota": "Los campos exactos pueden variar. Usa simur_descargar_muestra para ver los campos reales.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════════════

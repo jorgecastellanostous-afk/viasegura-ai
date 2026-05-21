@@ -1,4 +1,5 @@
 """SIMUR ArcGIS FeatureServer download utilities (from NB01, NB04)."""
+
 from __future__ import annotations
 
 import time
@@ -16,11 +17,11 @@ BASE_URL = (
 
 # Layer IDs within the FeatureServer
 CAPAS: dict[str, int] = {
-    "accidentes": 2,   # Main accident records
-    "actor_vial": 3,   # VM_ACC_ACTOR_VIAL  (field: CONDICION)
-    "vehiculo": 5,     # VM_ACC_VEHICULO    (field: CLASE)
-    "causa": 4,        # VM_ACC_CAUSA       (field: NOMBRE)
-    "via": 6,          # VM_ACC_VIA
+    "accidentes": 2,  # Main accident records
+    "actor_vial": 3,  # VM_ACC_ACTOR_VIAL  (field: CONDICION)
+    "vehiculo": 5,  # VM_ACC_VEHICULO    (field: CLASE)
+    "causa": 4,  # VM_ACC_CAUSA       (field: NOMBRE)
+    "via": 6,  # VM_ACC_VIA
 }
 
 CAMPO_JOIN = "FORMULARIO"
@@ -57,11 +58,7 @@ def descargar_accidentes_por_anio_seguro(
     chunks: list[pd.DataFrame] = []
 
     while offset < total:
-        chunk_path = (
-            ruta_chunks / f"accidentes_{anio}_offset_{offset}.csv"
-            if ruta_chunks
-            else None
-        )
+        chunk_path = ruta_chunks / f"accidentes_{anio}_offset_{offset}.csv" if ruta_chunks else None
 
         if chunk_path and chunk_path.exists():
             print(f"  Año {anio} offset {offset} — cargando desde caché")
@@ -132,10 +129,12 @@ def descargar_por_formularios(
     all batches fail.
     """
     url_q = f"{BASE_URL}/{layer_id}/query"
-    batches = [formularios[i: i + batch_size] for i in range(0, len(formularios), batch_size)]
+    batches = [formularios[i : i + batch_size] for i in range(0, len(formularios), batch_size)]
     resultados: list[dict] = []
 
-    print(f"  Layer {layer_id}: {len(formularios):,} FORMULARIOs → {len(batches)} batches ≤{batch_size}")
+    print(
+        f"  Layer {layer_id}: {len(formularios):,} FORMULARIOs → {len(batches)} batches ≤{batch_size}"
+    )
 
     for idx, batch in enumerate(batches):
         forms_str = "','".join(batch)
@@ -177,9 +176,7 @@ def agregar_por_zona(
 
     HHI = 10 000 → single dominant value; low values → diverse distribution.
     """
-    form_vals = (
-        df_capa.groupby(CAMPO_JOIN)[campo_valor].apply(list).to_dict()
-    )
+    form_vals = df_capa.groupby(CAMPO_JOIN)[campo_valor].apply(list).to_dict()
 
     resultado: dict[str, dict] = {}
     for zona, forms in zona_a_forms.items():
@@ -189,8 +186,7 @@ def agregar_por_zona(
         for f in forms:
             vals = form_vals.get(f, [])
             limpios = [
-                v for v in vals
-                if v is not None and str(v).strip() not in ("", "nan", "None")
+                v for v in vals if v is not None and str(v).strip() not in ("", "nan", "None")
             ]
             if limpios:
                 forms_con_dato += 1

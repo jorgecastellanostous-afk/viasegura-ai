@@ -1,6 +1,7 @@
 """
 tests/conftest.py — Configuración global de pytest para VíaSegura AI
 """
+
 import sys
 from pathlib import Path
 

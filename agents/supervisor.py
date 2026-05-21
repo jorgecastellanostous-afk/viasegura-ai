@@ -8,6 +8,7 @@ Flujo:
   4. Si aprobado → aplica fix y vuelve a correr (máx MAX_RETRIES veces)
   5. Reporta resultado final
 """
+
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -28,7 +29,7 @@ class SupervisorAgent:
     def __init__(self):
         self.log = SessionLog()
         self.execution = ExecutionAgent(self.log)
-        self.review    = ErrorReviewAgent(self.log)
+        self.review = ErrorReviewAgent(self.log)
         self.validator = ValidationAgent(self.log)
 
     # ── Punto de entrada principal ──────────────────────────────────────────
@@ -58,11 +59,15 @@ class SupervisorAgent:
 
             # 2. Revisar errores
             self.log.errors_found.extend(errors)
-            self.log.log(f"[Supervisor] {len(errors)} error(s) encontrado(s). Enviando a ErrorReviewAgent...")
+            self.log.log(
+                f"[Supervisor] {len(errors)} error(s) encontrado(s). Enviando a ErrorReviewAgent..."
+            )
 
             fixes_aplicados = 0
             for err in errors:
-                self.log.log(f"\n[Supervisor] Error en celda {err.celda}: {err.ename}: {err.evalue}")
+                self.log.log(
+                    f"\n[Supervisor] Error en celda {err.celda}: {err.ename}: {err.evalue}"
+                )
 
                 # 3. Proponer fix
                 proposal = self.review.review(err, str(path))
@@ -106,7 +111,9 @@ class SupervisorAgent:
     def _apply_fix_file(self, proposal: FixProposal, target: Path) -> bool:
         src = target.read_text(encoding="utf-8")
         if proposal.original not in src:
-            self.log.log(f"[Supervisor] Fix no aplicable: fragmento original no encontrado en {target.name}")
+            self.log.log(
+                f"[Supervisor] Fix no aplicable: fragmento original no encontrado en {target.name}"
+            )
             return False
         new_src = src.replace(proposal.original, proposal.replacement, 1)
         target.write_text(new_src, encoding="utf-8")
@@ -115,6 +122,7 @@ class SupervisorAgent:
 
     def _apply_fix_notebook(self, proposal: FixProposal, target: Path) -> bool:
         import nbformat
+
         nb = nbformat.read(target.open(encoding="utf-8"), as_version=4)
         applied = False
         for cell in nb.cells:
@@ -147,8 +155,11 @@ class SupervisorAgent:
                 for e in self.log.errors_found
             ],
             "fixes_proposed": [
-                {"approved": f.approved, "reasoning": f.reasoning,
-                 "rejection_reason": f.rejection_reason}
+                {
+                    "approved": f.approved,
+                    "reasoning": f.reasoning,
+                    "rejection_reason": f.rejection_reason,
+                }
                 for f in self.log.fixes_proposed
             ],
         }

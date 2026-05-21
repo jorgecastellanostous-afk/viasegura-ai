@@ -18,15 +18,15 @@ Uso en notebooks:
 from pathlib import Path
 
 # Raíz del proyecto = directorio donde vive este archivo
-PROJECT_ROOT   = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent
 
-DATA_RAW       = PROJECT_ROOT / 'data' / 'raw'
-DATA_PROCESSED = PROJECT_ROOT / 'data' / 'processed'
-REPORTS        = PROJECT_ROOT / 'outputs' / 'reports'
-MAPS           = PROJECT_ROOT / 'outputs' / 'maps'
-NOTEBOOKS      = PROJECT_ROOT / 'notebooks'
-APP            = PROJECT_ROOT / 'app'
-SQL            = PROJECT_ROOT / 'sql'
+DATA_RAW = PROJECT_ROOT / "data" / "raw"
+DATA_PROCESSED = PROJECT_ROOT / "data" / "processed"
+REPORTS = PROJECT_ROOT / "outputs" / "reports"
+MAPS = PROJECT_ROOT / "outputs" / "maps"
+NOTEBOOKS = PROJECT_ROOT / "notebooks"
+APP = PROJECT_ROOT / "app"
+SQL = PROJECT_ROOT / "sql"
 
 # Crear carpetas si no existen
 for _folder in [DATA_RAW, DATA_PROCESSED, REPORTS, MAPS]:

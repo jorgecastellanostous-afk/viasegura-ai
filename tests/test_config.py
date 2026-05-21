@@ -4,6 +4,7 @@ tests/test_config.py — Tests de config.py y estructura del proyecto
 Verifica que las rutas del proyecto sean correctas y que los datos
 base ya descargados existan.
 """
+
 import sys
 from pathlib import Path
 
@@ -60,10 +61,7 @@ class TestDatosBase:
 
     def test_csv_limpio_existe(self):
         csv = DATA_PROCESSED / "accidentes_bogota_2016_2019_limpio.csv"
-        assert csv.exists(), (
-            f"CSV limpio no encontrado en {csv}. "
-            "Ejecuta NB01 para generarlo."
-        )
+        assert csv.exists(), f"CSV limpio no encontrado en {csv}. Ejecuta NB01 para generarlo."
 
     def test_csv_limpio_no_vacio(self):
         csv = DATA_PROCESSED / "accidentes_bogota_2016_2019_limpio.csv"
@@ -82,33 +80,29 @@ class TestDatosBase:
         if not chunks.exists():
             pytest.skip("Carpeta de chunks no existe")
         csvs = list(chunks.glob("accidentes_201*.csv"))
-        assert len(csvs) >= 4, (
-            f"Se esperan ≥4 chunks (uno por año), encontrados: {len(csvs)}"
-        )
+        assert len(csvs) >= 4, f"Se esperan ≥4 chunks (uno por año), encontrados: {len(csvs)}"
 
     def test_ipi_csv_existe(self):
         ipi = REPORTS / "zonas_criticas_IPI_completo_2016_2019.csv"
-        assert ipi.exists(), (
-            f"CSV de IPI no encontrado en {ipi}. "
-            "Ejecuta NB02 para generarlo."
-        )
+        assert ipi.exists(), f"CSV de IPI no encontrado en {ipi}. Ejecuta NB02 para generarlo."
 
     def test_ipi_top50_existe(self):
         top50 = REPORTS / "top50_IPI_final_2016_2019.csv"
-        assert top50.exists(), (
-            f"CSV top50 no encontrado en {top50}. Ejecuta NB02."
-        )
+        assert top50.exists(), f"CSV top50 no encontrado en {top50}. Ejecuta NB02."
 
 
 class TestNotebooks:
     """Los notebooks del proyecto existen."""
 
-    @pytest.mark.parametrize("nb_name", [
-        "01_exploracion_datos_siniestralidad.ipynb",
-        "02_indice_criticidad_y_hotspots.ipynb",
-        "03_validacion_actualidad_y_enriquecimiento_simur.ipynb",
-        "03.5_sintesis_metodologica_y_documentacion.ipynb",
-    ])
+    @pytest.mark.parametrize(
+        "nb_name",
+        [
+            "01_exploracion_datos_siniestralidad.ipynb",
+            "02_indice_criticidad_y_hotspots.ipynb",
+            "03_validacion_actualidad_y_enriquecimiento_simur.ipynb",
+            "03.5_sintesis_metodologica_y_documentacion.ipynb",
+        ],
+    )
     def test_notebook_existe(self, nb_name):
         nb_path = NOTEBOOKS / nb_name
         assert nb_path.exists(), f"Notebook no encontrado: {nb_path}"

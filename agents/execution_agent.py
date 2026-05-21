@@ -2,6 +2,7 @@
 ExecutionAgent — corre scripts y notebooks, retorna errores estructurados.
 No usa la API de Claude: solo ejecuta código y reporta resultados.
 """
+
 from __future__ import annotations
 import sys
 import io
@@ -37,13 +38,15 @@ class ExecutionAgent:
             exec(compile(src, str(path), "exec"), namespace)
         except Exception as exc:
             tb = traceback.format_exc()
-            errors.append(ExecutionError(
-                celda=0,
-                ename=type(exc).__name__,
-                evalue=str(exc),
-                source=src,
-                traceback=tb,
-            ))
+            errors.append(
+                ExecutionError(
+                    celda=0,
+                    ename=type(exc).__name__,
+                    evalue=str(exc),
+                    source=src,
+                    traceback=tb,
+                )
+            )
         finally:
             sys.stdout = old_stdout
 
@@ -64,6 +67,7 @@ class ExecutionAgent:
         nb = nbformat.read(path.open(encoding="utf-8"), as_version=4)
 
         import os
+
         os.chdir(path.parent)
 
         namespace: dict = {"__name__": "__main__", "display": print}
@@ -83,7 +87,9 @@ class ExecutionAgent:
             try:
                 exec(compile(src, f"<celda {cell_num}>", "exec"), namespace)
                 output = captured.getvalue()
-                cell["outputs"] = [nbformat.v4.new_output("stream", name="stdout", text=output)] if output else []
+                cell["outputs"] = (
+                    [nbformat.v4.new_output("stream", name="stdout", text=output)] if output else []
+                )
             except Exception as exc:
                 output = captured.getvalue()
                 tb = traceback.format_exc()
@@ -95,8 +101,11 @@ class ExecutionAgent:
                     traceback=tb,
                 )
                 errors.append(err)
-                cell["outputs"] = [nbformat.v4.new_output("error",
-                    ename=err.ename, evalue=err.evalue, traceback=tb.splitlines())]
+                cell["outputs"] = [
+                    nbformat.v4.new_output(
+                        "error", ename=err.ename, evalue=err.evalue, traceback=tb.splitlines()
+                    )
+                ]
                 self.log.log(f"  Celda {cell_num} ERROR: {err.ename}: {err.evalue}")
             finally:
                 sys.stdout = old_stdout
@@ -105,5 +114,7 @@ class ExecutionAgent:
         nbformat.write(nb, path.open("w", encoding="utf-8"))
 
         ok = len(errors) == 0
-        self.log.log(f"[ExecutionAgent] {'OK' if ok else f'{len(errors)} error(s)'} en {cell_num} celdas")
+        self.log.log(
+            f"[ExecutionAgent] {'OK' if ok else f'{len(errors)} error(s)'} en {cell_num} celdas"
+        )
         return ok, errors
