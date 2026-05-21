@@ -129,7 +129,7 @@ class SupervisorAgent:
             nbformat.write(nb, target.open("w", encoding="utf-8"))
             self.log.log(f"[Supervisor] Fix aplicado en celda del notebook {target.name}")
         else:
-            self.log.log(f"[Supervisor] Fragmento original no encontrado en el notebook")
+            self.log.log("[Supervisor] Fragmento original no encontrado en el notebook")
         return applied
 
     # ── Guardar log de sesión ───────────────────────────────────────────────

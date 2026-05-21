@@ -3,11 +3,13 @@ ExecutionAgent — corre scripts y notebooks, retorna errores estructurados.
 No usa la API de Claude: solo ejecuta código y reporta resultados.
 """
 from __future__ import annotations
-import sys, io, uuid, traceback
+import sys
+import io
+import traceback
 from pathlib import Path
 import nbformat
 
-from .base import ExecutionError, SessionLog, PROJECT_ROOT, PYTHON
+from .base import ExecutionError, SessionLog
 
 
 class ExecutionAgent:
@@ -60,7 +62,6 @@ class ExecutionAgent:
         self.log.log(f"[ExecutionAgent] Corriendo notebook: {path.name}")
 
         nb = nbformat.read(path.open(encoding="utf-8"), as_version=4)
-        code_cells = [c for c in nb.cells if c["cell_type"] == "code"]
 
         import os
         os.chdir(path.parent)

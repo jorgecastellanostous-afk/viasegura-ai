@@ -45,7 +45,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from config import DATA_PROCESSED, REPORTS
+from config import REPORTS  # noqa: E402
 
 # ── Constantes SIMUR ───────────────────────────────────────────────────────
 SIMUR_URL = (

@@ -26,19 +26,17 @@ Requiere:
 from __future__ import annotations
 
 import csv
-import json
 import os
 import sys
 import time
 from pathlib import Path
-from typing import Generator
 
 # ── Path setup ──────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from config import REPORTS, DATA_PROCESSED
+from config import REPORTS  # noqa: E402
 
 # ── .env loader ─────────────────────────────────────────────────────────
 _env = ROOT / ".env"
@@ -54,7 +52,7 @@ if not os.environ.get("ANTHROPIC_API_KEY"):
     print("Agrega ANTHROPIC_API_KEY=sk-ant-... al archivo .env del proyecto.", file=sys.stderr)
     sys.exit(1)
 
-from anthropic import Anthropic
+from anthropic import Anthropic  # noqa: E402
 
 client = Anthropic()
 

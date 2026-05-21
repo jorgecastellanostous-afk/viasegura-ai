@@ -2,9 +2,8 @@
 ErrorReviewAgent — analiza errores con Claude y propone fixes concretos.
 """
 from __future__ import annotations
-from pathlib import Path
 
-from .base import client, ExecutionError, FixProposal, SessionLog, PROJECT_ROOT
+from .base import client, ExecutionError, FixProposal, SessionLog
 
 SYSTEM_PROMPT = """Eres un experto en Python y ciencia de datos especializado en el proyecto VíaSegura AI.
 VíaSegura AI analiza siniestralidad vial en Bogotá usando pandas, geopandas y folium.

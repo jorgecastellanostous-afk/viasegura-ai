@@ -82,7 +82,8 @@ Responde con este JSON exacto:
         raw = response.content[0].text.strip()
 
         try:
-            import json, re
+            import json
+            import re
             match = re.search(r'\{.*\}', raw, re.DOTALL)
             data = json.loads(match.group() if match else raw)
         except Exception:
