@@ -8,6 +8,7 @@ Se marcan con pytest.mark.network para poder excluirlos en CI sin red:
     pytest -m network                 # solo tests de red
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -37,7 +38,10 @@ def _simur_get(params: dict) -> dict:
 
 @pytest.fixture(scope="module")
 def simur_disponible():
-    """Salta todos los tests de red si SIMUR no responde."""
+    """Salta todos los tests de red si SIMUR no responde o si se ejecuta en CI."""
+    if os.environ.get("CI"):
+        pytest.skip("SIMUR network tests omitidos en CI (API geo-restringida fuera de Colombia)")
+
     try:
         resp = requests.get(
             SIMUR_URL,
@@ -48,6 +52,14 @@ def simur_disponible():
         data = resp.json()
         if "error" in data:
             pytest.skip(f"SIMUR retornó error: {data['error']}")
+        # Verify actual data is accessible (not just connectivity)
+        probe = requests.get(
+            SIMUR_URL,
+            params={"f": "json", "where": "ANIO_ACCIDENTE = 2019", "returnCountOnly": "true"},
+            timeout=TIMEOUT_S,
+        )
+        if probe.json().get("count", 0) == 0:
+            pytest.skip("SIMUR responde pero no retorna datos (posible restricción geográfica)")
     except Exception as exc:
         pytest.skip(f"SIMUR no disponible: {exc}")
     return True
