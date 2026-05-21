@@ -1,0 +1,319 @@
+name: VíaSegura AI — Validación CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:    # permite ejecución manual desde GitHub UI
+
+# Solo un job por PR a la vez (cancela el anterior si llega uno nuevo)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+  UV_CACHE_DIR: ~/.cache/uv
+
+jobs:
+  # ══════════════════════════════════════════════════════════════════════
+  # Job 1: Linting con Ruff (rápido, sin datos)
+  # ══════════════════════════════════════════════════════════════════════
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff check
+        run: |
+          ruff check \
+            agents/ \
+            mcp_simur/ \
+            tests/ \
+            config.py \
+            --output-format=github \
+            --ignore=E501,W291,W293
+
+      - name: Run ruff format check
+        run: |
+          ruff format --check \
+            agents/ \
+            mcp_simur/ \
+            tests/ \
+            config.py
+
+  # ══════════════════════════════════════════════════════════════════════
+  # Job 2: Tests unitarios (sin red, sin datos voluminosos)
+  # ══════════════════════════════════════════════════════════════════════
+  tests-unit:
+    name: Tests unitarios
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip/uv
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.UV_CACHE_DIR }}
+          key: uv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: uv-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv pip install --system \
+            pandas numpy geopandas shapely \
+            pytest pytest-cov \
+            requests
+
+      - name: Create stub data for tests
+        # CI no tiene los datos descargados → crear CSVs mínimos para tests de estructura
+        run: |
+          python - <<'EOF'
+          import os, csv
+          from pathlib import Path
+
+          root = Path(".")
+          (root / "data/raw/chunks_accidentes_2016_2019").mkdir(parents=True, exist_ok=True)
+          (root / "data/processed").mkdir(parents=True, exist_ok=True)
+          (root / "outputs/reports").mkdir(parents=True, exist_ok=True)
+          (root / "outputs/maps").mkdir(parents=True, exist_ok=True)
+
+          # Stub: CSV limpio
+          cols_limpio = ["LAT_ACCIDENTE","LON_ACCIDENTE","ANIO_ACCIDENTE",
+                         "GRAVEDAD_ACCIDENTE","CLASE_ACCIDENTE","puntaje_gravedad"]
+          with open("data/processed/accidentes_bogota_2016_2019_limpio.csv", "w", newline="") as f:
+              w = csv.DictWriter(f, fieldnames=cols_limpio)
+              w.writeheader()
+              for i in range(1000):
+                  w.writerow(dict(zip(cols_limpio,
+                      [4.60+i*0.001, -74.08+i*0.001, 2016+(i%4),
+                       "CON HERIDOS", "CHOQUE", 3])))
+
+          # Stub: chunks (4 archivos, uno por año)
+          for y in [2016, 2017, 2018, 2019]:
+              with open(f"data/raw/chunks_accidentes_2016_2019/accidentes_{y}_offset_0.csv","w",newline="") as f:
+                  w = csv.DictWriter(f, fieldnames=cols_limpio)
+                  w.writeheader()
+                  w.writerow(dict(zip(cols_limpio,[4.60,-74.08,y,"CON HERIDOS","CHOQUE",3])))
+
+          # Stub: IPI CSV (50 zonas Prioridad 1 + 150 más)
+          cols_ipi = [
+              "rank_IPI","IPI","prioridad_IPI","LAT_ZONA","LON_ZONA",
+              "cantidad_siniestros","criticidad_total","criticidad_promedio",
+              "localidad_predominante","barrio_predominante","via_predominante",
+              "clase_predominante","gravedad_predominante","criticidad_2016",
+              "criticidad_2017","criticidad_2018","criticidad_2019","anios_activos",
+              "tipo_hotspot","prioridad_intervencion",
+              "siniestros_solo_danos","siniestros_con_heridos","siniestros_con_muertos",
+              "criticidad_fatalidad_alta","rank_base","rank_fatalidad_alta",
+              "variacion_ranking_fatalidad",
+              "score_volumen","score_criticidad_total","score_severidad_promedio",
+              "score_persistencia","score_fatalidad","IPI","rank_IPI","prioridad_IPI",
+              "rank_criticidad_total","rank_volumen","rank_muertes","familia_analitica",
+          ]
+          # Usar columnas simplificadas para el stub
+          cols_simple = [
+              "rank_IPI","IPI","prioridad_IPI","LAT_ZONA","LON_ZONA",
+              "cantidad_siniestros","criticidad_total",
+              "localidad_predominante","barrio_predominante","via_predominante",
+              "clase_predominante","anios_activos",
+              "score_volumen","score_criticidad_total","score_severidad_promedio",
+              "score_persistencia","score_fatalidad",
+          ]
+          localidades = ["KENNEDY","ENGATIVA","SUBA","USAQUEN","FONTIBON",
+                         "BOSA","SANTA FE","CHAPINERO","TEUSAQUILLO","BARRIOS UNIDOS"]
+          with open("outputs/reports/zonas_criticas_IPI_completo_2016_2019.csv","w",newline="") as f:
+              w = csv.DictWriter(f, fieldnames=cols_simple)
+              w.writeheader()
+              for i in range(200):
+                  rank = i + 1
+                  ipi_val = 98.0 - i * 0.4
+                  if rank <= 50:
+                      prio = "Prioridad 1 - Intervención prioritaria"
+                  elif rank <= 200:
+                      prio = "Prioridad 2 - Auditoría de seguridad vial"
+                  else:
+                      prio = "Prioridad 3 - Monitoreo periódico"
+                  lat = 4.60 + (i % 10) * 0.005
+                  lon = -74.08 - (i % 8) * 0.005
+                  w.writerow({
+                      "rank_IPI": rank, "IPI": round(ipi_val, 2),
+                      "prioridad_IPI": prio,
+                      "LAT_ZONA": round(lat, 3), "LON_ZONA": round(lon, 3),
+                      "cantidad_siniestros": 200 - i,
+                      "criticidad_total": (200-i)*3,
+                      "localidad_predominante": localidades[i % len(localidades)],
+                      "barrio_predominante": f"BARRIO_{i}",
+                      "via_predominante": f"AVENIDA {i}",
+                      "clase_predominante": "CHOQUE",
+                      "anios_activos": 4 if i < 100 else 3,
+                      "score_volumen": round(0.99 - i*0.004, 3),
+                      "score_criticidad_total": round(0.99 - i*0.004, 3),
+                      "score_severidad_promedio": round(0.90 - i*0.003, 3),
+                      "score_persistencia": 1.0 if i < 100 else 0.75,
+                      "score_fatalidad": round(0.99 - i*0.004, 3),
+                  })
+          with open("outputs/reports/top50_IPI_final_2016_2019.csv","w",newline="") as f:
+              f.write("placeholder\n")
+          print("Stub data creada correctamente.")
+          EOF
+
+      - name: Run unit tests (sin red)
+        run: |
+          pytest tests/ \
+            -m "not network" \
+            -v \
+            --tb=short \
+            --no-header
+
+  # ══════════════════════════════════════════════════════════════════════
+  # Job 3: Validar NB03.5 (no necesita datos externos)
+  # ══════════════════════════════════════════════════════════════════════
+  notebook-035:
+    name: Notebook NB03.5 (síntesis metodológica)
+    runs-on: ubuntu-latest
+    needs: tests-unit
+    # Solo en push a main o PR → main (no en push a develop)
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv pip install --system \
+            pandas numpy geopandas \
+            nbformat nbconvert ipykernel \
+            requests matplotlib folium branca seaborn openpyxl
+
+      - name: Install kernel
+        run: python -m ipykernel install --user --name python3
+
+      - name: Create stub data for NB03.5
+        run: |
+          python - <<'EOF'
+          import csv
+          from pathlib import Path
+          root = Path(".")
+          (root / "data/processed").mkdir(parents=True, exist_ok=True)
+          (root / "outputs/reports").mkdir(parents=True, exist_ok=True)
+          (root / "outputs/maps").mkdir(parents=True, exist_ok=True)
+
+          # CSV limpio mínimo
+          cols = ["LAT_ACCIDENTE","LON_ACCIDENTE","ANIO_ACCIDENTE",
+                  "GRAVEDAD_ACCIDENTE","CLASE_ACCIDENTE","puntaje_gravedad",
+                  "LOCALIDAD_ACCIDENTE","BARRIO_ACCIDENTE","VIA_ACCIDENTE"]
+          with open("data/processed/accidentes_bogota_2016_2019_limpio.csv","w",newline="") as f:
+              w = csv.DictWriter(f, fieldnames=cols)
+              w.writeheader()
+              for i in range(500):
+                  w.writerow({
+                      "LAT_ACCIDENTE": 4.60+i*0.001, "LON_ACCIDENTE": -74.08+i*0.001,
+                      "ANIO_ACCIDENTE": 2016+(i%4), "GRAVEDAD_ACCIDENTE":"CON HERIDOS",
+                      "CLASE_ACCIDENTE":"CHOQUE", "puntaje_gravedad":3,
+                      "LOCALIDAD_ACCIDENTE":"KENNEDY", "BARRIO_ACCIDENTE":"PATIO BONITO",
+                      "VIA_ACCIDENTE":"AVENIDA 1ST",
+                  })
+          # IPI CSV mínimo
+          with open("outputs/reports/zonas_criticas_IPI_completo_2016_2019.csv","w",newline="") as f:
+              f.write("rank_IPI,IPI,prioridad_IPI,LAT_ZONA,LON_ZONA,cantidad_siniestros\n")
+              for i in range(50):
+                  f.write(f"{i+1},{98-i*0.5},Prioridad 1,4.60,-74.08,{100-i}\n")
+          print("Stubs NB03.5 OK")
+          EOF
+
+      - name: Execute NB03.5
+        run: |
+          python - <<'PYEOF'
+          import asyncio, sys
+          asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
+          import nbformat
+          from nbconvert.preprocessors import ExecutePreprocessor
+          from pathlib import Path
+
+          nb_path = Path("notebooks/03.5_sintesis_metodologica_y_documentacion.ipynb")
+          if not nb_path.exists():
+              print(f"SKIP: {nb_path} no existe")
+              sys.exit(0)
+
+          with open(nb_path, encoding="utf-8") as f:
+              nb = nbformat.read(f, as_version=4)
+
+          ep = ExecutePreprocessor(timeout=300, kernel_name="python3")
+          try:
+              ep.preprocess(nb, {"metadata": {"path": str(nb_path.parent)}})
+              print("NB03.5 ejecutado correctamente.")
+          except Exception as e:
+              print(f"ERROR ejecutando NB03.5: {e}")
+              sys.exit(1)
+          PYEOF
+
+  # ══════════════════════════════════════════════════════════════════════
+  # Job 4: Validar integridad de notebooks (estructura JSON)
+  # ══════════════════════════════════════════════════════════════════════
+  notebook-integrity:
+    name: Integridad de notebooks (JSON válido)
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install nbformat
+        run: pip install nbformat
+
+      - name: Validate notebooks
+        run: |
+          python - <<'EOF'
+          import nbformat, sys
+          from pathlib import Path
+
+          nbs = list(Path("notebooks").glob("*.ipynb"))
+          errors = []
+          for nb_path in nbs:
+              try:
+                  with open(nb_path, encoding="utf-8") as f:
+                      nb = nbformat.read(f, as_version=4)
+                  nbformat.validate(nb)
+                  print(f"  OK  {nb_path.name}")
+              except Exception as e:
+                  errors.append(f"  ERROR  {nb_path.name}: {e}")
+                  print(errors[-1])
+
+          if errors:
+              print(f"\n{len(errors)} notebook(s) con errores de formato.")
+              sys.exit(1)
+          else:
+              print(f"\nTodos los notebooks ({len(nbs)}) tienen formato válido.")
+          EOF

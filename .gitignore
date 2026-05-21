@@ -28,6 +28,14 @@ outputs/reports/hotspots_enriquecidos_*.csv
 outputs/reports/hotspots_normalizados_*.csv
 outputs/maps/.ipynb_checkpoints/
 
+# NB04 — mapas HTML y GeoJSONs pesados (regenerables)
+outputs/maps/*.html
+outputs/maps/*.geojson
+outputs/reports/*.png
+outputs/reports/ipi_por_localidad_stats.csv
+outputs/reports/top_vias_criticas_geoespacial.csv
+outputs/reports/top_barrios_criticos_geoespacial.csv
+
 # Metadata sensible
 data/raw/_snapshot_metadata.json
 
@@ -54,3 +62,6 @@ add_sec12_13_result.txt
 add_sec12_13_stdout.txt
 run_sec12_13_out.txt
 ejecucion_notebooks.log
+
+# Cache osmnx y otros caches de herramientas
+notebooks/cache/

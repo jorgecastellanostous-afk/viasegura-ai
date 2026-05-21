@@ -86,68 +86,104 @@
 
 ---
 
-## Fase 4 — Enriquecimiento (Próxima)
+## Fase 4 — Enriquecimiento (Completada)
 
 ### NB04 — Actores viales, vehículos y causas
 
 **Objetivo:** integrar capas hermanas SIMUR para enriquecer el IPI y distinguir perfiles de intervención por tipo de actor, vehículo y causa en cada zona priorizada.
 
-**Entradas:**
-- `outputs/reports/clasificacion_hotspots_persistencia_notebook_03.csv`
-- `outputs/reports/top200_IPI_reciente_notebook_03.csv`
-- `data/processed/accidentes_bogota_reciente_limpio.csv`
-- `outputs/reports/esquema_integracion_nb04_notebook_03.csv`
-
-**Tareas:**
-1. Para cada zona del Top 200 reciente: obtener FORMULARIOs de siniestros en esa celda
-2. JOIN a VM_ACC_ACTOR_VIAL (layer 3) → moda de campo `CONDICION`
-3. JOIN a VM_ACC_VEHICULO (layer 5) → moda de campo `CLASE`
-4. JOIN a VM_ACC_CAUSA (layer 4) → moda de campo `NOMBRE`
-5. Verificar cobertura de VM_ACC_VIA antes de incluirla (devolvió 0 en muestra)
-6. Añadir columnas de contexto al DataFrame de clasificación
-7. Generar mapa enriquecido con popup de actor/vehículo/causa por zona
-
-**Salidas esperadas:**
+**Salidas:**
 - `outputs/reports/hotspots_enriquecidos_nb04.csv`
 - `outputs/maps/mapa_hotspots_enriquecidos_nb04.html`
 - `outputs/reports/resumen_ejecutivo_notebook_04.md`
 
-**Estado:** Próximo. Insumos listos desde NB03.
+**Estado:** Completado.
 
 ---
 
-## Fase 5 — Normalización (Pendiente)
+### NB04.5 — Análisis geoespacial avanzado (H3 + OSM + KDE)
+
+**Objetivo:** superponer el IPI sobre hexágonos H3 y límites oficiales de localidades para habilitar visualización espacialmente coherente en el dashboard.
+
+**Entradas:**
+- `outputs/reports/zonas_criticas_IPI_completo_2016_2019.csv`
+
+**Metodología:**
+1. Mapeo de zonas IPI a celdas H3 resolución 8 (~460 m de diámetro) con `h3.latlng_to_cell()`
+2. Descarga de límites de localidades Bogotá vía OSM (`osmnx.geocode_to_gdf`), con fallback convex hull
+3. Spatial join zonas → localidades con GeoPandas
+4. Agregación de IPI, siniestros, fallecidos por localidad y por hexágono H3
+5. KDE con `scipy.stats.gaussian_kde` sobre coordenadas de las 17,130 zonas
+6. 3 mapas Folium con leyendas en español: hexagonal H3, coropleta por localidad, calor + clusters
+7. Export GeoJSON para consumo del dashboard
+
+**Salidas:**
+- `outputs/reports/ipi_hexagonos_h3.csv`
+- `outputs/reports/ipi_por_localidad.csv`
+- `outputs/reports/ipi_densidad_kde.csv`
+- `outputs/reports/ipi_hexagonos_h3.geojson` (426 KB)
+- `outputs/reports/ipi_por_localidad.geojson` (6.1 MB)
+- `outputs/maps/mapa_ipi_hexagonos_h3.html`
+- `outputs/maps/mapa_ipi_por_localidad.html`
+- `outputs/maps/mapa_ipi_calor_clusters.html`
+- `outputs/reports/figura_ipi_kde_superficie.png`
+- `outputs/reports/figura_ipi_treemap_localidades.png`
+
+**Estado:** Completado (2026-05-21).
+
+---
+
+## Fase 5 — Normalización (Completada)
 
 ### NB05 — Normalización por exposición
 
 **Objetivo:** estimar tasas de accidentalidad por unidad de exposición. Distinguir entre zonas con muchos siniestros porque tienen mucho tráfico vs. zonas con alta tasa relativa de accidentalidad.
 
-**Entradas:** base de accidentalidad + datos de población (DANE) + red vial (OSM o IGAC)
+**Resultado clave:** solo el 10% del Top 200 volumétrico (20 zonas) tiene también alta tasa relativa. El 90% restante refleja el efecto de alto tráfico, no vías intrínsecamente peligrosas.
 
-**Tareas (preliminares):**
-1. Obtener población por UPZ o localidad (DANE)
-2. Calcular longitud de red vial por zona (OSM o capa oficial)
-3. Calcular tasa de siniestros por 10,000 habitantes
-4. Calcular tasa de siniestros por km de red vial
-5. Comparar ranking del IPI vs ranking de tasas normalizadas
-
-**Estado:** Pendiente. Requiere fuentes externas adicionales (DANE, red vial).
+**Estado:** Completado.
 
 ---
 
-## Fase 6 — Producto final (Pendiente)
+## Fase 6 — Producto final (Completada)
 
-### NB06 — Dashboard y síntesis
+### NB06 — Dashboard Streamlit
 
-**Objetivo:** consolidar los resultados en un producto presentable y reproducible.
+**Objetivo:** consolidar los resultados en un dashboard interactivo presentable y reproducible.
 
-**Tareas (preliminares):**
-1. Dashboard Streamlit en `app/`
-2. Informe técnico PDF
-3. README final con instrucciones de reproducción completa
-4. Snapshot y hash de todas las fuentes usadas
+**Implementación:** `app/` — aplicación Streamlit multi-página.
 
-**Estado:** Pendiente. Depende de NB04 y NB05.
+**Páginas:**
+| Página | Archivo | Descripción |
+|---|---|---|
+| 🏠 Inicio | `app/main.py` | KPIs globales + donut IPI + metodología |
+| 🗺️ Mapa Interactivo | `pages/1_mapa.py` | 3 vistas Folium (H3 hex, coropleta, calor) |
+| 🔴 Zonas Críticas | `pages/2_zonas_criticas.py` | Tabla filtrable + gráficos + radar + descarga CSV |
+| 📍 Por Localidad | `pages/3_localidades.py` | Global view + detalle con Pydeck |
+| 🤖 Agente IA | `pages/4_agente.py` | Chat Claude Opus 4.7 con prompt caching |
+
+**Cómo correr:**
+```bash
+.venv\Scripts\streamlit.exe run app/main.py
+```
+
+**Estado:** Completado (2026-05-21). Dashboard funcional en localhost:8501.
+
+---
+
+## Infraestructura complementaria (Completada — 2026-05-21)
+
+### MCP Server SIMUR (`mcp_simur/server.py`)
+Expone datos SIMUR e IPI como herramientas Claude via protocolo MCP. 6 herramientas: `simur_contar_registros`, `simur_descargar_muestra`, `simur_localidades_activas`, `simur_estadisticas_zona`, `ipi_top_zonas`, `ipi_resumen_ejecutivo`. 2 recursos: `simur://metodologia`, `simur://estructura-campos`.
+
+### Agente de insights (`agents/insights_agent.py`)
+Script autónomo que usa Claude Opus 4.7 con prompt caching sobre el CSV IPI completo. Ejecuta preguntas predefinidas y muestra ahorro de tokens por caché.
+
+### Suite de tests (`tests/`)
+34 tests pytest: 18 de configuración, 13 de fórmula IPI (con validación de coordenadas y localidades), 7 de red (marcados `@network`).
+
+### CI/CD (`.github/workflows/validate.yml`)
+4 jobs: lint (ruff), tests unitarios (con stub data), ejecución NB03.5, integridad de notebooks.
 
 ---
 

@@ -211,6 +211,78 @@ Todas las secciones 1–13 construidas y corregidas. 19 outputs generados.
 
 ---
 
-## Próxima entrada esperada
+---
 
-`[NB04 inicio]` — Enriquecimiento de hotspots con capas VM_ACC_ACTOR_VIAL, VM_ACC_CAUSA y VM_ACC_VEHICULO.
+## [NB04.5 + NB06 Dashboard + Infraestructura] — 2026-05-21
+
+### Añadido — NB04.5 Análisis geoespacial avanzado
+
+- `notebooks/04.5_analisis_geoespacial_avanzado.ipynb` — Notebook completo ejecutado (~17 s).
+- Hexágonos H3 resolución 8 (`h3==4.4.2`): mapeo de todas las 17,130 zonas IPI.
+- Límites de localidades Bogotá descargados vía OSM (`osmnx`), con fallback convex hull.
+- Spatial join zonas → localidades con GeoPandas.
+- KDE con `scipy.stats.gaussian_kde` sobre coordenadas.
+- 3 mapas Folium con leyendas flotantes en español y tooltips con alias legibles:
+  - `outputs/maps/mapa_ipi_hexagonos_h3.html` — Mapa hexagonal H3 (CARTO Dark)
+  - `outputs/maps/mapa_ipi_por_localidad.html` — Coropleta por localidad (CARTO Light + CircleMarker popup)
+  - `outputs/maps/mapa_ipi_calor_clusters.html` — Mapa de calor + clusters (gradiente azul→rojo)
+- Exports geoespaciales:
+  - `outputs/reports/ipi_hexagonos_h3.geojson` (426 KB)
+  - `outputs/reports/ipi_por_localidad.geojson` (6.1 MB)
+  - `outputs/reports/ipi_hexagonos_h3.csv`, `ipi_por_localidad.csv`, `ipi_densidad_kde.csv`
+- Figuras:
+  - `outputs/reports/figura_ipi_kde_superficie.png`
+  - `outputs/reports/figura_ipi_treemap_localidades.png`
+
+### Añadido — NB06 Dashboard Streamlit (`app/`)
+
+- `app/main.py` — Página de inicio con 5 KPIs globales, donut chart IPI por prioridad, tabla de metodología.
+- `app/data_loader.py` — Módulo centralizado con `@st.cache_data` para 8 loaders (IPI, localidades, hexágonos, vías, barrios, GeoJSON, HTML mapas, métricas globales).
+- `app/pages/1_mapa.py` — Mapa interactivo: radio selector entre los 3 mapas Folium de NB04.5.
+- `app/pages/2_zonas_criticas.py` — Tabla filtrable por prioridad/localidad/clase/años, con gráficos Plotly (histograma, scatter, radar) y descarga CSV.
+- `app/pages/3_localidades.py` — Vista global (bar chart + bubble chart) y vista detalle por localidad (barrios, tendencia anual, Pydeck ScatterplotLayer).
+- `app/pages/4_agente.py` — Chat con Claude Opus 4.7: API key en sidebar, 6 preguntas rápidas, streaming con `client.messages.stream()`, prompt caching sobre CSV IPI, caption de tokens + ahorro de caché.
+- `.streamlit/config.toml` — Tema oscuro: `primaryColor=#d73027`, `backgroundColor=#0f1117`.
+
+### Añadido — MCP Server SIMUR (`mcp_simur/`)
+
+- `mcp_simur/__init__.py` — Paquete Python.
+- `mcp_simur/server.py` — FastMCP server con 6 herramientas y 2 recursos. Transporte stdio.
+  - `simur_contar_registros(anio)`, `simur_descargar_muestra(anio, n, where_extra)`
+  - `simur_localidades_activas(anio)`, `simur_estadisticas_zona(lat, lon, radio_grados)`
+  - `ipi_top_zonas(n, prioridad)`, `ipi_resumen_ejecutivo()`
+  - Recursos: `simur://metodologia`, `simur://estructura-campos`
+- `mcp_simur/README.md` — Documentación de herramientas e instrucciones de registro en Claude Code.
+
+### Añadido — Agente de insights (`agents/insights_agent.py`)
+
+- Claude Opus 4.7 con `thinking: {type: "adaptive"}` y streaming.
+- Prompt caching (`cache_control: ephemeral`) sobre el bloque de texto CSV IPI.
+- 5 preguntas predefinidas ejecutadas en secuencia; muestra ahorro de tokens por caché.
+
+### Añadido — Suite de tests (`tests/`)
+
+- `tests/conftest.py` — Registro de marks `network` y `slow`.
+- `tests/test_config.py` — 18 tests: rutas absolutas, archivos de datos y notebooks existen.
+- `tests/test_ipi_formula.py` — 13 tests de fórmula IPI: rango [0,100], scores [0,1], rank1 es IPI máximo, sin nulos, coords en bbox Bogotá (lat 4.0–4.90, lon -74.35 a -73.95), localidades conocidas (con `unicodedata.normalize("NFD")`), top10 IPI>80, ranking ordenado.
+- `tests/test_simur_api.py` — 7 tests de red (`@pytest.mark.network`): endpoint responde, conteo 2016>50k, campos requeridos presentes, muertos<heridos, ≥15 localidades, tendencia 2016-2019.
+
+### Añadido — CI/CD (`.github/workflows/validate.yml`)
+
+- Job `lint`: `ruff check` + `ruff format --check`.
+- Job `tests-unit`: genera CSVs stub, ejecuta `pytest -m "not network"`.
+- Job `notebook-035`: ejecuta NB03.5 con datos stub via `nbconvert --execute`.
+- Job `notebook-integrity`: valida todos los notebooks como JSON nbformat válido.
+
+### Modificado
+
+- `pyproject.toml` — Añadidas dependencias: `mcp>=1.0`, `streamlit>=1.35`, `streamlit-folium>=0.25`, `plotly>=5.20`, `pydeck>=0.9`, `h3>=4.0`.
+- `.gitignore` — Añadidos outputs NB04.5 (mapas HTML, GeoJSONs, PNGs geoespaciales) para no versionar archivos grandes.
+
+### Bugs corregidos
+
+- `app/main.py`: `st.page_link()` usaba paths `"app/pages/..."` — corregido a relativos al entrypoint: `"pages/..."`.
+- `app/pages/2_zonas_criticas.py`: `df_tabla.style.applymap(...)` → `df_tabla.style.map(...)` (pandas ≥ 2.1 renombró el método).
+- `.streamlit/config.toml`: `enableCORS = false` → `true` (conflicto con protección XSRF).
+- `tests/test_ipi_formula.py`: bbox LAT_MIN corregido de 4.45 a 4.0 para incluir Sumapaz; normalización NFD para manejar tilde en "ANTONIO NARIÑO".
+- `notebooks/04.5_analisis_geoespacial_avanzado.ipynb`: choropleth — helper `_safe_int()` para manejar NaN en `int()`; hexágonos — usar `__geo_interface__` como FeatureCollection en lugar de geometría individual.

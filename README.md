@@ -15,8 +15,19 @@ Análisis espacial de siniestralidad vial en Bogotá usando datos oficiales de l
 | NB03 | Validación de actualidad + exploración de capas SIMUR | ✅ Completado |
 | NB03.5 | Síntesis metodológica | ✅ Completado |
 | NB04 | Enriquecimiento con actores viales, vehículos y causas | ✅ Completado |
+| NB04.5 | Análisis geoespacial avanzado (H3 + OSM localidades + KDE) | ✅ Completado |
 | NB05 | Normalización por exposición (red vial OSM + población DANE) | ✅ Completado |
-| NB06 | Dashboard Streamlit + síntesis final | 🔄 En desarrollo |
+| NB06 | Dashboard Streamlit + síntesis final | ✅ Completado |
+
+### Infraestructura complementaria
+
+| Componente | Descripción | Estado |
+|---|---|---|
+| `app/` | Dashboard Streamlit multip-página (4 vistas + agente IA) | ✅ Activo |
+| `mcp_simur/` | MCP Server que expone SIMUR/IPI como herramientas Claude | ✅ Implementado |
+| `agents/insights_agent.py` | Agente Claude API con prompt caching sobre CSV IPI | ✅ Implementado |
+| `tests/` | Suite pytest: 34 tests (fórmula IPI, config, API de red) | ✅ Pasando |
+| `.github/workflows/validate.yml` | CI/CD: lint + tests unitarios + ejecución NB03.5 | ✅ Activo |
 
 ---
 
@@ -30,6 +41,9 @@ Solapamiento entre Top 200 base y Top 200 reciente: **18.5% (37 zonas persistent
 
 ### NB04 — Perfil de actores y causas por zona
 Distribución por zona en el Top 200: **Automóvil 31.5% · Moto 24.9% · Bus 10.6% · Camioneta 10.3% · Bicicleta 8.8%**. Causa principal identificada en 55% de zonas: "No mantener distancia / Adelantar cerrando" (53 zonas). Análisis de sensibilidad EPDO: 84.5% de estabilidad frente al IPI 1/3/5 (ADR-12).
+
+### NB04.5 — Análisis geoespacial avanzado
+Integración espacial del IPI con celdas H3 (resolución 8, ~460 m de diámetro) y límites de localidades vía OSM. Análisis KDE sobre las 17,130 zonas activas. Genera 3 mapas interactivos Folium con leyendas en español: mapa hexagonal H3, coropleta por localidad y mapa de calor + clusters. Outputs: `ipi_hexagonos_h3.geojson` (426 KB), `ipi_por_localidad.geojson` (6.1 MB), 3 HTML, 2 PNG.
 
 ### NB05 — Normalización por exposición ⭐
 **Hallazgo central:** solo el **10% del Top 200 volumétrico (20 zonas)** tiene también alta tasa relativa de siniestros por km de red vial. El 90% restante refleja el efecto de alto tráfico, no vías intrínsecamente peligrosas.
@@ -57,14 +71,36 @@ Ver `memory/limitations.md` para el detalle completo (L1–L14).
 
 ```
 viasegura_ai/
-├── notebooks/               # Análisis en Jupyter (NB01–NB05 ejecutados)
-├── agents/                  # Agentes Python de orquestación
+├── notebooks/               # Análisis en Jupyter (NB01–NB05 + NB03.5 + NB04.5 ejecutados)
+├── agents/
+│   └── insights_agent.py    # Agente Claude API con prompt caching sobre CSV IPI
+├── mcp_simur/
+│   ├── __init__.py
+│   ├── server.py            # MCP Server — 6 herramientas + 2 recursos SIMUR/IPI
+│   └── README.md
+├── app/                     # Dashboard Streamlit (NB06)
+│   ├── main.py              # Página de inicio + KPIs globales
+│   ├── data_loader.py       # Carga centralizada con @st.cache_data
+│   └── pages/
+│       ├── 1_mapa.py        # Mapa interactivo (3 vistas Folium)
+│       ├── 2_zonas_criticas.py  # Ranking IPI filtrable + descarga CSV
+│       ├── 3_localidades.py     # Análisis por localidad + Pydeck
+│       └── 4_agente.py          # Chat con Claude Opus 4.7 (prompt caching)
+├── tests/
+│   ├── conftest.py          # Marks: network, slow
+│   ├── test_config.py       # 18 tests de paths y archivos
+│   ├── test_ipi_formula.py  # 13 tests de fórmula IPI
+│   └── test_simur_api.py    # 7 tests de red (marcados @network)
+├── .github/
+│   └── workflows/
+│       └── validate.yml     # CI: lint + tests + NB03.5 + integridad notebooks
+├── .streamlit/
+│   └── config.toml          # Tema oscuro rojo (#d73027)
+├── .claude/agents/          # 6 sub-agentes Claude Code especializados
 ├── scripts/                 # Scripts auxiliares y utilidades
 ├── memory/                  # Documentación operativa del proyecto
-├── .claude/agents/          # 6 sub-agentes Claude Code especializados
-├── app/                     # Dashboard futuro (NB06 — Streamlit)
 ├── outputs/
-│   ├── maps/                # Mapas interactivos Folium (.html)
+│   ├── maps/                # Mapas interactivos Folium (.html) — no versionados
 │   └── reports/             # CSVs de resultados y figuras (.png)
 ├── data/
 │   ├── raw/                 # Datos originales SIMUR (no versionados — >150MB)
@@ -102,7 +138,26 @@ uv sync
 code .
 ```
 
-Dependencias principales: `pandas · geopandas · osmnx · folium · matplotlib · shapely · scipy · nbconvert`
+Dependencias principales: `pandas · geopandas · osmnx · folium · matplotlib · shapely · scipy · nbconvert · streamlit · plotly · pydeck · h3 · anthropic · mcp`
+
+Para correr el dashboard:
+
+```bash
+.venv\Scripts\streamlit.exe run app/main.py
+# → http://localhost:8501
+```
+
+Para correr los tests:
+
+```bash
+.venv\Scripts\pytest.exe tests/ -m "not network" -v
+```
+
+Para correr el MCP server:
+
+```bash
+.venv\Scripts\python.exe -m mcp_simur.server
+```
 
 ---
 
