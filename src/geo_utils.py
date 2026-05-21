@@ -6,7 +6,7 @@ import pandas as pd
 try:
     import h3 as _h3
     import geopandas as gpd
-    from shapely.geometry import Polygon, Point
+    from shapely.geometry import Polygon
     _GEO_AVAILABLE = True
 except ImportError:
     _GEO_AVAILABLE = False

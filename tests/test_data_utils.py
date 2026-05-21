@@ -5,7 +5,6 @@ import pandas as pd
 import pytest
 
 from src.data_utils import (
-    PUNTAJE_GRAVEDAD,
     PUNTAJE_EPDO,
     calcular_puntaje_gravedad,
     limpiar_siniestros,

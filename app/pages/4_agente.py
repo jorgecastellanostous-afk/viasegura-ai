@@ -4,7 +4,8 @@ Chat con Claude (Opus 4.7) sobre los datos IPI de Bogotá.
 Usa prompt caching para no re-enviar el CSV en cada mensaje.
 La API key se puede ingresar directamente en la barra lateral.
 """
-import sys, os
+import os
+import sys
 from pathlib import Path
 import streamlit as st
 

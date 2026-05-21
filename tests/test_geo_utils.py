@@ -1,6 +1,7 @@
 """
 tests/test_geo_utils.py — Unit tests for src/geo_utils.py
 """
+import pandas as pd
 import pytest
 
 from src.geo_utils import clasificar_hex, _GEO_AVAILABLE
@@ -106,3 +107,76 @@ class TestAsignarH3:
         })
         result = asignar_h3(df)
         assert result.iloc[0] != result.iloc[1]
+
+
+# ── agregar_por_hexagono ──────────────────────────────────────────────────
+
+@pytest.mark.skipif(not _GEO_AVAILABLE, reason="geopandas/h3 no disponibles")
+class TestAgregarPorHexagono:
+    @pytest.fixture
+    def gdf_zonas(self):
+        import geopandas as gpd
+        from shapely.geometry import Point
+        from src.geo_utils import asignar_h3
+
+        df = pd.DataFrame({
+            "LATITUD":  [4.651, 4.652, 4.720],
+            "LONGITUD": [-74.082, -74.083, -74.050],
+            "IPI": [90.0, 85.0, 70.0],
+            "cantidad_siniestros": [100, 80, 50],
+            "criticidad_total": [300, 240, 150],
+            "siniestros_con_muertos": [5, 3, 1],
+            "localidad_predominante": ["SANTA FE", "SANTA FE", "KENNEDY"],
+            "prioridad_IPI": [
+                "Prioridad 1 - Intervención prioritaria",
+                "Prioridad 1 - Intervención prioritaria",
+                "Prioridad 2 - Auditoría de seguridad vial",
+            ],
+        })
+        df["h3_id"] = asignar_h3(df, lat_col="LATITUD", lon_col="LONGITUD")
+        geometry = [Point(lon, lat) for lat, lon in zip(df["LATITUD"], df["LONGITUD"])]
+        return gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
+
+    def test_retorna_geodataframe(self, gdf_zonas):
+        import geopandas as gpd
+        from src.geo_utils import agregar_por_hexagono
+        result = agregar_por_hexagono(gdf_zonas)
+        assert isinstance(result, gpd.GeoDataFrame)
+
+    def test_una_fila_por_hexagono(self, gdf_zonas):
+        from src.geo_utils import agregar_por_hexagono
+        result = agregar_por_hexagono(gdf_zonas)
+        n_hexagonos = gdf_zonas["h3_id"].nunique()
+        assert len(result) == n_hexagonos
+
+    def test_columnas_presentes(self, gdf_zonas):
+        from src.geo_utils import agregar_por_hexagono
+        result = agregar_por_hexagono(gdf_zonas)
+        for col in ["IPI_hex", "siniestros_total", "localidad", "categoria", "geometry"]:
+            assert col in result.columns
+
+    def test_ipi_hex_es_maximo(self, gdf_zonas):
+        from src.geo_utils import agregar_por_hexagono
+        result = agregar_por_hexagono(gdf_zonas)
+        # IPI_hex debe ser el máximo de las zonas en el hexágono
+        for _, row in result.iterrows():
+            zonas_en_hex = gdf_zonas[gdf_zonas["h3_id"] == row["h3_id"]]
+            assert row["IPI_hex"] == pytest.approx(zonas_en_hex["IPI"].max())
+
+    def test_crs_epsg4326(self, gdf_zonas):
+        from src.geo_utils import agregar_por_hexagono
+        result = agregar_por_hexagono(gdf_zonas)
+        assert result.crs.to_epsg() == 4326
+
+
+# ── _require_geo error path ───────────────────────────────────────────────
+
+def test_require_geo_raises_when_unavailable():
+    import src.geo_utils as geo
+    original = geo._GEO_AVAILABLE
+    geo._GEO_AVAILABLE = False
+    try:
+        with pytest.raises(ImportError, match="geopandas"):
+            geo._require_geo()
+    finally:
+        geo._GEO_AVAILABLE = original

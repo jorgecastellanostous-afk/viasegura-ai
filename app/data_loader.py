@@ -18,7 +18,7 @@ ROOT  = _here.parent                              # viasegura_ai/
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from config import REPORTS, MAPS, DATA_PROCESSED
+from config import REPORTS, MAPS  # noqa: E402
 
 
 # ════════════════════════════════════════════════════════════════════════

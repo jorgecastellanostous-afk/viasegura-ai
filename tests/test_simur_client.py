@@ -153,3 +153,103 @@ class TestDescargarPorFormularios:
         mock_post.assert_not_called()
         assert isinstance(result, pd.DataFrame)
         assert len(result) == 0
+
+
+# ── descargar_accidentes_por_anio_seguro (mocked HTTP) ────────────────────
+
+class TestDescargarAccidentesPorAnio:
+    def _make_count_response(self, count):
+        m = MagicMock()
+        m.json.return_value = {"count": count}
+        return m
+
+    def _make_features_response(self, rows):
+        m = MagicMock()
+        m.status_code = 200
+        m.json.return_value = {
+            "features": [{"properties": r} for r in rows]
+        }
+        return m
+
+    def _make_empty_response(self):
+        m = MagicMock()
+        m.status_code = 200
+        m.json.return_value = {"features": []}
+        return m
+
+    def test_retorna_none_si_total_cero(self):
+        with patch("src.simur_client.requests.get", return_value=self._make_count_response(0)):
+            from src.simur_client import descargar_accidentes_por_anio_seguro
+            result = descargar_accidentes_por_anio_seguro(anio=2019)
+        assert result is None
+
+    def test_descarga_pagina_unica(self):
+        rows = [{"FORMULARIO": f"F{i:04}", "GRAVEDAD": "CON HERIDOS"} for i in range(5)]
+        responses = [
+            self._make_count_response(5),
+            self._make_features_response(rows),
+            self._make_empty_response(),
+        ]
+        with patch("src.simur_client.requests.get", side_effect=responses), \
+             patch("src.simur_client.time.sleep"):
+            from src.simur_client import descargar_accidentes_por_anio_seguro
+            result = descargar_accidentes_por_anio_seguro(
+                anio=2019,
+                registros_por_bloque=10,
+            )
+        assert isinstance(result, pd.DataFrame)
+        assert len(result) == 5
+        assert "GRAVEDAD" in result.columns
+
+    def test_descarga_multiples_paginas(self):
+        rows_p1 = [{"FORMULARIO": f"F{i:04}"} for i in range(3)]
+        rows_p2 = [{"FORMULARIO": f"F{i:04}"} for i in range(3, 5)]
+        responses = [
+            self._make_count_response(5),
+            self._make_features_response(rows_p1),
+            self._make_features_response(rows_p2),
+            self._make_empty_response(),
+        ]
+        with patch("src.simur_client.requests.get", side_effect=responses), \
+             patch("src.simur_client.time.sleep"):
+            from src.simur_client import descargar_accidentes_por_anio_seguro
+            result = descargar_accidentes_por_anio_seguro(
+                anio=2019,
+                registros_por_bloque=3,
+            )
+        assert isinstance(result, pd.DataFrame)
+        assert len(result) == 5
+
+    def test_carga_desde_cache(self, tmp_path):
+        cache_file = tmp_path / "accidentes_2019_offset_0.csv"
+        pd.DataFrame({"FORMULARIO": ["F001"], "GRAVEDAD": ["CON MUERTOS"]}).to_csv(
+            cache_file, index=False
+        )
+        count_resp = self._make_count_response(1)
+        with patch("src.simur_client.requests.get", return_value=count_resp), \
+             patch("src.simur_client.time.sleep"):
+            from src.simur_client import descargar_accidentes_por_anio_seguro
+            result = descargar_accidentes_por_anio_seguro(
+                anio=2019,
+                ruta_chunks=tmp_path,
+            )
+        assert result is not None
+        assert result["GRAVEDAD"].iloc[0] == "CON MUERTOS"
+
+    def test_retorna_none_si_todos_los_intentos_fallan(self):
+        error_response = MagicMock()
+        error_response.status_code = 500
+        error_response.json.return_value = {}
+        responses = [
+            self._make_count_response(10),
+            *[error_response] * 5,  # max_reintentos=5 failures
+        ]
+        with patch("src.simur_client.requests.get", side_effect=responses), \
+             patch("src.simur_client.time.sleep"):
+            from src.simur_client import descargar_accidentes_por_anio_seguro
+            result = descargar_accidentes_por_anio_seguro(
+                anio=2019,
+                registros_por_bloque=10,
+                max_reintentos=5,
+            )
+        assert result is None
