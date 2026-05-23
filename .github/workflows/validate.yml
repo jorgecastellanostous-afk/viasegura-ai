@@ -247,6 +247,45 @@ jobs:
               f.write("rank_IPI,IPI,prioridad_IPI,LAT_ZONA,LON_ZONA,cantidad_siniestros\n")
               for i in range(50):
                   f.write(f"{i+1},{98-i*0.5},Prioridad 1,4.60,-74.08,{100-i}\n")
+
+          # Stubs de reports que NB03.5 lee (un registro mínimo cada uno)
+          def w1(path, header, row):
+              with open(f"outputs/reports/{path}", "w", newline="") as f:
+                  f.write(header + "\n")
+                  f.write(row + "\n")
+
+          w1("resumen_calidad_datos_2016_2019.csv",
+             "base,periodo,filas_raw,filas_limpias,filas_eliminadas_limpieza,duplicados_objectid_raw,duplicados_objectid_limpia,nulos_latitud,nulos_longitud,nulos_puntaje_gravedad",
+             "2016-2019,2016-2019,260831,260831,0,0,0,0,0,0")
+
+          w1("tabla_localidad_2016_2019.csv",
+             "LOCALIDAD,cantidad_siniestros,criticidad_total,criticidad_promedio",
+             "KENNEDY,30000,90000,3.0")
+
+          w1("tabla_gravedad_2016_2019.csv",
+             "GRAVEDAD,cantidad_siniestros,criticidad_total",
+             "CON HERIDOS,180000,540000")
+
+          w1("resumen_concentracion_IPI_2016_2019_final.csv",
+             "top_n_zonas,porcentaje_zonas,siniestros_acumulados,porcentaje_siniestros,criticidad_acumulada,porcentaje_criticidad,siniestros_con_muertos_acumulados,porcentaje_siniestros_con_muertos",
+             "50,0.29,5000,1.92,15000,3.25,200,4.77")
+
+          w1("resumen_familia_analitica_2016_2019.csv",
+             "familia_analitica,cantidad_zonas,siniestros_acumulados,criticidad_total_acumulada,muertes_registradas,IPI_promedio",
+             "Hotspot robusto integral,500,50000,150000,500,87.5")
+
+          w1("auditoria_ratios_gravedad_notebook_03.csv",
+             "anio,n_total,n_solo_danos,n_con_heridos,n_con_muertos,pct_con_heridos,pct_con_muertos,ratio_heridos_danos",
+             "2019,65000,30000,32000,3000,49.2,4.6,1.07")
+
+          w1("clasificacion_hotspots_persistencia_notebook_03.csv",
+             "lat_grid,lon_grid,rank_IPI_base,IPI_base,cantidad_siniestros_base,siniestros_con_muertos_base,criticidad_total_base,familia_analitica_base,localidad_modal_base,rank_IPI_rec,IPI_rec,cantidad_siniestros_rec,siniestros_con_muertos_rec,criticidad_total_rec,familia_analitica_rec,localidad_modal_rec,en_top50_base,en_top200_base,en_top500_base,en_top200_rec,en_top500_rec,categoria_persistencia,sensible_fatalidad",
+             "4.60,-74.08,1,95.0,100,5,300,Hotspot robusto integral,KENNEDY,1,94.0,95,4,285,Hotspot robusto integral,KENNEDY,True,True,True,True,True,Persistente confirmado,False")
+
+          w1("auditoria_capas_hermanas_simur_notebook_03.csv",
+             "capa_id,nombre,n_registros,nota,url_query",
+             "2,AccidentalidadAnalisis,259829,Capa base usada,https://sig.simur.gov.co/...")
+
           print("Stubs NB03.5 OK")
           EOF
 
