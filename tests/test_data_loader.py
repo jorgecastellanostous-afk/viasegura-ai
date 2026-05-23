@@ -36,7 +36,13 @@ from app.data_loader import (  # noqa: E402
 
 
 class TestCargarIPI:
-    _COLS = ("IPI", "prioridad_IPI", "cantidad_siniestros", "siniestros_con_muertos", "anios_activos")
+    _COLS = (
+        "IPI",
+        "prioridad_IPI",
+        "cantidad_siniestros",
+        "siniestros_con_muertos",
+        "anios_activos",
+    )
 
     def test_retorna_dataframe(self):
         assert isinstance(cargar_ipi(), pd.DataFrame)
@@ -115,9 +121,15 @@ class TestCargarTopBarrios:
 
 class TestMetricasGlobales:
     _CLAVES = (
-        "total_zonas", "total_siniestros", "total_muertos",
-        "zonas_p1", "ipi_max", "ipi_medio",
-        "localidad_top", "via_top", "persistentes_4a",
+        "total_zonas",
+        "total_siniestros",
+        "total_muertos",
+        "zonas_p1",
+        "ipi_max",
+        "ipi_medio",
+        "localidad_top",
+        "via_top",
+        "persistentes_4a",
     )
 
     def test_retorna_dict(self):

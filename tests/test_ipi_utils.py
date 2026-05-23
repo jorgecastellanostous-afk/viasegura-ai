@@ -408,8 +408,15 @@ class TestCalcularRankingsDuales:
 
     def test_columnas_requeridas_presentes(self, df_rankings):
         result = calcular_rankings_duales(df_rankings)
-        for col in ("rank_vol", "rank_tasa_red", "rank_tasa_pob",
-                    "delta_rank", "en_top_vol", "en_top_tasa_red", "en_top_tasa_pob"):
+        for col in (
+            "rank_vol",
+            "rank_tasa_red",
+            "rank_tasa_pob",
+            "delta_rank",
+            "en_top_vol",
+            "en_top_tasa_red",
+            "en_top_tasa_pob",
+        ):
             assert col in result.columns
 
     def test_no_modifica_dataframe_original(self, df_rankings):

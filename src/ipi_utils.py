@@ -114,11 +114,7 @@ def calcular_ipi_pesos_alternativos(
     n_h = ((c0 - 4.0 * n_m - n_t) / 2.0).round().clip(lower=0).astype(int)
     n_s = (n_t - n_m - n_h).round().clip(lower=0).astype(int)
 
-    crit_alt = (
-        n_s * pesos["solo_danos"]
-        + n_h * pesos["con_heridos"]
-        + n_m * pesos["con_muertos"]
-    )
+    crit_alt = n_s * pesos["solo_danos"] + n_h * pesos["con_heridos"] + n_m * pesos["con_muertos"]
     n_t_safe = n_t.where(n_t > 0)
     crit_prom_alt = (crit_alt / n_t_safe).fillna(0.0)
 
