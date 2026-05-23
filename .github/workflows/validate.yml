@@ -90,16 +90,21 @@ jobs:
           (root / "outputs/reports").mkdir(parents=True, exist_ok=True)
           (root / "outputs/maps").mkdir(parents=True, exist_ok=True)
 
-          # Stub: CSV limpio
+          # Stub: CSV limpio — 25 000 filas para superar el test_csv_limpio_no_vacio (>1 MB)
           cols_limpio = ["LAT_ACCIDENTE","LON_ACCIDENTE","ANIO_ACCIDENTE",
                          "GRAVEDAD_ACCIDENTE","CLASE_ACCIDENTE","puntaje_gravedad"]
+          gravedades = ["CON HERIDOS","CON MUERTOS","SOLO DANOS"]
+          clases     = ["CHOQUE","ATROPELLO","CAIDA OCUPANTE","VOLCAMIENTO"]
           with open("data/processed/accidentes_bogota_2016_2019_limpio.csv", "w", newline="") as f:
               w = csv.DictWriter(f, fieldnames=cols_limpio)
               w.writeheader()
-              for i in range(1000):
+              for i in range(25000):
                   w.writerow(dict(zip(cols_limpio,
-                      [4.60+i*0.001, -74.08+i*0.001, 2016+(i%4),
-                       "CON HERIDOS", "CHOQUE", 3])))
+                      [round(4.55 + (i % 200)*0.001, 4),
+                       round(-74.20 + (i % 150)*0.001, 4),
+                       2016 + (i % 4),
+                       gravedades[i % 3], clases[i % 4],
+                       [1,3,5][i % 3]])))
 
           # Stub: chunks (4 archivos, uno por año)
           for y in [2016, 2017, 2018, 2019]:
