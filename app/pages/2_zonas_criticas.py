@@ -22,6 +22,40 @@ inject_global_css()
 
 st.markdown('<p class="vs-page-title">Zonas Críticas — Ranking IPI</p>', unsafe_allow_html=True)
 
+# ── Disclaimer metodológico ──────────────────────────────────────────────
+st.info(
+    "**Nota metodológica:** El umbral Prioridad 1 (top 50 zonas) es una decisión operativa, "
+    "no un corte estadístico natural. Las zonas en los puestos 48-55 tienen IPIs muy similares "
+    "(diferencia < 0.5 puntos). Las zonas **SIN_NMG** en el top 50 no tienen nombre de vía en "
+    "SIMUR; se incluye la calle identificada vía OpenStreetMap como referencia aproximada (±100 m).",
+    icon="ℹ️",
+)
+
+# ── Lookup OSM para zonas sin nombre de vía en SIMUR ────────────────────
+# Identificadas por reverse-geocoding Nominatim + Overpass (mayo 2026)
+_OSM_VIA = {
+    # (localidad, barrio): nombre OSM
+    ("BOSA", "EL CORZO I"): "Cra. 100 [OSM]",
+    ("PUENTE ARANDA", "SAN EUSEBIO"): "Cra. 52 / Av. Cll. 26 Sur [OSM]",
+    ("ANTONIO NARI\xd1O", "CIUDAD JARDIN SUR"): "Cra. 10B [OSM]",
+    ("SUBA", "RINCON ALTAMAR"): "Av. Cll. 127 [OSM]",
+    ("FONTIBON", "VILLEMAR"): "Av. Cll. 17 [OSM]",
+    ("BOSA", "ESCOCIA"): "Cra. 88C [OSM]",
+    ("KENNEDY", "CHUCUA DE LA VACA II"): "Cra. 80F [OSM]",
+}
+
+
+def _patch_via(row):
+    """Reemplaza SIN_NMG con nombre OSM si está disponible."""
+    if str(row.get("via_predominante", "")).startswith("SIN_NMG"):
+        key = (
+            str(row.get("localidad_predominante", "")).upper(),
+            str(row.get("barrio_predominante", "")).upper(),
+        )
+        return _OSM_VIA.get(key, row["via_predominante"])
+    return row["via_predominante"]
+
+
 df = cargar_ipi()
 
 # ── Sidebar de filtros ───────────────────────────────────────────────────
@@ -74,7 +108,11 @@ df_filtrado = df[mask].nlargest(top_n, "IPI").copy()
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Zonas mostradas", len(df_filtrado))
 c2.metric("Total siniestros", f"{df_filtrado['cantidad_siniestros'].sum():,}")
-c3.metric("Total fallecidos", f"{df_filtrado['siniestros_con_muertos'].sum():,}")
+c3.metric(
+    "Acc. fatales",
+    f"{df_filtrado['siniestros_con_muertos'].sum():,}",
+    help="Eventos SIMUR clasificados CON MUERTOS (≠ víctimas individuales).",
+)
 c4.metric("IPI promedio", f"{df_filtrado['IPI'].mean():.1f}")
 
 st.markdown("---")
@@ -101,6 +139,9 @@ with tab1:
     cols_mostrar = [c for c in COLS if c in df_filtrado.columns]
     df_tabla = df_filtrado[cols_mostrar].copy()
     df_tabla["IPI"] = df_tabla["IPI"].round(1)
+    # Parchar SIN_NMG con nombre OSM donde esté disponible
+    if "via_predominante" in df_tabla.columns:
+        df_tabla["via_predominante"] = df_tabla.apply(_patch_via, axis=1)
 
     # Colorear por prioridad
     def color_prioridad(val):
@@ -221,7 +262,7 @@ with tab2:
             - Barrio: {top_zona["barrio_predominante"]}
             - Vía: {top_zona["via_predominante"]}
             - Siniestros: {int(top_zona["cantidad_siniestros"])}
-            - Muertos: {int(top_zona["siniestros_con_muertos"])}
+            - Acc. fatales: {int(top_zona["siniestros_con_muertos"])}
             - Años activos: {int(top_zona["anios_activos"])}/4
             """)
         with radar_col:
