@@ -9,7 +9,7 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 import pytest
 
-from src.simur_client import agregar_por_zona, CAMPO_JOIN
+from src.simur_client import CAMPO_JOIN, agregar_por_zona
 
 
 # ── agregar_por_zona ──────────────────────────────────────────────────────
@@ -277,3 +277,77 @@ class TestDescargarAccidentesPorAnio:
                 max_reintentos=5,
             )
         assert result is None
+
+
+# ── B3.2: descargar_victimas_fatales_por_formulario ───────────────────────
+
+
+class TestDescargarVictimasFatales:
+    def _mock_post(self, features):
+        m = MagicMock()
+        m.json.return_value = {"features": features}
+        return m
+
+    def test_lista_vacia_retorna_dataframe_vacio(self):
+        from src.simur_client import descargar_victimas_fatales_por_formulario
+
+        result = descargar_victimas_fatales_por_formulario([])
+        assert isinstance(result, pd.DataFrame)
+        assert len(result) == 0
+        assert "n_victimas_fatales" in result.columns
+
+    def test_cuenta_victimas_por_formulario(self):
+        features = [
+            {"attributes": {CAMPO_JOIN: "F001", "CONDICION": "MUERTO"}},
+            {"attributes": {CAMPO_JOIN: "F001", "CONDICION": "MUERTO"}},
+            {"attributes": {CAMPO_JOIN: "F001", "CONDICION": "CONDUCTOR"}},
+            {"attributes": {CAMPO_JOIN: "F002", "CONDICION": "MUERTO"}},
+        ]
+        with patch("src.simur_client.requests.post", return_value=self._mock_post(features)):
+            from src.simur_client import descargar_victimas_fatales_por_formulario
+
+            result = descargar_victimas_fatales_por_formulario(["F001", "F002"])
+
+        row_f001 = result[result[CAMPO_JOIN] == "F001"]
+        assert len(row_f001) == 1
+        assert row_f001["n_victimas_fatales"].iloc[0] == 2  # CONDUCTOR no cuenta
+
+        row_f002 = result[result[CAMPO_JOIN] == "F002"]
+        assert row_f002["n_victimas_fatales"].iloc[0] == 1
+
+    def test_sin_muertos_retorna_vacio(self):
+        features = [{"attributes": {CAMPO_JOIN: "F001", "CONDICION": "CONDUCTOR"}}]
+        with patch("src.simur_client.requests.post", return_value=self._mock_post(features)):
+            from src.simur_client import descargar_victimas_fatales_por_formulario
+
+            result = descargar_victimas_fatales_por_formulario(["F001"])
+        assert len(result) == 0
+
+    def test_respuesta_vacia_retorna_vacio(self):
+        with patch("src.simur_client.requests.post", return_value=self._mock_post([])):
+            from src.simur_client import descargar_victimas_fatales_por_formulario
+
+            result = descargar_victimas_fatales_por_formulario(["F001"])
+        assert len(result) == 0
+
+    def test_condicion_muerto_configurable(self):
+        features = [
+            {"attributes": {CAMPO_JOIN: "F001", "CONDICION": "FALLECIDO"}},
+            {"attributes": {CAMPO_JOIN: "F001", "CONDICION": "MUERTO"}},
+        ]
+        with patch("src.simur_client.requests.post", return_value=self._mock_post(features)):
+            from src.simur_client import descargar_victimas_fatales_por_formulario
+
+            result = descargar_victimas_fatales_por_formulario(
+                ["F001"], condicion_muerto="FALLECIDO"
+            )
+        assert result["n_victimas_fatales"].iloc[0] == 1  # solo el FALLECIDO
+
+    def test_retorna_dataframe_con_columnas_correctas(self):
+        features = [{"attributes": {CAMPO_JOIN: "F001", "CONDICION": "MUERTO"}}]
+        with patch("src.simur_client.requests.post", return_value=self._mock_post(features)):
+            from src.simur_client import descargar_victimas_fatales_por_formulario
+
+            result = descargar_victimas_fatales_por_formulario(["F001"])
+        assert CAMPO_JOIN in result.columns
+        assert "n_victimas_fatales" in result.columns

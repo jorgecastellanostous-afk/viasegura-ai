@@ -164,6 +164,41 @@ def descargar_por_formularios(
     return pd.DataFrame(resultados)
 
 
+def descargar_victimas_fatales_por_formulario(
+    formularios: list[str],
+    condicion_muerto: str = "MUERTO",
+    batch_size: int = _DEFAULT_BATCH,
+    max_reintentos: int = _DEFAULT_RETRIES,
+) -> pd.DataFrame:
+    """Count individual fatalities per accident from Layer 3 (actor_vial).
+
+    Returns DataFrame with FORMULARIO and n_victimas_fatales.
+    Accidents with no matching CONDICION are absent from the result.
+
+    Context: siniestros_con_muertos counts accident events; this counts
+    individual victims (SDM ratio ~2 victims per fatal event).
+    """
+    if not formularios:
+        return pd.DataFrame(columns=[CAMPO_JOIN, "n_victimas_fatales"])
+
+    df_actor = descargar_por_formularios(
+        layer_id=CAPAS["actor_vial"],
+        formularios=formularios,
+        campos=f"{CAMPO_JOIN},CONDICION",
+        batch_size=batch_size,
+        max_reintentos=max_reintentos,
+    )
+
+    if df_actor.empty:
+        return pd.DataFrame(columns=[CAMPO_JOIN, "n_victimas_fatales"])
+
+    muertos = df_actor[df_actor["CONDICION"] == condicion_muerto]
+    if muertos.empty:
+        return pd.DataFrame(columns=[CAMPO_JOIN, "n_victimas_fatales"])
+
+    return muertos.groupby(CAMPO_JOIN).size().reset_index(name="n_victimas_fatales")
+
+
 def agregar_por_zona(
     df_capa: pd.DataFrame,
     campo_valor: str,
