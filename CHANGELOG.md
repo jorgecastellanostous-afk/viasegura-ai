@@ -105,7 +105,7 @@ El Top 50 IPI (0.29% de zonas) concentra el 6.39% de muertes del periodo. El Top
 - `outputs/maps/mapa_calor_criticidad_siniestros_2016_2019.html` — Mapa de calor exploratorio.
 
 ### Validaciones realizadas
-- Total descargado (260,831) coincide con conteo oficial del FeatureServer: diferencia = 0.
+- Total descargado (260,831) vs conteo del FeatureServer en fecha de consulta (259,829): diferencia = +1,002 (+0.38%), consistente con ingestión continua de registros en SIMUR entre la fecha del conteo y la descarga por chunks. Patrón uniforme por año (+211 a +285 registros/año).
 - Sin duplicados en OBJECTID, CODIGO_ACCIDENTE ni FORMULARIO.
 - Sin nulos en coordenadas. Sin registros fuera del bounding box de Bogotá.
 - Sin nulos en `puntaje_gravedad`.

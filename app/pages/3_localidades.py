@@ -46,7 +46,11 @@ if loc_sel == "— Ver todas —":
             color_continuous_scale="Reds",
             hover_data=["n_zonas", "siniestros_total", "siniestros_muertos", "zonas_p1"],
             template="plotly_dark",
-            labels={"IPI_localidad": "IPI (P75)", "localidad": ""},
+            labels={
+                "IPI_localidad": "IPI (P75)",
+                "localidad": "",
+                "siniestros_muertos": "Acc. fatales (eventos SIMUR)",
+            },
         )
         fig_bar.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
@@ -74,6 +78,7 @@ if loc_sel == "— Ver todas —":
                 "siniestros_total": "Total siniestros",
                 "zonas_p1": "Zonas Prioridad 1",
                 "IPI_localidad": "IPI (P75)",
+                "siniestros_muertos": "Acc. fatales (eventos SIMUR)",
             },
         )
         fig_bub.update_layout(
@@ -101,7 +106,15 @@ else:
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("IPI (P75)", f"{row['IPI_localidad']:.1f}")
     c2.metric("Siniestros", f"{int(row['siniestros_total']):,}")
-    c3.metric("Fallecidos", f"{int(row['siniestros_muertos']):,}")
+    c3.metric(
+        "Acc. fatales",
+        f"{int(row['siniestros_muertos']):,}",
+        help=(
+            "Eventos SIMUR clasificados como CON MUERTOS. "
+            "No equivale al número de víctimas individuales "
+            "(ratio ~2 eventos por víctima según SDM)."
+        ),
+    )
     c4.metric("Zonas Prioridad 1", int(row["zonas_p1"]))
 
     st.markdown("---")

@@ -46,7 +46,7 @@ with st.sidebar:
     st.markdown("### 💡 Preguntas sugeridas")
     sugeridas = [
         "¿Cuáles son las 3 zonas más urgentes y por qué?",
-        "¿Qué localidades tienen más fallecidos?",
+        "¿Qué localidades tienen más accidentes fatales?",
         "Dame recomendaciones para Kennedy",
         "¿Qué tipo de accidentes predomina en Prioridad 1?",
         "¿Cuáles vías necesitan intervención de ingeniería?",
@@ -122,7 +122,7 @@ def _cargar_ipi_resumen() -> str:
         f"Prioridades: {dict(prioridades)}",
         f"Top 5 localidades por n° de zonas: {dict(localidades.most_common(5))}",
         f"Zonas activas 4 años: {sum(1 for r in rows if r.get('anios_activos') == '4'):,}",
-        f"Total fallecidos (suma): {sum(int(r.get('siniestros_con_muertos', 0) or 0) for r in rows):,}",
+        f"Total accidentes fatales (suma eventos SIMUR): {sum(int(r.get('siniestros_con_muertos', 0) or 0) for r in rows):,}",
         f"Total siniestros (suma): {sum(int(r.get('cantidad_siniestros', 0) or 0) for r in rows):,}",
     ]
     return "\n".join(lineas)
@@ -177,6 +177,11 @@ if pregunta:
                     "- Prioridad 1 = top 50 zonas (intervención inmediata).\n"
                     "- Gravedad: Muertos=5pts, Heridos=3pts, Solo Daños=1pt.\n"
                     "- Período base: 2016-2019 · Fuente: SIMUR Bogotá.\n"
+                    "- IMPORTANTE sobre fatalidades: 'siniestros_con_muertos' cuenta EVENTOS de accidente "
+                    "clasificados como CON MUERTOS en SIMUR (4,197 eventos 2016-2019), NO víctimas individuales. "
+                    "SDM/ANSV reporta ~2,142 víctimas fatales confirmadas en ese período "
+                    "(ratio ~2 eventos SIMUR por víctima). Al responder sobre fallecidos o víctimas fatales, "
+                    "usa el término 'accidentes fatales' y aclara esta distinción si es relevante.\n"
                 ),
             },
             {

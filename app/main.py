@@ -70,7 +70,16 @@ col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.metric("Total Siniestros", f"{m['total_siniestros']:,}", "2016–2019")
 with col2:
-    st.metric("Fallecidos", f"{m['total_muertos']:,}", "periodo base")
+    st.metric(
+        "Acc. fatales",
+        f"{m['total_muertos']:,}",
+        "periodo base",
+        help=(
+            "Siniestros clasificados como CON MUERTOS en SIMUR. "
+            "Cada registro es un accidente con ≥1 fallecido, no el conteo de víctimas individuales "
+            "(SDM reporta ~2,142 víctimas confirmadas 2016-2019 vs 4,197 eventos SIMUR)."
+        ),
+    )
 with col3:
     st.metric("Zonas analizadas", f"{m['total_zonas']:,}", "~100 m resolución")
 with col4:
