@@ -39,11 +39,12 @@ outputs/reports/top_barrios_criticos_geoespacial.csv
 # Metadata sensible
 data/raw/_snapshot_metadata.json
 
-# Claude Code — settings locales (no son del equipo)
+# Claude Code — archivos locales (no son del equipo)
 .claude/settings.local.json
+.claude/launch.json
 
 # VS Code (settings personales, no de proyecto)
-.vscode/launch.json
+.vscode/
 
 # Sistema
 .DS_Store
