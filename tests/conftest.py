@@ -2,6 +2,7 @@
 tests/conftest.py — Configuración global de pytest para VíaSegura AI
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -9,6 +10,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+# Excluir test_data_loader.py en CI: requiere streamlit + dataset completo
+# Esto opera ANTES de que pytest intente importar el archivo (pre-colección)
+if os.environ.get("CI"):
+    collect_ignore = [str(Path(__file__).parent / "test_data_loader.py")]
 
 
 def pytest_configure(config):
