@@ -6,6 +6,7 @@ No mocking needed — tests use real data files from outputs/.
 """
 
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -17,15 +18,14 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-# Guard 1: skip entire module if streamlit is not installed (CI test job)
-try:
-    import streamlit  # noqa: F401
-except ImportError:
+# Skip entire module in CI (no streamlit, no full dataset — same pattern as SIMUR network tests)
+if os.environ.get("CI"):
     pytest.skip(
-        "streamlit no instalado — tests de data_loader omitidos en CI", allow_module_level=True
+        "test_data_loader omitido en CI: requiere streamlit + dataset completo",
+        allow_module_level=True,
     )
 
-# Guard 2: skip if the full dataset is absent (CI stub or fresh clone)
+# Skip if the full dataset is absent (fresh clone without running NB01-NB04)
 from config import MAPS, REPORTS  # noqa: E402
 
 _REQUIRED_FILES = [
