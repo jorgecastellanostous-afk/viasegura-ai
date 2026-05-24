@@ -17,6 +17,22 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+# Guard 1: skip entire module if streamlit is not installed (CI test job)
+pytest.importorskip("streamlit")
+
+# Guard 2: skip if the full dataset is absent (CI stub or fresh clone)
+from config import MAPS, REPORTS  # noqa: E402
+
+_REQUIRED_FILES = [
+    REPORTS / "zonas_criticas_IPI_completo_2016_2019.csv",
+    REPORTS / "ipi_por_localidad_stats.csv",
+    REPORTS / "top_vias_criticas_geoespacial.csv",
+    REPORTS / "top_barrios_criticos_geoespacial.csv",
+    MAPS / "mapa_top50_IPI_final_2016_2019.html",
+]
+if not all(p.exists() for p in _REQUIRED_FILES):
+    pytest.skip("Dataset completo no disponible — ejecuta NB01-NB04", allow_module_level=True)
+
 # Suppress Streamlit's "No runtime found" log message
 logging.getLogger("streamlit").setLevel(logging.ERROR)
 
