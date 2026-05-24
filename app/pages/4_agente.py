@@ -79,52 +79,114 @@ if not api_key:
     st.stop()
 
 
-# ── Cargar resumen IPI (cacheado) ─────────────────────────────────────────
+# ── Cargar contexto del agente (cacheado) ────────────────────────────────
 @st.cache_data(show_spinner=False)
 def _cargar_ipi_resumen() -> str:
     import csv
+    import statistics
+    from collections import Counter
+
+    import pandas as pd
+
     from config import REPORTS
 
+    # ── 1. Top 200 zonas por IPI ─────────────────────────────────────────
     ipi_path = REPORTS / "zonas_criticas_IPI_completo_2016_2019.csv"
     with open(ipi_path, encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
 
-    top = rows[:100]
-    encabezado = (
-        "## Dataset: Zonas Críticas IPI Bogotá 2016-2019\n"
-        f"Total zonas analizadas: {len(rows):,}\n"
-        "Top 100 por IPI (formato compacto pipe-separado):\n\n"
-        "rank|IPI|prioridad|lat|lon|siniestros|criticidad|localidad|barrio|via|clase|anios|score_vol|score_fat\n"
-    )
-    lineas = [encabezado]
-    for r in top:
+    top200 = rows[:200]
+    lineas = [
+        "## Dataset: Zonas Críticas IPI Bogotá 2016-2019",
+        f"Total zonas analizadas: {len(rows):,}",
+        "Top 200 por IPI (pipe-separado):",
+        "rank|IPI|prioridad|lat|lon|siniestros|muertos|criticidad|localidad|barrio|via|clase|anios|score_vol|score_fat",
+    ]
+    for r in top200:
         lineas.append(
             f"{r.get('rank_IPI', '?')}|{float(r.get('IPI', 0)):.1f}"
             f"|{r.get('prioridad_IPI', '?').split(' - ')[0]}"
             f"|{r.get('LAT_ZONA', '?')}|{r.get('LON_ZONA', '?')}"
-            f"|{r.get('cantidad_siniestros', '?')}|{r.get('criticidad_total', '?')}"
+            f"|{r.get('cantidad_siniestros', '?')}|{r.get('siniestros_con_muertos', '?')}"
+            f"|{r.get('criticidad_total', '?')}"
             f"|{r.get('localidad_predominante', '?')}|{r.get('barrio_predominante', '?')}"
             f"|{r.get('via_predominante', '?')}|{r.get('clase_predominante', '?')}"
             f"|{r.get('anios_activos', '?')}"
             f"|{float(r.get('score_volumen', 0)):.3f}|{float(r.get('score_fatalidad', 0)):.3f}"
         )
 
-    from collections import Counter
-    import statistics
-
+    # ── 2. Estadísticas globales ──────────────────────────────────────────
     ipi_vals = [float(r["IPI"]) for r in rows if r.get("IPI")]
     prioridades = Counter(r.get("prioridad_IPI", "?").split(" - ")[0] for r in rows)
-    localidades = Counter(r.get("localidad_predominante", "?") for r in rows)
-
     lineas += [
         "\n## Estadísticas globales",
         f"IPI: min={min(ipi_vals):.1f} max={max(ipi_vals):.1f} media={statistics.mean(ipi_vals):.1f}",
         f"Prioridades: {dict(prioridades)}",
-        f"Top 5 localidades por n° de zonas: {dict(localidades.most_common(5))}",
         f"Zonas activas 4 años: {sum(1 for r in rows if r.get('anios_activos') == '4'):,}",
-        f"Total accidentes fatales (suma eventos SIMUR): {sum(int(r.get('siniestros_con_muertos', 0) or 0) for r in rows):,}",
-        f"Total siniestros (suma): {sum(int(r.get('cantidad_siniestros', 0) or 0) for r in rows):,}",
+        f"Total accidentes fatales (eventos SIMUR): {sum(int(r.get('siniestros_con_muertos', 0) or 0) for r in rows):,}",
+        f"Total siniestros: {sum(int(r.get('cantidad_siniestros', 0) or 0) for r in rows):,}",
     ]
+
+    # ── 3. Estadísticas por localidad ─────────────────────────────────────
+    loc_path = REPORTS / "ipi_por_localidad_stats.csv"
+    if loc_path.exists():
+        df_loc = pd.read_csv(loc_path)
+        lineas += [
+            "\n## Ranking de localidades (rank_localidad|localidad|n_zonas|ipi_max|ipi_medio|siniestros|muertos|zonas_p1|zonas_p2)"
+        ]
+        for _, row in df_loc.sort_values("rank_localidad").iterrows():
+            lineas.append(
+                f"{int(row['rank_localidad'])}|{row['localidad']}"
+                f"|{int(row['n_zonas'])}|{row['ipi_max']:.1f}|{row['ipi_medio']:.1f}"
+                f"|{int(row['siniestros_total'])}|{int(row['siniestros_muertos'])}"
+                f"|{int(row['zonas_p1'])}|{int(row['zonas_p2'])}"
+            )
+
+    # ── 4. Top vías críticas ──────────────────────────────────────────────
+    vias_path = REPORTS / "top_vias_criticas_geoespacial.csv"
+    if vias_path.exists():
+        df_vias = pd.read_csv(vias_path)
+        df_vias = df_vias[df_vias["via_predominante"] != "SIN_NMG"].head(20)
+        lineas += ["\n## Top 20 vías críticas (via|n_zonas|ipi_max|siniestros|muertos|criticidad)"]
+        for _, row in df_vias.iterrows():
+            lineas.append(
+                f"{row['via_predominante']}|{int(row['n_zonas'])}|{row['ipi_max']:.1f}"
+                f"|{int(row['siniestros'])}|{int(row['muertos'])}|{int(row['criticidad'])}"
+            )
+
+    # ── 5. Top barrios críticos ───────────────────────────────────────────
+    barrios_path = REPORTS / "top_barrios_criticos_geoespacial.csv"
+    if barrios_path.exists():
+        df_bar = pd.read_csv(barrios_path).head(20)
+        lineas += [
+            "\n## Top 20 barrios críticos (localidad|barrio|n_zonas|ipi_max|siniestros|muertos)"
+        ]
+        for _, row in df_bar.iterrows():
+            lineas.append(
+                f"{row['localidad_predominante']}|{row['barrio_predominante']}"
+                f"|{int(row['n_zonas'])}|{row['ipi_max']:.1f}"
+                f"|{int(row['siniestros'])}|{int(row['muertos'])}"
+            )
+
+    # ── 6. Tipología NB05 (normalización por exposición) ─────────────────
+    nb05_path = REPORTS / "hotspots_normalizados_nb05.csv"
+    if nb05_path.exists():
+        df_nb05 = pd.read_csv(nb05_path)
+        tip_counts = df_nb05["tipologia_nb05"].value_counts().to_dict()
+        top_ocultos = df_nb05[df_nb05["tipologia_nb05"] == "Hotspot relativo oculto"].nsmallest(
+            10, "rank_tasa_red"
+        )[["localidad_modal_rec", "rank_vol", "rank_tasa_red", "tasa_red"]]
+        lineas += [
+            "\n## Tipología NB05 (normalización por exposición OSM + población)",
+            "Zonas que aparecen como hotspot solo al normalizar por km de red vial:",
+            f"Distribución tipologías: {tip_counts}",
+            "Top 10 hotspots relativos ocultos (localidad|rank_vol|rank_tasa_red|tasa_red_x_km):",
+        ]
+        for _, row in top_ocultos.iterrows():
+            lineas.append(
+                f"{row['localidad_modal_rec']}|{int(row['rank_vol'])}|{int(row['rank_tasa_red'])}|{row['tasa_red']:.2f}"
+            )
+
     return "\n".join(lineas)
 
 

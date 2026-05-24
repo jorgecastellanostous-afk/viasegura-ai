@@ -18,7 +18,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 # Guard 1: skip entire module if streamlit is not installed (CI test job)
-pytest.importorskip("streamlit")
+try:
+    import streamlit  # noqa: F401
+except ImportError:
+    pytest.skip(
+        "streamlit no instalado — tests de data_loader omitidos en CI", allow_module_level=True
+    )
 
 # Guard 2: skip if the full dataset is absent (CI stub or fresh clone)
 from config import MAPS, REPORTS  # noqa: E402
