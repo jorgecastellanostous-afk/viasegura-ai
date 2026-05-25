@@ -29,8 +29,10 @@ GLOBAL_CSS = """
   --font-m:   'DM Mono', monospace;
   --r:        12px;
   --r-sm:     8px;
-  --t:        200ms;
-  --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+  --t:        180ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);   /* enter — decelerates */
+  --ease-in:  cubic-bezier(0.4, 0, 1, 1);   /* exit  — accelerates */
+  --ease:     cubic-bezier(0.4, 0, 0.2, 1); /* micro-interactions  */
 }
 
 html { scroll-behavior: smooth; }
@@ -73,7 +75,8 @@ html { scroll-behavior: smooth; }
   border-left: 2px solid var(--red) !important;
   font-weight: 500 !important;
 }
-[data-testid="stPageLink"] a {
+/* ── Sidebar page links (dim, compact) ─────────────────────────────────── */
+[data-testid="stSidebar"] [data-testid="stPageLink"] a {
   border-radius: var(--r-sm) !important;
   font-family: var(--font-b) !important;
   font-size: 0.85rem !important;
@@ -81,11 +84,65 @@ html { scroll-behavior: smooth; }
   padding: 0.4rem 0.75rem !important;
   display: block !important;
   text-decoration: none !important;
-  transition: color var(--t) var(--ease), background var(--t) var(--ease) !important;
+  cursor: pointer !important;
+  transition: color var(--t) var(--ease),
+              background var(--t) var(--ease) !important;
 }
-[data-testid="stPageLink"] a:hover {
-  background: rgba(255,255,255,0.04) !important;
+[data-testid="stSidebar"] [data-testid="stPageLink"] a:hover {
+  background: rgba(255,255,255,0.05) !important;
   color: var(--text) !important;
+}
+[data-testid="stSidebar"] [data-testid="stPageLink"] a:active {
+  background: rgba(255,255,255,0.08) !important;
+}
+[data-testid="stSidebar"] [data-testid="stPageLink"] a:focus-visible {
+  outline: 2px solid var(--red) !important;
+  outline-offset: 2px !important;
+}
+
+/* ── Main-content page links — pill buttons ────────────────────────────── */
+.main [data-testid="stPageLink"] a,
+.block-container [data-testid="stPageLink"] a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 60px !important;
+  padding: 13px 12px !important;
+  min-height: 48px !important;      /* WCAG touch target */
+  cursor: pointer !important;
+  font-family: var(--font-b) !important;
+  font-weight: 500 !important;
+  font-size: 0.82rem !important;
+  color: var(--text) !important;
+  text-decoration: none !important;
+  width: 100% !important;
+  will-change: transform, border-color !important;
+  transition: border-color var(--t) var(--ease-out),
+              background  var(--t) var(--ease-out),
+              transform   150ms   var(--ease-out),
+              box-shadow  var(--t) var(--ease-out) !important;
+}
+.main [data-testid="stPageLink"] a:hover,
+.block-container [data-testid="stPageLink"] a:hover {
+  border-color: var(--border-h) !important;
+  background: var(--raised) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4) !important;
+}
+.main [data-testid="stPageLink"] a:active,
+.block-container [data-testid="stPageLink"] a:active {
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: none !important;
+  background: #1c1c1c !important;
+}
+.main [data-testid="stPageLink"] a:focus-visible,
+.block-container [data-testid="stPageLink"] a:focus-visible {
+  outline: 2px solid var(--red) !important;
+  outline-offset: 3px !important;
+  border-color: var(--red) !important;
 }
 
 /* ── Header ────────────────────────────────────────────────────────────── */
@@ -195,11 +252,29 @@ span[data-baseweb="tag"] {
   background: var(--red) !important;
   border: none !important;
   color: #fff !important;
+  min-height: 44px !important;
 }
 .stDownloadButton > button:hover {
   filter: brightness(1.12) !important;
-  transform: translateY(-1px) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255,34,51,0.35) !important;
 }
+.stDownloadButton > button:active {
+  transform: scale(0.97) translateY(0) !important;
+  filter: brightness(0.95) !important;
+}
+.stDownloadButton > button:focus-visible,
+.stButton > button:focus-visible {
+  outline: 2px solid var(--red) !important;
+  outline-offset: 3px !important;
+}
+/* Tab focus */
+button[data-baseweb="tab"]:focus-visible {
+  outline: 2px solid var(--red) !important;
+  outline-offset: -2px !important;
+  border-radius: 4px !important;
+}
+button[data-baseweb="tab"] { cursor: pointer !important; }
 
 /* ── Chat ──────────────────────────────────────────────────────────────── */
 [data-testid="stChatMessage"] {
@@ -239,12 +314,18 @@ hr {
 
 /* ── Animations ────────────────────────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+  50%       { opacity: 0.25; }
+}
+
+/* Global focus ring — keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--red) !important;
+  outline-offset: 3px !important;
 }
 
 /* ════════════════════════════════════════════════════════
@@ -273,7 +354,7 @@ hr {
   background: var(--red);
   border-radius: 50%;
   flex-shrink: 0;
-  animation: blink 3s ease-in-out infinite;
+  animation: blink 4s ease-in-out infinite;
 }
 .vs-logo-sub {
   font-family: var(--font-b);
@@ -286,7 +367,7 @@ hr {
 /* ── Hero ──────────────────────────────────────────────────────────────── */
 .vs-hero {
   padding: 1rem 0 2.5rem;
-  animation: fadeUp 0.5s var(--ease) both;
+  animation: fadeUp 0.45s var(--ease-out) both;
 }
 .vs-hero-eyebrow {
   font-family: var(--font-m);
@@ -355,13 +436,16 @@ hr {
   border-radius: var(--r);
   overflow: hidden;
   margin: 8px 0 36px;
-  animation: fadeUp 0.5s var(--ease) 0.1s both;
+  animation: fadeUp 0.4s var(--ease-out) 0.08s both;
 }
 .vs-kpi {
   padding: 22px 24px;
   border-right: 1px solid var(--border);
+  cursor: default;
+  transition: background var(--t) var(--ease-out);
 }
 .vs-kpi:last-child { border-right: none; }
+.vs-kpi:hover { background: rgba(255,255,255,0.018); }
 .vs-kpi-value {
   font-family: var(--font-h);
   font-weight: 900;
@@ -387,8 +471,13 @@ hr {
   margin: 8px 0 40px;
   border-radius: var(--r);
   overflow: hidden;
-  animation: fadeUp 0.5s var(--ease) 0.15s both;
+  animation: fadeUp 0.4s var(--ease-out) 0.12s both;
 }
+/* Stagger bento children */
+.vs-bento > div:nth-child(1) { animation: fadeUp 0.4s var(--ease-out) 0.10s both; }
+.vs-bento > div:nth-child(2) { animation: fadeUp 0.4s var(--ease-out) 0.18s both; }
+.vs-bento > div:nth-child(3) { animation: fadeUp 0.4s var(--ease-out) 0.26s both; }
+
 .vs-bento-main {
   grid-column: 1;
   grid-row: 1 / 3;
@@ -398,9 +487,11 @@ hr {
   flex-direction: column;
   justify-content: flex-end;
   min-height: 280px;
-  transition: background var(--t) var(--ease);
+  cursor: default;
+  transition: background var(--t) var(--ease-out);
   position: relative;
   overflow: hidden;
+  will-change: background;
 }
 .vs-bento-main::before {
   content: '';
@@ -416,9 +507,11 @@ hr {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  transition: background var(--t) var(--ease);
+  cursor: default;
+  transition: background var(--t) var(--ease-out);
   position: relative;
   overflow: hidden;
+  will-change: background;
 }
 .vs-bento-sm::before {
   content: '';
@@ -426,7 +519,7 @@ hr {
   top: 0; left: 0;
   width: 100%; height: 3px;
   background: var(--border-h);
-  transition: background var(--t) var(--ease);
+  transition: background var(--t) var(--ease-out);
 }
 .vs-bento-sm:hover { background: var(--raised); }
 .vs-bento-sm:hover::before { background: var(--red); }
@@ -478,8 +571,10 @@ hr {
   background: var(--surface);
   padding: 20px 18px;
   border-top: 2px solid var(--border);
-  transition: border-color var(--t) var(--ease), background var(--t) var(--ease);
+  transition: border-color var(--t) var(--ease-out),
+              background   var(--t) var(--ease-out);
   cursor: default;
+  will-change: border-color, background;
 }
 .vs-dim-card:hover {
   background: var(--raised);
@@ -599,51 +694,19 @@ hr {
   background: var(--red-dim);
 }
 
-/* ── Nav pill strip ────────────────────────────────────────────────────── */
-.vs-nav-strip {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
+/* ── Nav links — main content (pill buttons via st.page_link) ──────────── */
+.vs-nav-links {
   margin: 8px 0 32px;
-  animation: fadeUp 0.5s var(--ease) 0.2s both;
+  animation: fadeUp 0.4s var(--ease-out) 0.22s both;
 }
-.vs-nav-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 60px;
-  padding: 10px 18px 10px 14px;
-  cursor: default;
-  transition: border-color var(--t) var(--ease), background var(--t) var(--ease);
-}
-.vs-nav-pill:hover {
-  border-color: var(--border-h);
-  background: var(--raised);
-}
-.vs-nav-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--raised);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--red);
-}
-.vs-nav-title {
-  font-family: var(--font-b);
-  font-weight: 500;
-  font-size: 0.82rem;
-  color: var(--text);
-}
-.vs-nav-desc {
-  font-family: var(--font-b);
-  font-size: 0.7rem;
-  color: var(--muted);
-  margin-top: 1px;
+/* Stagger each column's page link */
+.vs-nav-links .stHorizontalBlock > div:nth-child(1) [data-testid="stPageLink"] a { animation-delay: 0ms; }
+.vs-nav-links .stHorizontalBlock > div:nth-child(2) [data-testid="stPageLink"] a { animation-delay: 50ms; }
+.vs-nav-links .stHorizontalBlock > div:nth-child(3) [data-testid="stPageLink"] a { animation-delay: 100ms; }
+.vs-nav-links .stHorizontalBlock > div:nth-child(4) [data-testid="stPageLink"] a { animation-delay: 150ms; }
+.vs-nav-links .stHorizontalBlock > div:nth-child(5) [data-testid="stPageLink"] a { animation-delay: 200ms; }
+.vs-nav-links [data-testid="stPageLink"] a {
+  animation: fadeUp 0.35s var(--ease-out) both;
 }
 
 /* ── IPI step (metodología) ────────────────────────────────────────────── */

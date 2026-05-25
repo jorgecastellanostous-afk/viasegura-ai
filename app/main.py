@@ -302,89 +302,26 @@ with col_stack:
 
 st.markdown("---")
 
-# ── Navegación ────────────────────────────────────────────────────────────
-st.markdown('<div class="vs-label">Explorar</div>', unsafe_allow_html=True)
+# ── Navegación — botones reales con st.page_link ──────────────────────────
+st.markdown('<div class="vs-label">Explorar el análisis</div>', unsafe_allow_html=True)
+
+st.markdown('<div class="vs-nav-links">', unsafe_allow_html=True)
+nav_cols = st.columns(5, gap="small")
+with nav_cols[0]:
+    st.page_link("pages/1_mapa.py",         label="Mapa Interactivo")
+with nav_cols[1]:
+    st.page_link("pages/2_zonas_criticas.py", label="Zonas Críticas")
+with nav_cols[2]:
+    st.page_link("pages/3_localidades.py",  label="Por Localidad")
+with nav_cols[3]:
+    st.page_link("pages/4_agente.py",       label="Agente IA")
+with nav_cols[4]:
+    st.page_link("pages/5_metodologia.py",  label="Metodología")
+st.markdown('</div>', unsafe_allow_html=True)
+
 st.markdown(
-    """
-<div class="vs-nav-strip">
-
-  <div class="vs-nav-pill">
-    <div class="vs-nav-icon">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-        <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
-      </svg>
-    </div>
-    <div>
-      <div class="vs-nav-title">Mapa Interactivo</div>
-      <div class="vs-nav-desc">Choropleth H3 + clusters P1</div>
-    </div>
-  </div>
-
-  <div class="vs-nav-pill">
-    <div class="vs-nav-icon">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
-        <line x1="8" y1="18" x2="21" y2="18"/>
-        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
-        <line x1="3" y1="18" x2="3.01" y2="18"/>
-      </svg>
-    </div>
-    <div>
-      <div class="vs-nav-title">Zonas Críticas</div>
-      <div class="vs-nav-desc">Ranking IPI filtrable</div>
-    </div>
-  </div>
-
-  <div class="vs-nav-pill">
-    <div class="vs-nav-icon">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-    </div>
-    <div>
-      <div class="vs-nav-title">Por Localidad</div>
-      <div class="vs-nav-desc">20 localidades + PyDeck</div>
-    </div>
-  </div>
-
-  <div class="vs-nav-pill">
-    <div class="vs-nav-icon">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-    </div>
-    <div>
-      <div class="vs-nav-title">Agente IA</div>
-      <div class="vs-nav-desc">Claude Haiku 4.5</div>
-    </div>
-  </div>
-
-  <div class="vs-nav-pill">
-    <div class="vs-nav-icon">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-      </svg>
-    </div>
-    <div>
-      <div class="vs-nav-title">Metodología</div>
-      <div class="vs-nav-desc">IPI · limitaciones · ADR</div>
-    </div>
-  </div>
-
-</div>
-
-<p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:#444;margin-top:8px">
-  Usa el menú lateral para navegar entre secciones.
-  Proyecto de portafolio — Ingeniería Civil énfasis Transporte · Universidad de los Andes · Coterminal
-</p>
-""",
+    "<p style='font-family:var(--font-b);font-size:0.72rem;color:#444;margin-top:4px'>"
+    "Proyecto de portafolio — Ingeniería Civil énfasis Transporte · Universidad de los Andes · Coterminal"
+    "</p>",
     unsafe_allow_html=True,
 )
