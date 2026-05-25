@@ -1,6 +1,6 @@
 """
 Página 4 — Agente IA
-Chat con Claude (Opus 4.7) sobre los datos IPI de Bogotá.
+Chat con Claude Haiku 4.5 sobre los datos IPI de Bogotá.
 Usa prompt caching para no re-enviar el CSV en cada mensaje.
 La API key se puede ingresar directamente en la barra lateral.
 """
@@ -25,13 +25,22 @@ if _env.exists():
 
 st.set_page_config(page_title="Agente IA · VíaSegura AI", page_icon="🤖", layout="wide")
 
-from app.styles import inject_global_css
+from app.styles import inject_global_css, SIDEBAR_BRAND
 
 inject_global_css()
 
-# ── API Key (sidebar primero) ────────────────────────────────────────────
+# ── Sidebar ───────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🔑 Configuración")
+    st.markdown(SIDEBAR_BRAND, unsafe_allow_html=True)
+    st.page_link("main.py",                      label="Inicio")
+    st.page_link("pages/1_mapa.py",              label="Mapa Interactivo")
+    st.page_link("pages/2_zonas_criticas.py",    label="Zonas Críticas")
+    st.page_link("pages/3_localidades.py",       label="Por Localidad")
+    st.page_link("pages/4_agente.py",            label="Agente IA")
+    st.page_link("pages/5_metodologia.py",       label="Metodología")
+    st.markdown("---")
+
+    st.markdown('<div class="vs-label">Configuración</div>', unsafe_allow_html=True)
     api_key_env = os.environ.get("ANTHROPIC_API_KEY", "")
     api_key_input = st.text_input(
         "Anthropic API Key",
@@ -43,7 +52,7 @@ with st.sidebar:
     api_key = api_key_input.strip() or api_key_env
 
     st.markdown("---")
-    st.markdown("### 💡 Preguntas sugeridas")
+    st.markdown('<div class="vs-label">Preguntas sugeridas</div>', unsafe_allow_html=True)
     sugeridas = [
         "¿Cuáles son las 3 zonas más urgentes y por qué?",
         "¿Qué localidades tienen más accidentes fatales?",
@@ -57,29 +66,45 @@ with st.sidebar:
             st.session_state.pregunta_rapida = q
 
     st.markdown("---")
-    if st.button("🗑️ Limpiar chat", use_container_width=True):
+    if st.button("Limpiar historial", use_container_width=True):
         st.session_state.mensajes = []
         st.rerun()
 
-# ── Header ───────────────────────────────────────────────────────────────
+    st.caption("SDM · SIMUR · sig.simur.gov.co")
+
+# ── Hero ──────────────────────────────────────────────────────────────────
 st.markdown(
-    '<p class="vs-page-title">Agente Intérprete de Seguridad Vial</p>', unsafe_allow_html=True
-)
-st.markdown(
-    "Pregúntale a **Claude Haiku 4.5** sobre el análisis IPI de Bogotá 2016-2019. "
-    "El agente tiene acceso completo a las 17,130 zonas analizadas."
+    """
+<div class="vs-hero">
+  <div class="vs-hero-eyebrow">Claude Haiku 4.5 · Contexto: 17,130 zonas</div>
+  <h1 class="vs-hero-title">
+    Agente<br><em>intérprete</em><br>de seguridad vial
+  </h1>
+  <p class="vs-hero-sub">
+    Pregúntale a Claude sobre el análisis IPI de Bogotá 2016–2019.
+    El agente tiene acceso completo a las zonas analizadas, rankings de localidades,
+    vías críticas y tipología de hotspots NB05.
+  </p>
+</div>
+""",
+    unsafe_allow_html=True,
 )
 
 if not api_key:
-    st.warning(
-        "**Ingresa tu Anthropic API Key** en la barra lateral para activar el agente.\n\n"
-        "Puedes obtenerla en [console.anthropic.com](https://console.anthropic.com) "
-        "— o agrega `ANTHROPIC_API_KEY=sk-ant-...` al archivo `.env` del proyecto."
+    st.markdown(
+        """
+<div class="vs-callout-warn">
+  <b>API Key requerida.</b> Ingresa tu Anthropic API Key en la barra lateral para activar el agente.
+  Obtén la tuya en <a href="https://console.anthropic.com" target="_blank" style="color:var(--amber)">console.anthropic.com</a>
+  o agrega <code>ANTHROPIC_API_KEY=sk-ant-...</code> al archivo <code>.env</code> del proyecto.
+</div>
+""",
+        unsafe_allow_html=True,
     )
     st.stop()
 
 
-# ── Cargar contexto del agente (cacheado) ────────────────────────────────
+# ── Cargar contexto del agente (cacheado) ─────────────────────────────────
 @st.cache_data(show_spinner=False)
 def _cargar_ipi_resumen() -> str:
     import csv
@@ -90,7 +115,6 @@ def _cargar_ipi_resumen() -> str:
 
     from config import REPORTS
 
-    # ── 1. Top 200 zonas por IPI ─────────────────────────────────────────
     ipi_path = REPORTS / "zonas_criticas_IPI_completo_2016_2019.csv"
     with open(ipi_path, encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
@@ -115,7 +139,6 @@ def _cargar_ipi_resumen() -> str:
             f"|{float(r.get('score_volumen', 0)):.3f}|{float(r.get('score_fatalidad', 0)):.3f}"
         )
 
-    # ── 2. Estadísticas globales ──────────────────────────────────────────
     ipi_vals = [float(r["IPI"]) for r in rows if r.get("IPI")]
     prioridades = Counter(r.get("prioridad_IPI", "?").split(" - ")[0] for r in rows)
     lineas += [
@@ -127,7 +150,6 @@ def _cargar_ipi_resumen() -> str:
         f"Total siniestros: {sum(int(r.get('cantidad_siniestros', 0) or 0) for r in rows):,}",
     ]
 
-    # ── 3. Estadísticas por localidad ─────────────────────────────────────
     loc_path = REPORTS / "ipi_por_localidad_stats.csv"
     if loc_path.exists():
         df_loc = pd.read_csv(loc_path)
@@ -142,7 +164,6 @@ def _cargar_ipi_resumen() -> str:
                 f"|{int(row['zonas_p1'])}|{int(row['zonas_p2'])}"
             )
 
-    # ── 4. Top vías críticas ──────────────────────────────────────────────
     vias_path = REPORTS / "top_vias_criticas_geoespacial.csv"
     if vias_path.exists():
         df_vias = pd.read_csv(vias_path)
@@ -154,7 +175,6 @@ def _cargar_ipi_resumen() -> str:
                 f"|{int(row['siniestros'])}|{int(row['muertos'])}|{int(row['criticidad'])}"
             )
 
-    # ── 5. Top barrios críticos ───────────────────────────────────────────
     barrios_path = REPORTS / "top_barrios_criticos_geoespacial.csv"
     if barrios_path.exists():
         df_bar = pd.read_csv(barrios_path).head(20)
@@ -168,7 +188,6 @@ def _cargar_ipi_resumen() -> str:
                 f"|{int(row['siniestros'])}|{int(row['muertos'])}"
             )
 
-    # ── 6. Tipología NB05 (normalización por exposición) ─────────────────
     nb05_path = REPORTS / "hotspots_normalizados_nb05.csv"
     if nb05_path.exists():
         df_nb05 = pd.read_csv(nb05_path)
@@ -193,24 +212,25 @@ def _cargar_ipi_resumen() -> str:
 with st.spinner("Preparando datos para el agente..."):
     ipi_texto = _cargar_ipi_resumen()
 
-st.success(f"✅ Agente listo — {len(ipi_texto):,} caracteres de contexto cargados")
+st.markdown(
+    f'<div class="vs-callout">Agente listo — <b>{len(ipi_texto):,} caracteres</b> de contexto cargados con prompt caching activo.</div>',
+    unsafe_allow_html=True,
+)
 st.markdown("---")
 
-# ── Historial ─────────────────────────────────────────────────────────────
+# ── Historial ──────────────────────────────────────────────────────────────
 if "mensajes" not in st.session_state:
     st.session_state.mensajes = []
 if "pregunta_rapida" not in st.session_state:
     st.session_state.pregunta_rapida = ""
 
-# Mostrar historial
 for msg in st.session_state.mensajes:
     avatar = "🧑" if msg["role"] == "user" else "🤖"
     with st.chat_message(msg["role"], avatar=avatar):
         st.markdown(msg["content"])
 
-# ── Capturar pregunta (input normal o botón lateral) ─────────────────────
+# ── Input ──────────────────────────────────────────────────────────────────
 pregunta_digita = st.chat_input("Escribe tu pregunta sobre seguridad vial en Bogotá...")
-
 pregunta = pregunta_digita or st.session_state.pop("pregunta_rapida", "") or ""
 
 if pregunta:
@@ -218,7 +238,6 @@ if pregunta:
     with st.chat_message("user", avatar="🧑"):
         st.markdown(pregunta)
 
-    # ── Llamar a Claude ───────────────────────────────────────────────────
     try:
         from anthropic import Anthropic
 
@@ -273,20 +292,18 @@ if pregunta:
 
             placeholder.markdown(full_response)
 
-            # Info de tokens
             final_msg = stream.get_final_message()
             usage = final_msg.usage
             cache_read = getattr(usage, "cache_read_input_tokens", 0) or 0
             cache_created = getattr(usage, "cache_creation_input_tokens", 0) or 0
-            ahorro = (
-                f" · 🟢 caché activa ({cache_read:,} tokens reutilizados)"
-                if cache_read
-                else f" · ⏳ caché creada ({cache_created:,} tokens)"
-                if cache_created
-                else ""
-            )
+            if cache_read:
+                cache_info = f" · cache activa ({cache_read:,} tokens reutilizados)"
+            elif cache_created:
+                cache_info = f" · cache creada ({cache_created:,} tokens)"
+            else:
+                cache_info = ""
             st.caption(
-                f"Tokens: {usage.input_tokens:,} entrada · {usage.output_tokens:,} salida{ahorro}"
+                f"Tokens: {usage.input_tokens:,} entrada · {usage.output_tokens:,} salida{cache_info}"
             )
 
         st.session_state.mensajes.append({"role": "assistant", "content": full_response})
