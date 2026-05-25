@@ -47,3 +47,7 @@ outputs/      maps/ GeoJSON+HTML, reports/ CSV+PNG
 - pydeck tooltips: no Python format specifiers (`{col:.1f}`) — pre-format as string column. <!-- /aprende 2026-05-21 -->
 - Claude Haiku 4.5: does NOT accept `thinking=` parameter — only Opus/Sonnet support it. <!-- /aprende 2026-05-21 -->
 - SIMUR API: `https://sig.simur.gov.co/arcgis/rest/services/Accidentalidad/AccidentalidadAnalisis/FeatureServer/2/query`
+- SIMUR `siniestros_con_muertos` = eventos de accidente CON MUERTOS, NO victimas individuales. Usar siempre "accidentes fatales" en UI. <!-- /aprende 2026-05-23 -->
+- Tests de red pytest (SIMUR): usar `if os.environ.get("CI"): pytest.skip(...)` como PRIMERA línea del fixture. <!-- /aprende 2026-05-23 -->
+- CI stub CSV limpio: generar >=25,000 filas en `.github/workflows/validate.yml` para pasar `test_csv_limpio_no_vacio`. <!-- /aprende 2026-05-23 -->
+- Jupyter notebooks (.ipynb): usar SIEMPRE `NotebookEdit` con `cell_id`, NO `Edit`. Edit tool lanza error inmediato en .ipynb. Cargar schema primero con `ToolSearch("select:NotebookEdit")`. <!-- /aprende 2026-05-24 -->

@@ -51,3 +51,4 @@ outputs/      maps/ GeoJSON+HTML, reports/ CSV+PNG
 - Tests de red pytest (SIMUR): usar `if os.environ.get("CI"): pytest.skip(...)` como PRIMERA línea del fixture — SIMUR es geo-restringido fuera de Colombia y GitHub Actions retorna count=0 en queries reales. <!-- /aprende 2026-05-23 -->
 - CI stub CSV limpio: generar >=25,000 filas en `.github/workflows/validate.yml` para pasar `test_csv_limpio_no_vacio` (exige >1MB). <!-- /aprende 2026-05-23 -->
 - PowerShell git commit: evitar chars no-ASCII en cuerpo del mensaje. Usar `$msg = @"..."@` como variable, no `git commit -m @'...'@` directo con tildes/flechas. <!-- /aprende 2026-05-23 -->
+- Jupyter notebooks (.ipynb): usar SIEMPRE `NotebookEdit` con `cell_id`, NO `Edit`. Edit tool lanza error inmediato en .ipynb. Cargar schema primero con `ToolSearch("select:NotebookEdit")`. El `cell_id` se encuentra en el JSON como `"id": "18326c09"`. <!-- /aprende 2026-05-24 -->

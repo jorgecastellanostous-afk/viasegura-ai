@@ -43,7 +43,20 @@ Solapamiento entre Top 200 base y Top 200 reciente: **18.5% (37 zonas persistent
 Distribución por zona en el Top 200: **Automóvil 31.5% · Moto 24.9% · Bus 10.6% · Camioneta 10.3% · Bicicleta 8.8%**. Causa principal identificada en 55% de zonas: "No mantener distancia / Adelantar cerrando" (53 zonas). Análisis de sensibilidad EPDO: 84.5% de estabilidad frente al IPI 1/3/5 (ADR-12).
 
 ### NB04.5 — Análisis geoespacial avanzado
-Integración espacial del IPI con celdas H3 (resolución 8, ~460 m de diámetro) y límites de localidades vía OSM. Análisis KDE sobre las 17,130 zonas activas. Genera 3 mapas interactivos Folium con leyendas en español: mapa hexagonal H3, coropleta por localidad y mapa de calor + clusters. Outputs: `ipi_hexagonos_h3.geojson` (426 KB), `ipi_por_localidad.geojson` (6.1 MB), 3 HTML, 2 PNG.
+Integración espacial del IPI con celdas H3 (resolución 8, ~460 m de diámetro) y límites de localidades vía OSM. Análisis KDE sobre las 17,130 zonas activas del periodo base. Genera 3 mapas interactivos Folium. Universo: **17,130 zonas (base 2016-2019)** — ver L9 en `memory/limitations.md`.
+
+| Output | Tamaño | Descripción |
+|---|---|---|
+| `outputs/maps/ipi_hexagonos_h3.geojson` | 426 KB | 581 hexágonos H3 con IPI agregado |
+| `outputs/maps/ipi_por_localidad.geojson` | 513 KB | 19 localidades distritales con IPI (polígonos OSM) |
+| `outputs/maps/mapa_choropleth_localidades_IPI.html` | 528 KB | Coropleta por localidad |
+| `outputs/maps/mapa_hexagonos_H3_IPI.html` | 472 KB | Mapa hexagonal H3 coloreado por IPI |
+| `outputs/maps/mapa_heatmap_clusters_P1.html` | 229 KB | HeatMap + clusters Prioridad 1 |
+| `outputs/reports/densidad_espacial_IPI.png` | 591 KB | KDE + persistencia espacial |
+| `outputs/reports/top_vias_barrios_criticos.png` | 121 KB | Bar charts top vías/barrios |
+| `outputs/reports/top_vias_criticas_geoespacial.csv` | 0.9 KB | Top 15 vías por criticidad |
+| `outputs/reports/top_barrios_criticos_geoespacial.csv` | 0.8 KB | Top 15 barrios por IPI |
+| `outputs/reports/ipi_por_localidad_stats.csv` | 2 KB | IPI P75 por localidad (19 filas) |
 
 ### NB05 — Normalización por exposición ⭐
 **Hallazgo central:** solo el **10% del Top 200 volumétrico (20 zonas)** tiene también alta tasa relativa de siniestros por km de red vial. El 90% restante refleja el efecto de alto tráfico, no vías intrínsecamente peligrosas.
@@ -55,7 +68,15 @@ Integración espacial del IPI con celdas H3 (resolución 8, ~460 m de diámetro)
 | Hotspot relativo oculto | 180 | Sub-representados por IPI volumétrico |
 | Alta tasa poblacional | 138 | Riesgo para residentes — equidad vial |
 
-Red vial descargada desde OSM: **14,884.9 km · 174,311 segmentos**. Denominadores: km de red vial (proxy exposición vehicular) y 100,000 hab DANE 2018 (exposición poblacional).
+Red vial descargada desde OSM: **14,884.9 km · 174,311 segmentos**. Denominadores: km de red vial (proxy exposición vehicular) y 100,000 hab DANE 2018 (exposición poblacional). Universo: **19,255 zonas (2020-2021)** — ver L9 en `memory/limitations.md`.
+
+| Output | Tamaño | Descripción |
+|---|---|---|
+| `outputs/reports/hotspots_normalizados_nb05.csv` | ~2.5 MB | 19,255 zonas con tasas, rankings, tipología y causa_efectiva (32 cols) |
+| `outputs/maps/tipologia_nb05.html` | — | Mapa tipología de concordancia (4 categorías) |
+| `outputs/maps/tasa_red_nb05.html` | — | Calor de tasa_red (siniestros/km) |
+| `outputs/maps/delta_ranking_nb05.html` | — | Impacto de normalización (delta rank_vol - rank_tasa_red) |
+| `outputs/reports/tipologia_nb05_comparativa.png` | — | Scatter IPI_rec vs tasa_red + barras tipología |
 
 ---
 
@@ -85,7 +106,7 @@ viasegura_ai/
 │       ├── 1_mapa.py        # Mapa interactivo (3 vistas Folium)
 │       ├── 2_zonas_criticas.py  # Ranking IPI filtrable + descarga CSV
 │       ├── 3_localidades.py     # Análisis por localidad + Pydeck
-│       └── 4_agente.py          # Chat con Claude Opus 4.7 (prompt caching)
+│       └── 4_agente.py          # Chat con Claude Haiku 4.5 (prompt caching)
 ├── tests/
 │   ├── conftest.py          # Marks: network, slow
 │   ├── test_config.py       # 18 tests de paths y archivos
