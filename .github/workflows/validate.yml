@@ -73,7 +73,7 @@ jobs:
         run: |
           pip install uv
           uv pip install --system \
-            pandas numpy geopandas shapely h3 \
+            pandas numpy geopandas shapely h3 scipy \
             pytest pytest-cov \
             requests
 
