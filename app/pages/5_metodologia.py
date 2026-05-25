@@ -207,6 +207,7 @@ with tab_datos:
         ("NB04", "Actores, vehiculos y causas", "Enriquecimiento: distribucion por tipo de vehiculo, causa_top1/top2, analisis EPDO (ADR-12)."),
         ("NB04.5", "Analisis geoespacial", "H3 resolucion 8 (~460m), localidades OSM (fix admin_level=9), KDE. 3 mapas Folium."),
         ("NB05", "Normalizacion por exposicion", "Red OSM 14,884 km · poblacion DANE 2018. Tipologia 4 categorias. causa_efectiva rescue OTRA -> top2."),
+        ("NB06", "TPDA proxy — jerarquia vial", "Resolucion parcial L1: pesos TPDA por tipo highway OSM. tasa_vehkm = sin/10^9 veh·km (PIARC). Calibracion con 19 sensores CGT/SDM. tipologia_nb06."),
     ]
 
     for code, name, desc in notebooks:
@@ -308,7 +309,7 @@ with tab_limites:
     )
 
     limitaciones = [
-        ("L1", "Alta", "Sin datos TPDA", "El IPI no mide riesgo por vehiculo-km. Una via con 100,000 veh/dia y 10 accidentes aparece igual que una con 1,000 veh/dia y 10 accidentes.", "Integrar aforos IDU. NB05 usa red OSM como proxy."),
+        ("L1", "Media", "Sin datos TPDA — parcialmente resuelta en NB06", "El IPI original trata todos los km de red igual (1 km motorway = 1 km residencial). NB06 pondera por jerarquia OSM (motorway 120k veh/dia, residential 2.5k) y calcula tasa_vehkm en sin/10^9 veh·km (estandar PIARC). Pendiente: calibracion exacta con TPDA real de la SDM por solicitud formal Ley 1712/2014.", "NB06 implementado. Calibracion formal: solicitar datos CGT a SDM (19 estaciones, ArcGIS REST disponible)."),
         ("L2", "Media", "Grilla 0.001 grados no es unidad estandar", "Una interseccion real puede caer en la frontera de 2-4 celdas, diluyendo su senal.", "Snap-to-network o DBSCAN. H3 implementado en NB04.5 como alternativa parcial."),
         ("L3", "Media", "Validacion 2020-2021 = anos pandemia", "Movilidad atipica (-30% a -60% en trafico). El solapamiento del 18.5% esta confundido por la pandemia.", "Usar 2022-2023 cuando SIMUR confirme el cambio estructural."),
         ("L4", "Alta", "Causa OTRA en 45% de zonas Top 200", "SIMUR tiene alta tasa de causa sin clasificar. NB05 implementa rescate con causa_top2.", "Solicitar datos desagregados al SDM/SIMUR."),
@@ -352,6 +353,7 @@ with tab_decisiones:
         ("ADR-12", "Analisis de sensibilidad EPDO", "Prueba 1/3/5 vs EPDO 1/8/24. 84.5% de las zonas Top 50 son estables. Pesos parametrizables en el codigo."),
         ("ADR-13", "Join Layer 6 por CODIGO_ACCIDENTE", "La clave de join correcta para VM_ACC_VIA (Layer 6) es CODIGO_ACCIDENTE, no FORMULARIO. Validado contra 961,101 registros."),
         ("ADR-14", "causa_efectiva rescue", "Cuando causa_top1 es OTRA/OTRAS (45% zonas Top 200), se usa causa_top2. Implementado en NB05."),
+        ("ADR-15", "tasa_vehkm como complemento, no reemplazo del IPI", "NB06 produce tasa en 10^9 veh·km como metrica complementaria. No reemplaza el IPI: los pesos TPDA proxy tienen error esperado +/- 30-50% por tipo de via. Los rankings duales (IPI_vol + tasa_vehkm) permiten decisiones diferenciadas segun tipo de intervencion."),
     ]
 
     for code, titulo, desc in decisiones:
