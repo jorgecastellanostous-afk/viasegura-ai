@@ -16,7 +16,6 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-# ── Config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="VíaSegura AI",
     page_icon="🚦",
@@ -28,103 +27,106 @@ from app.styles import inject_global_css, SIDEBAR_BRAND
 
 inject_global_css()
 
-# ── Datos ────────────────────────────────────────────────────────────────
 from app.data_loader import metricas_globales, cargar_ipi
 
 # ── Sidebar ──────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(SIDEBAR_BRAND, unsafe_allow_html=True)
-
     st.page_link("main.py", label="Inicio")
     st.page_link("pages/1_mapa.py", label="Mapa Interactivo")
     st.page_link("pages/2_zonas_criticas.py", label="Zonas Críticas")
     st.page_link("pages/3_localidades.py", label="Por Localidad")
     st.page_link("pages/4_agente.py", label="Agente IA")
     st.page_link("pages/5_metodologia.py", label="Metodología")
-
     st.markdown("---")
-    st.caption("Fuente: SIMUR · sig.simur.gov.co")
-    st.caption("Metodología IPI v1.0 · Bogotá 2016–2019")
+    st.caption("SDM · SIMUR · sig.simur.gov.co")
+
+# ── Datos ────────────────────────────────────────────────────────────────
+with st.spinner(""):
+    m = metricas_globales()
 
 # ── Hero ─────────────────────────────────────────────────────────────────
 st.markdown(
     """
 <div class="vs-hero">
-  <div class="vs-brand">
-    <div class="vs-brand-dot"></div>
-    <span class="vs-brand-name">VíaSegura AI</span>
-    <span class="vs-brand-badge">2016–2019</span>
-  </div>
-  <p class="vs-subtitle">
-    Análisis espacial de siniestralidad vial en Bogotá D.C.<br>
-    <span style="font-size:0.9rem;opacity:0.7">
-      Índice de Prioridad de Intervención reproducible · fuente oficial SIMUR
-    </span>
+  <div class="vs-hero-eyebrow">Proyecto de portafolio · Ingeniería Civil</div>
+  <h1 class="vs-hero-title">
+    Priorización de<br><em>intervención vial</em><br>en Bogotá D.C.
+  </h1>
+  <p class="vs-hero-sub">
+    Análisis espacial de 260,831 siniestros viales (SIMUR 2016–2019).
+    Índice reproducible y metodológicamente defendible para identificar
+    zonas críticas de intervención en infraestructura vial.
   </p>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
-# ── KPIs ─────────────────────────────────────────────────────────────────
-st.markdown('<p class="vs-section-label">Escala del análisis</p>', unsafe_allow_html=True)
+# ── KPI strip (puro HTML) ─────────────────────────────────────────────────
+st.markdown('<div class="vs-label">Escala del análisis</div>', unsafe_allow_html=True)
+st.markdown(
+    f"""
+<div class="vs-kpi-strip">
+  <div class="vs-kpi">
+    <div class="vs-kpi-value">{m['total_siniestros']:,}</div>
+    <div class="vs-kpi-label">siniestros registrados<br>2016–2019</div>
+  </div>
+  <div class="vs-kpi">
+    <div class="vs-kpi-value">{m['total_zonas']:,}</div>
+    <div class="vs-kpi-label">zonas activas<br>~100 m resolución</div>
+  </div>
+  <div class="vs-kpi">
+    <div class="vs-kpi-value">{m['total_muertos']:,}</div>
+    <div class="vs-kpi-label">accidentes fatales<br>periodo base</div>
+  </div>
+  <div class="vs-kpi">
+    <div class="vs-kpi-value">14,884 km</div>
+    <div class="vs-kpi-label">red vial OSM<br>174 K segmentos</div>
+  </div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
 
-with st.spinner("Cargando datos..."):
-    m = metricas_globales()
-
-col1, col2, col3, col4, col5 = st.columns(5)
-with col1:
-    st.metric("Siniestros analizados", f"{m['total_siniestros']:,}", "2016–2019")
-with col2:
-    st.metric(
-        "Accidentes fatales",
-        f"{m['total_muertos']:,}",
-        "eventos con fallecido",
-        help=(
-            "Siniestros clasificados como CON MUERTOS en SIMUR. "
-            "Cada registro es un accidente con ≥1 fallecido, no el conteo de víctimas individuales."
-        ),
-    )
-with col3:
-    st.metric("Zonas analizadas", f"{m['total_zonas']:,}", "celdas ~100 m")
-with col4:
-    st.metric("Zonas Prioridad 1", f"{m['zonas_p1']}", "intervención urgente")
-with col5:
-    st.metric("Red vial cubierta", "14,884 km", "OSM · 174 K segmentos")
-
-st.markdown("---")
-
-# ── Hallazgos clave (pitch SDM) ───────────────────────────────────────────
-st.markdown('<p class="vs-section-label">Hallazgos que justifican la intervención</p>', unsafe_allow_html=True)
-
+# ── Bento de hallazgos ────────────────────────────────────────────────────
+st.markdown('<div class="vs-label">Hallazgos que justifican la intervención</div>', unsafe_allow_html=True)
 st.markdown(
     """
-<div class="vs-finding-grid">
+<div class="vs-bento">
 
-  <div class="vs-finding-card" style="animation-delay:0s">
-    <div class="vs-finding-number">0.29%</div>
-    <div class="vs-finding-label">de las zonas concentra el 6.39% de todas las muertes del periodo</div>
-    <div class="vs-finding-sub">
-      El Top 50 sobre 17,130 zonas activas. Concentración extrema —
-      intervenir esas 50 zonas tiene impacto desproporcionado.
+  <!-- Card principal — 0.29% -->
+  <div class="vs-bento-main">
+    <div style="flex:1"></div>
+    <div class="vs-num-xl">0.29%</div>
+    <div class="vs-bento-label">
+      del total de zonas concentra el <strong>6.39%</strong> de todas las muertes del periodo
+    </div>
+    <div class="vs-bento-sub">
+      Top 50 sobre 17,130 zonas activas. Intervenir estas 50 zonas tiene
+      impacto desproporcionado sobre la mortalidad vial.
     </div>
   </div>
 
-  <div class="vs-finding-card" style="animation-delay:0.1s">
-    <div class="vs-finding-number">35</div>
-    <div class="vs-finding-label">zonas persisten como críticas en el periodo de validación 2020–2021</div>
-    <div class="vs-finding-sub">
-      Solapamiento Top 200 base ↔ Top 200 reciente: 18.5%.
-      Las 35 zonas persistentes son estructurales, no ruido estadístico.
+  <!-- Card 2 — 35 zonas -->
+  <div class="vs-bento-sm">
+    <div style="flex:1"></div>
+    <div class="vs-num-sm">35</div>
+    <div class="vs-bento-label">zonas persistentes</div>
+    <div class="vs-bento-sub">
+      Permanecen críticas en validación 2020–2021 (18.5% solapamiento Top 200).
+      Son estructurales — no ruido estadístico.
     </div>
   </div>
 
-  <div class="vs-finding-card" style="animation-delay:0.2s">
-    <div class="vs-finding-number">10%</div>
-    <div class="vs-finding-label">del Top 200 volumétrico tiene también alta tasa relativa de siniestros</div>
-    <div class="vs-finding-sub">
-      Solo 20 zonas son hotspot absoluto + relativo. El 90% restante refleja
-      alto tráfico, no vías intrínsecamente peligrosas.
+  <!-- Card 3 — 10% -->
+  <div class="vs-bento-sm">
+    <div style="flex:1"></div>
+    <div class="vs-num-sm vs-num-sm-red">10%</div>
+    <div class="vs-bento-label">hotspot real</div>
+    <div class="vs-bento-sub">
+      Solo 20 zonas del Top 200 tienen alta tasa relativa de siniestros/km de red.
+      El 90% restante es efecto de tráfico.
     </div>
   </div>
 
@@ -135,74 +137,76 @@ st.markdown(
 
 st.markdown("---")
 
-# ── Distribución + detalles ───────────────────────────────────────────────
-col_left, col_right = st.columns([3, 2])
+# ── IPI — 5 dimensiones ───────────────────────────────────────────────────
+st.markdown('<div class="vs-label">Índice de Prioridad de Intervención</div>', unsafe_allow_html=True)
 
-with col_left:
-    st.markdown('<p class="vs-section-label">IPI — Índice de Prioridad de Intervención</p>', unsafe_allow_html=True)
+col_ipi_left, col_ipi_right = st.columns([5, 4], gap="large")
+
+with col_ipi_left:
     st.markdown(
         """
-        Score compuesto **[0–100]** construido sobre 260,831 registros SIMUR.
-        Combina 5 dimensiones con igual peso para capturar distintos tipos de criticidad:
-        """
+<p style="font-family:'DM Sans',sans-serif;font-size:1rem;color:#888;line-height:1.7;margin-bottom:20px">
+  Score compuesto <strong style="color:#f5f5f5">[0–100]</strong> construido sobre 5 dimensiones
+  normalizadas por percentil. Cada dimensión captura un tipo distinto de criticidad.
+  Mayor IPI = mayor urgencia de intervención.
+</p>
+""",
+        unsafe_allow_html=True,
     )
-
     st.markdown(
         """
-<div class="vs-ipi-step">
-  <div class="vs-ipi-idx">1</div>
-  <div>
-    <div class="vs-ipi-title">Volumen · 20%</div>
-    <div class="vs-ipi-desc">Cantidad de siniestros en la celda durante 2016–2019</div>
+<div class="vs-dim-grid">
+  <div class="vs-dim-card">
+    <div class="vs-dim-num">01</div>
+    <div class="vs-dim-title">Volumen</div>
+    <div class="vs-dim-weight">20%</div>
+    <div class="vs-dim-desc">Cantidad de siniestros en la celda durante 4 años</div>
   </div>
-</div>
-<div class="vs-ipi-step">
-  <div class="vs-ipi-idx">2</div>
-  <div>
-    <div class="vs-ipi-title">Criticidad · 20%</div>
-    <div class="vs-ipi-desc">Gravedad ponderada (1×leve + 3×grave + 5×fatal)</div>
+  <div class="vs-dim-card">
+    <div class="vs-dim-num">02</div>
+    <div class="vs-dim-title">Criticidad</div>
+    <div class="vs-dim-weight">20%</div>
+    <div class="vs-dim-desc">Gravedad ponderada 1×leve + 3×grave + 5×fatal</div>
   </div>
-</div>
-<div class="vs-ipi-step">
-  <div class="vs-ipi-idx">3</div>
-  <div>
-    <div class="vs-ipi-title">Severidad · 20%</div>
-    <div class="vs-ipi-desc">Criticidad promedio por evento — detecta zonas de alta letalidad con bajo volumen</div>
+  <div class="vs-dim-card">
+    <div class="vs-dim-num">03</div>
+    <div class="vs-dim-title">Severidad</div>
+    <div class="vs-dim-weight">20%</div>
+    <div class="vs-dim-desc">Gravedad promedio por evento — detecta alta letalidad con bajo volumen</div>
   </div>
-</div>
-<div class="vs-ipi-step">
-  <div class="vs-ipi-idx">4</div>
-  <div>
-    <div class="vs-ipi-title">Persistencia · 20%</div>
-    <div class="vs-ipi-desc">Años consecutivos activos (1–4) — distingue problemas estructurales de anomalías</div>
+  <div class="vs-dim-card">
+    <div class="vs-dim-num">04</div>
+    <div class="vs-dim-title">Persistencia</div>
+    <div class="vs-dim-weight">20%</div>
+    <div class="vs-dim-desc">Años consecutivos activos (1–4) — distingue problemas estructurales</div>
   </div>
-</div>
-<div class="vs-ipi-step">
-  <div class="vs-ipi-idx">5</div>
-  <div>
-    <div class="vs-ipi-title">Fatalidad · 20%</div>
-    <div class="vs-ipi-desc">Proporción de siniestros con fallecido — prioriza donde el riesgo es letal</div>
+  <div class="vs-dim-card">
+    <div class="vs-dim-num">05</div>
+    <div class="vs-dim-title">Fatalidad</div>
+    <div class="vs-dim-weight">20%</div>
+    <div class="vs-dim-desc">Proporción de siniestros con fallecido</div>
   </div>
 </div>
 """,
         unsafe_allow_html=True,
     )
-
     st.markdown(
         """
 <div class="vs-callout">
-  <strong>Mayor IPI = mayor urgencia de intervención.</strong><br>
-  Cada dimensión se normaliza por percentil [0–100] antes de promediar, eliminando el efecto de escala entre variables de diferente magnitud.
+  <strong>Importante:</strong> el IPI mide prioridad exploratoria, no riesgo vial real.
+  Sin datos de TPDA (tráfico promedio diario), una zona de alto tráfico aparece primero
+  por exposición, no por ser intrínsecamente peligrosa. NB05 introduce corrección parcial.
 </div>
 """,
         unsafe_allow_html=True,
     )
 
-with col_right:
+with col_ipi_right:
     st.markdown(
-        '<p class="vs-section-label">Distribución por prioridad</p>', unsafe_allow_html=True
+        '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.1em;'
+        'text-transform:uppercase;color:#444;margin-bottom:12px">Distribución por prioridad</p>',
+        unsafe_allow_html=True,
     )
-
     df = cargar_ipi()
     prioridades = df["prioridad_IPI"].value_counts()
     labels = [p.split(" - ")[0] for p in prioridades.index]
@@ -211,26 +215,26 @@ with col_right:
         go.Pie(
             labels=labels,
             values=prioridades.values,
-            hole=0.58,
-            marker_colors=["#e63946", "#fc8d59", "#fee08b", "#91bfdb"],
+            hole=0.62,
+            marker_colors=["#ff2233", "#f97316", "#eab308", "#3b82f6"],
             textinfo="label+percent",
-            textfont_size=11,
-            textfont_color="#edf2f7",
+            textfont_size=10.5,
+            textfont_color="#f5f5f5",
         )
     )
     fig.update_layout(
         showlegend=False,
-        margin=dict(t=10, b=10, l=10, r=10),
-        height=260,
+        margin=dict(t=0, b=0, l=0, r=0),
+        height=240,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font_color="#edf2f7",
+        font_color="#f5f5f5",
         annotations=[
             dict(
-                text=f"<b>{m['total_zonas']:,}</b><br><span style='font-size:11px'>zonas</span>",
+                text=f"<b>{m['total_zonas']:,}</b><br><span style='font-size:10px;color:#888'>zonas</span>",
                 x=0.5,
                 y=0.5,
-                font=dict(size=16, color="#edf2f7"),
+                font=dict(size=18, color="#f5f5f5", family="Archivo"),
                 showarrow=False,
             )
         ],
@@ -239,12 +243,11 @@ with col_right:
 
     st.markdown(
         f"""
-<div style="padding-left:4px">
-  <p class="vs-kv">Intervención inmediata &nbsp;<b>{m["zonas_p1"]} zonas</b></p>
-  <p class="vs-kv">Activas los 4 años &nbsp;<b>{m["persistentes_4a"]:,} zonas</b></p>
-  <p class="vs-kv">Zona más crítica &nbsp;<b>{m["via_top"]}</b></p>
-  <p class="vs-kv">IPI promedio &nbsp;<b>{m["ipi_medio"]} / 100</b></p>
-  <p class="vs-kv">Red normalización &nbsp;<b>14,884 km OSM</b></p>
+<div style="margin-top:8px">
+  <p class="vs-kv">Prioridad 1 (urgente) &nbsp;<b>{m['zonas_p1']} zonas</b></p>
+  <p class="vs-kv">Activas los 4 años &nbsp;<b>{m['persistentes_4a']:,} zonas</b></p>
+  <p class="vs-kv">Zona top &nbsp;<b>{m['via_top']}</b></p>
+  <p class="vs-kv">IPI máximo &nbsp;<b>{m['ipi_max']} / 100</b></p>
 </div>
 """,
         unsafe_allow_html=True,
@@ -252,21 +255,21 @@ with col_right:
 
 st.markdown("---")
 
-# ── MCP Server showcase ───────────────────────────────────────────────────
-st.markdown('<p class="vs-section-label">Infraestructura técnica</p>', unsafe_allow_html=True)
-
-col_mcp, col_stack = st.columns([3, 2])
+# ── Infraestructura técnica ───────────────────────────────────────────────
+col_mcp, col_stack = st.columns([3, 2], gap="large")
 
 with col_mcp:
+    st.markdown('<div class="vs-label">MCP Server</div>', unsafe_allow_html=True)
     st.markdown(
         """
 <div class="vs-mcp-card">
-  <h4>MCP Server — SIMUR como herramienta de IA</h4>
-  <p style="font-size:0.85rem;margin-bottom:12px;color:var(--vs-text-muted)">
-    El proyecto expone los datos SIMUR/IPI como <strong>Model Context Protocol server</strong>,
-    permitiendo que Claude (y cualquier cliente MCP) consulte zonas críticas en lenguaje natural.
+  <h4>SIMUR como herramienta de IA</h4>
+  <p>
+    El proyecto expone los datos SIMUR/IPI como un
+    <strong>Model Context Protocol server</strong>, permitiendo que Claude
+    consulte zonas críticas de Bogotá en lenguaje natural.
   </p>
-  <div style="display:flex;flex-wrap:wrap;gap:6px">
+  <div>
     <span class="vs-mcp-tool">get_top_zonas_ipi</span>
     <span class="vs-mcp-tool">get_zona_detail</span>
     <span class="vs-mcp-tool">query_simur_layer</span>
@@ -280,17 +283,18 @@ with col_mcp:
     )
 
 with col_stack:
-    st.markdown('<p class="vs-section-label">Stack técnico</p>', unsafe_allow_html=True)
+    st.markdown('<div class="vs-label">Stack técnico</div>', unsafe_allow_html=True)
     st.markdown(
         """
 <div class="vs-stack-row">
-  <span class="vs-stack-badge vs-stack-accent">SIMUR ArcGIS REST</span>
+  <span class="vs-stack-badge red">SIMUR ArcGIS REST</span>
+  <span class="vs-stack-badge red">Claude API · MCP</span>
   <span class="vs-stack-badge">GeoPandas · OSMnx</span>
   <span class="vs-stack-badge">H3 · Folium · PyDeck</span>
-  <span class="vs-stack-badge vs-stack-accent">Claude API · MCP</span>
   <span class="vs-stack-badge">Streamlit · Plotly</span>
   <span class="vs-stack-badge">GitHub Actions CI</span>
-  <span class="vs-stack-badge">uv · pytest</span>
+  <span class="vs-stack-badge">uv · pytest · ruff</span>
+  <span class="vs-stack-badge">DANE · OSM</span>
 </div>
 """,
         unsafe_allow_html=True,
@@ -298,82 +302,89 @@ with col_stack:
 
 st.markdown("---")
 
-# ── Navegación cards ──────────────────────────────────────────────────────
-st.markdown('<p class="vs-section-label">Explorar el análisis</p>', unsafe_allow_html=True)
-
+# ── Navegación ────────────────────────────────────────────────────────────
+st.markdown('<div class="vs-label">Explorar</div>', unsafe_allow_html=True)
 st.markdown(
     """
-<div class="vs-nav-grid">
+<div class="vs-nav-strip">
 
-  <div class="vs-nav-card">
+  <div class="vs-nav-pill">
     <div class="vs-nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
         <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
       </svg>
     </div>
-    <div class="vs-nav-title">Mapa Interactivo</div>
-    <div class="vs-nav-desc">Choropleth por localidad, hexágonos H3 y heatmap de clusters P1</div>
+    <div>
+      <div class="vs-nav-title">Mapa Interactivo</div>
+      <div class="vs-nav-desc">Choropleth H3 + clusters P1</div>
+    </div>
   </div>
 
-  <div class="vs-nav-card">
+  <div class="vs-nav-pill">
     <div class="vs-nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
         <line x1="8" y1="18" x2="21" y2="18"/>
         <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
         <line x1="3" y1="18" x2="3.01" y2="18"/>
       </svg>
     </div>
-    <div class="vs-nav-title">Zonas Críticas</div>
-    <div class="vs-nav-desc">Ranking IPI filtrable por localidad, prioridad y tipo de siniestro</div>
+    <div>
+      <div class="vs-nav-title">Zonas Críticas</div>
+      <div class="vs-nav-desc">Ranking IPI filtrable</div>
+    </div>
   </div>
 
-  <div class="vs-nav-card">
+  <div class="vs-nav-pill">
     <div class="vs-nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
         <circle cx="12" cy="10" r="3"/>
       </svg>
     </div>
-    <div class="vs-nav-title">Por Localidad</div>
-    <div class="vs-nav-desc">Análisis comparativo por las 20 localidades distritales + mapa PyDeck</div>
+    <div>
+      <div class="vs-nav-title">Por Localidad</div>
+      <div class="vs-nav-desc">20 localidades + PyDeck</div>
+    </div>
   </div>
 
-  <div class="vs-nav-card">
+  <div class="vs-nav-pill">
     <div class="vs-nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
       </svg>
     </div>
-    <div class="vs-nav-title">Agente IA</div>
-    <div class="vs-nav-desc">Chat con Claude Haiku 4.5 con prompt caching sobre el dataset IPI</div>
+    <div>
+      <div class="vs-nav-title">Agente IA</div>
+      <div class="vs-nav-desc">Claude Haiku 4.5</div>
+    </div>
   </div>
 
-  <div class="vs-nav-card">
+  <div class="vs-nav-pill">
     <div class="vs-nav-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
       </svg>
     </div>
-    <div class="vs-nav-title">Metodología</div>
-    <div class="vs-nav-desc">IPI paso a paso, decisiones de datos, limitaciones honestas y arquitectura MCP</div>
+    <div>
+      <div class="vs-nav-title">Metodología</div>
+      <div class="vs-nav-desc">IPI · limitaciones · ADR</div>
+    </div>
   </div>
 
 </div>
-""",
-    unsafe_allow_html=True,
-)
 
-st.markdown(
-    "<p style='font-size:0.75rem;color:var(--vs-text-muted);text-align:center;margin-top:24px'>"
-    "Proyecto de portafolio — Ingeniería Civil énfasis Transporte · Universidad de los Andes · Coterminal"
-    "</p>",
+<p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:#444;margin-top:8px">
+  Usa el menú lateral para navegar entre secciones.
+  Proyecto de portafolio — Ingeniería Civil énfasis Transporte · Universidad de los Andes · Coterminal
+</p>
+""",
     unsafe_allow_html=True,
 )
