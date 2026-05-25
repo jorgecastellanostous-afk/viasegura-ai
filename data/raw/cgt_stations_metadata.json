@@ -1,0 +1,222 @@
+[
+  {
+    "siteid": 1,
+    "address": "Autopista norte x calle 192",
+    "location": "Usaquen",
+    "name": "Autopista norte - calle 192",
+    "lon": -74.0431049019098,
+    "lat": 4.77002349495888,
+    "tipo_osm_inferred": "motorway",
+    "proxy_nb06": 120000,
+    "benchmark_bogota": 120000
+  },
+  {
+    "siteid": 2,
+    "address": "Autopista norte x calle 127",
+    "location": "Usaquen",
+    "name": "Autopista norte - calle 127 carril lento",
+    "lon": -74.0542147010565,
+    "lat": 4.70574999600649,
+    "tipo_osm_inferred": "motorway",
+    "proxy_nb06": 120000,
+    "benchmark_bogota": 120000
+  },
+  {
+    "siteid": 3,
+    "address": "Autopista sur x calle 63 sur",
+    "location": "Ciudad Bolívar",
+    "name": "Autopista Sur - Calle 63 Sur",
+    "lon": -74.1793789044023,
+    "lat": 4.59681739658117,
+    "tipo_osm_inferred": "motorway",
+    "proxy_nb06": 120000,
+    "benchmark_bogota": 120000
+  },
+  {
+    "siteid": 4,
+    "address": "Autopista norte x calle 127",
+    "location": "Usaquen",
+    "name": "Autopista norte - calle 127 carril rápido",
+    "lon": -74.0538009032607,
+    "lat": 4.70810129493475,
+    "tipo_osm_inferred": "motorway",
+    "proxy_nb06": 120000,
+    "benchmark_bogota": 120000
+  },
+  {
+    "siteid": 5,
+    "address": "Avenida calle 26 x carrera 68D",
+    "location": "Fontibon",
+    "name": "Avenida calle 26 - carrera 68D El Tiempo",
+    "lon": -74.1057764068246,
+    "lat": 4.65692579746246,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 6,
+    "address": "Avenida ciudad de Cali x calle 43 sur",
+    "location": "Kennedy",
+    "name": "Avenida ciudad de Cali - calle 43 sur",
+    "lon": -74.1708887070417,
+    "lat": 4.62854509800673,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 7,
+    "address": "Avenida Boyaca x calle 13",
+    "location": "Fontibon",
+    "name": "Avenida Boyacá - calle 13",
+    "lon": -74.1252396032214,
+    "lat": 4.6506137996912,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 8,
+    "address": "Calle 13 x Avenida Boyaca",
+    "location": "Fontibon",
+    "name": "Calle 13 - Avenida Boyacá",
+    "lon": -74.1251216009259,
+    "lat": 4.64712769538164,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 9,
+    "address": "Calle 17 x Avenida ciudad de Cali",
+    "location": "Fontibon",
+    "name": "Calle 17 - Avenida ciudad de Cali",
+    "lon": -74.137138903141,
+    "lat": 4.66069889813662,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 10,
+    "address": "Calle 127 x Autopista Norte",
+    "location": "Usaquen",
+    "name": "Calle 127 - Autopista Norte",
+    "lon": -74.0522143021226,
+    "lat": 4.70630699396133,
+    "tipo_osm_inferred": "motorway",
+    "proxy_nb06": 120000,
+    "benchmark_bogota": 120000
+  },
+  {
+    "siteid": 11,
+    "address": "Calle 17 x Río Bogotá",
+    "location": "Fontibon",
+    "name": "Calle 17 - Río Bogotá",
+    "lon": -74.1717872023582,
+    "lat": 4.69612389802933,
+    "tipo_osm_inferred": "secondary",
+    "proxy_nb06": 20000,
+    "benchmark_bogota": 15000
+  },
+  {
+    "siteid": 12,
+    "address": "Avenida 1 de Mayo x carrera 8A",
+    "location": "Antonio Nariño",
+    "name": "Avenida 1 de Mayo x carrera 8A",
+    "lon": -74.0940396040678,
+    "lat": 4.5752843990922,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 13,
+    "address": "Calle 72 x Carrera 84Bis",
+    "location": "Engativa",
+    "name": "Calle 72 - Carrera 84Bis",
+    "lon": -74.1049478054047,
+    "lat": 4.69508159905672,
+    "tipo_osm_inferred": "secondary",
+    "proxy_nb06": 20000,
+    "benchmark_bogota": 15000
+  },
+  {
+    "siteid": 14,
+    "address": "Calle 80 x Carrera 119",
+    "location": "Engativa",
+    "name": "Calle 80 - Carrera 119",
+    "lon": -74.1246301010251,
+    "lat": 4.72604769468307,
+    "tipo_osm_inferred": "primary",
+    "proxy_nb06": 50000,
+    "benchmark_bogota": 35000
+  },
+  {
+    "siteid": 15,
+    "address": "Avenida de las Américas x carrera 68D",
+    "location": "Kennedy",
+    "name": "Calle 9 - Avenida de las Américas",
+    "lon": -74.1246830001473,
+    "lat": 4.62928929924965,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 16,
+    "address": "Carrera 10 x calle 19 sur",
+    "location": "Antonio Nariño",
+    "name": "Carrera 10 - calle 19 sur",
+    "lon": -74.0940804034472,
+    "lat": 4.57664739340544,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 17,
+    "address": "Avenida carrera 68 x calle 8",
+    "location": "Puente Aranda",
+    "name": "Avenida carrera 68 - calle 8",
+    "lon": -74.1220321059227,
+    "lat": 4.63007189333439,
+    "tipo_osm_inferred": "trunk",
+    "proxy_nb06": 90000,
+    "benchmark_bogota": 85000
+  },
+  {
+    "siteid": 18,
+    "address": "Avenida carrera 86 x calle 72A",
+    "location": "Engativa",
+    "name": "Avenida carrera 86 - calle 72A",
+    "lon": -74.1054386049509,
+    "lat": 4.69669099897146,
+    "tipo_osm_inferred": "primary",
+    "proxy_nb06": 50000,
+    "benchmark_bogota": 35000
+  },
+  {
+    "siteid": 19,
+    "address": "Transversal 5 x calle 89 Vía la Calera",
+    "location": "Chapinero",
+    "name": "Transversal 5 vía la Calera",
+    "lon": -74.043623700738,
+    "lat": 4.6697193980217,
+    "tipo_osm_inferred": "secondary",
+    "proxy_nb06": 20000,
+    "benchmark_bogota": 15000
+  },
+  {
+    "siteid": 20,
+    "address": "Carrera 7 x calle 193",
+    "location": "Usaquen",
+    "name": "Carrera 7 - calle 193",
+    "lon": -74.0270703062415,
+    "lat": 4.76979189366102,
+    "tipo_osm_inferred": "primary",
+    "proxy_nb06": 50000,
+    "benchmark_bogota": 35000
+  }
+]
