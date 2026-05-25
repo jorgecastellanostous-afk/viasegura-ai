@@ -67,7 +67,7 @@ st.info(DESCRIPCIONES[capa])
 c1, c2, c3 = st.columns(3)
 c1.metric("Zonas Prioridad 1", m["zonas_p1"], "intervención inmediata")
 c2.metric("IPI máximo", m["ipi_max"], m["localidad_top"])
-c3.metric("Fallecidos (2016-19)", f"{m['total_muertos']:,}", "periodo base")
+c3.metric("Acc. fatales (2016-19)", f"{m['total_muertos']:,}", "periodo base")
 
 st.markdown("---")
 
