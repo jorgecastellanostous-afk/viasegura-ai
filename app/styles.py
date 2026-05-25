@@ -445,6 +445,236 @@ span[data-baseweb="tag"] {
   font-weight: 500;
 }
 
+/* ── Finding cards — hallazgos clave ──────────────────────────────────── */
+.vs-finding-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 16px 0 28px;
+}
+.vs-finding-card {
+  background: var(--c-glass);
+  border: 1px solid var(--c-border);
+  border-top: 2px solid var(--c-accent);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform var(--t) var(--spring), border-color var(--t) var(--spring), box-shadow var(--t) var(--spring);
+  animation: fadeInUp 0.5s var(--spring) both;
+  cursor: default;
+}
+.vs-finding-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--c-border-acc);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 28px rgba(0,0,0,0.4), 0 0 0 1px rgba(230,57,70,0.08);
+}
+.vs-finding-card:nth-child(2) { animation-delay: 80ms; }
+.vs-finding-card:nth-child(3) { animation-delay: 160ms; }
+.vs-finding-number {
+  font-family: 'Geist Mono', monospace;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--c-accent);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+}
+.vs-finding-label {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--c-text);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.vs-finding-sub {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.7rem;
+  color: var(--c-muted);
+  line-height: 1.4;
+}
+
+/* ── Tech stack badges ──────────────────────────────────────────────────── */
+.vs-stack-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 24px;
+}
+.vs-stack-badge {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--c-muted);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: color var(--t) var(--spring), border-color var(--t) var(--spring), background var(--t) var(--spring);
+  cursor: default;
+}
+.vs-stack-badge:hover {
+  color: var(--c-text);
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+}
+.vs-stack-badge.accent {
+  color: var(--c-accent);
+  border-color: rgba(230,57,70,0.35);
+  background: var(--c-accent-dim);
+}
+
+/* ── Callout / insight box ──────────────────────────────────────────────── */
+.vs-callout {
+  background: rgba(230,57,70,0.06);
+  border: 1px solid rgba(230,57,70,0.2);
+  border-left: 3px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-family: 'Geist', sans-serif;
+  font-size: 0.875rem;
+  color: var(--c-text);
+  line-height: 1.6;
+  animation: fadeInUp 0.4s var(--spring) both;
+}
+.vs-callout b { color: var(--c-accent); }
+
+/* ── Limitation / warning callout ──────────────────────────────────────── */
+.vs-callout-warn {
+  background: rgba(251,191,36,0.05);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-left: 3px solid #f59e0b;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 10px 0;
+  font-family: 'Geist', sans-serif;
+  font-size: 0.82rem;
+  color: var(--c-muted);
+  line-height: 1.5;
+}
+.vs-callout-warn b { color: #f59e0b; }
+
+/* ── MCP server card ────────────────────────────────────────────────────── */
+.vs-mcp-card {
+  background: rgba(59,130,246,0.05);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 16px 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.vs-mcp-card h4 {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #60a5fa;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.vs-mcp-card p {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.82rem;
+  color: var(--c-muted);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+.vs-mcp-tool {
+  display: inline-block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  color: #60a5fa;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin: 3px 3px 3px 0;
+}
+
+/* ── IPI dimension pill ─────────────────────────────────────────────────── */
+.vs-ipi-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--c-border);
+}
+.vs-ipi-step:last-child { border-bottom: none; }
+.vs-ipi-index {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--c-accent);
+  background: var(--c-accent-dim);
+  border: 1px solid rgba(230,57,70,0.3);
+  border-radius: 4px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.vs-ipi-title {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: 4px;
+}
+.vs-ipi-desc {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  line-height: 1.5;
+}
+
+/* ── Nav card grid ──────────────────────────────────────────────────────── */
+.vs-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.vs-nav-card {
+  background: var(--c-glass);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: transform var(--t) var(--spring), border-color var(--t) var(--spring), background var(--t) var(--spring);
+  text-decoration: none;
+  display: block;
+  animation: fadeInUp 0.5s var(--spring) both;
+}
+.vs-nav-card:nth-child(2) { animation-delay: 60ms; }
+.vs-nav-card:nth-child(3) { animation-delay: 120ms; }
+.vs-nav-card:nth-child(4) { animation-delay: 180ms; }
+.vs-nav-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.12);
+  background: var(--c-glass-h);
+}
+.vs-nav-icon {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  display: block;
+}
+.vs-nav-title {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: 4px;
+}
+.vs-nav-desc {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.72rem;
+  color: var(--c-muted);
+  line-height: 1.4;
+}
+
 /* ── Reduced motion ────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
